@@ -1175,6 +1175,7 @@ class _BikeEditorState extends State<BikeEditor> {
             color: Colors.transparent,
             padding: EdgeInsets.all(50),
             child: InteractiveViewer(
+              clipBehavior: Clip.none,
               transformationController: _transformationController,
               minScale: 1.0,
               maxScale: 2.0,
@@ -1182,7 +1183,7 @@ class _BikeEditorState extends State<BikeEditor> {
                 child: AspectRatio(
                   aspectRatio: 16 / 9,
                   child: Stack(
-                    clipBehavior: Clip.none,
+                    fit: StackFit.expand,
                     children: [
                       //Stack arrangment is where bottom is the top most layer which is not similar to photoshop layer arrangement
                       //Kickstand

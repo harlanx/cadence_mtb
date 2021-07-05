@@ -232,7 +232,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void deleteProfile(List<UserProfile> profiles, int index) {
-    int profileNumber = profiles[index - 1].profileNumber;
+    int profileNumber = profiles[index].profileNumber;
     final GlobalKey deleteStatusKey = GlobalKey();
     showModal(
       context: context,

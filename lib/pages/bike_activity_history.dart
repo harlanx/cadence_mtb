@@ -159,214 +159,222 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                               }
                               return SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
-                                child: DataTable(
-                                  headingTextStyle: TextStyle(color: Color(0xFF496D47), fontWeight: FontWeight.w700),
-                                  dataTextStyle: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.grey.shade600,
-                                  ),
-                                  dataRowColor: MaterialStateProperty.resolveWith(
-                                      (states) => states.contains(MaterialState.selected) ? Color(0xFF496D47).brighten(0.5) : Colors.transparent),
-                                  sortAscending: _isAscending,
-                                  sortColumnIndex: _sortColumnIndex,
-                                  columnSpacing: 20,
-                                  showCheckboxColumn: true,
-                                  columns: [
-                                    DataColumn(
-                                      label: Text('Map'),
-                                      tooltip: 'Long press to see map.',
-                                    ),
-                                    DataColumn(
-                                      label: Text('Date'),
-                                      tooltip: 'The date of the ride session.',
-                                      onSort: (columnIndex, ascending) {
-                                        onSortColumn(columnIndex, ascending);
-                                        setState(() {
-                                          _isAscending = ascending;
-                                          _sortColumnIndex = columnIndex;
-                                        });
-                                      },
-                                    ),
-                                    DataColumn(
-                                      label: Text('Start'),
-                                      tooltip: 'The starting location of the ride session.',
-                                      onSort: (columnIndex, ascending) {
-                                        onSortColumn(columnIndex, ascending);
-                                        setState(() {
-                                          _isAscending = ascending;
-                                          _sortColumnIndex = columnIndex;
-                                        });
-                                      },
-                                    ),
-                                    DataColumn(
-                                      label: Text('End'),
-                                      tooltip: 'The ending location of the ride session.',
-                                      onSort: (columnIndex, ascending) {
-                                        onSortColumn(columnIndex, ascending);
-                                        setState(() {
-                                          _isAscending = ascending;
-                                          _sortColumnIndex = columnIndex;
-                                        });
-                                      },
-                                    ),
-                                    DataColumn(
-                                      label: Text('Average\nSpeed'),
-                                      tooltip: 'The calculated average speed of the ride session.',
-                                      onSort: (columnIndex, ascending) {
-                                        onSortColumn(columnIndex, ascending);
-                                        setState(() {
-                                          _isAscending = ascending;
-                                          _sortColumnIndex = columnIndex;
-                                        });
-                                      },
-                                    ),
-                                    DataColumn(
-                                      label: Text('Calories\nBurned'),
-                                      tooltip: 'The total burned calories during the ride session.',
-                                      onSort: (columnIndex, ascending) {
-                                        onSortColumn(columnIndex, ascending);
-                                        setState(() {
-                                          _isAscending = ascending;
-                                          _sortColumnIndex = columnIndex;
-                                        });
-                                      },
-                                    ),
-                                    DataColumn(
-                                      label: Text('Distance'),
-                                      tooltip: 'The total distance traveled of the ride session.',
-                                      onSort: (columnIndex, ascending) {
-                                        onSortColumn(columnIndex, ascending);
-                                        setState(() {
-                                          _isAscending = ascending;
-                                          _sortColumnIndex = columnIndex;
-                                        });
-                                      },
-                                    ),
-                                    DataColumn(
-                                      label: Text('Max\nElevation'),
-                                      tooltip: 'The maximum elevation attained in the ride session.',
-                                      onSort: (columnIndex, ascending) {
-                                        onSortColumn(columnIndex, ascending);
-                                        setState(() {
-                                          _isAscending = ascending;
-                                          _sortColumnIndex = columnIndex;
-                                        });
-                                      },
-                                    ),
-                                    DataColumn(
-                                      label: Text('Duration'),
-                                      tooltip: 'The total duration of the ride session.',
-                                      onSort: (columnIndex, ascending) {
-                                        onSortColumn(columnIndex, ascending);
-                                        setState(() {
-                                          _isAscending = ascending;
-                                          _sortColumnIndex = columnIndex;
-                                        });
-                                      },
-                                    ),
-                                    DataColumn(
-                                      label: Text('Weather'),
-                                      tooltip: 'The weather status when the ride session started.',
-                                      onSort: (columnIndex, ascending) {
-                                        onSortColumn(columnIndex, ascending);
-                                        setState(() {
-                                          _isAscending = ascending;
-                                          _sortColumnIndex = columnIndex;
-                                        });
-                                      },
-                                    ),
-                                  ],
-                                  rows: _activitiesData
-                                      .map(
-                                        (activity) => DataRow(
-                                          selected: _selected.contains(activity),
-                                          onSelectChanged: (val) {
-                                            onSelectedRow(val!, activity);
-                                          },
-                                          cells: [
-                                            DataCell(
-                                              Ink(
-                                                width: 30,
-                                                child: InkWell(
-                                                  child: Icon(
-                                                    Icons.map_outlined,
-                                                    color: Color(0xFF496D47),
-                                                  ),
-                                                  onLongPress: () {
-                                                    showModal<Map<String, dynamic>>(
-                                                      context: (context),
-                                                      configuration: FadeScaleTransitionConfiguration(barrierDismissible: true),
-                                                      builder: (_) => MapDialog(activity: activity),
-                                                    ).then((result) {
-                                                      //DELETES THE FILE GENERATED BY SCREENSHOT CONTROLLER.
-                                                      if (result!['takenScreenshot'] as bool) {
-                                                        FunctionHelper.deleteImage((result['imagePath'] as String));
-                                                      }
-                                                    });
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                            DataCell(
-                                              Text(
-                                                DateFormat('MM-dd-y hh:mm a').format(activity.activityDate!),
-                                              ),
-                                            ),
-                                            DataCell(
-                                              SizedBox(
-                                                width: 300,
-                                                child: Text(
-                                                  activity.startLocation!,
-                                                  maxLines: 3,
-                                                ),
-                                              ),
-                                            ),
-                                            DataCell(
-                                              SizedBox(
-                                                width: 300,
-                                                child: Text(
-                                                  activity.endLocation!,
-                                                  maxLines: 3,
-                                                ),
-                                              ),
-                                            ),
-                                            DataCell(
-                                              Text(
-                                                '${activity.averageSpeed!.toStringAsFixed(2)} m/s',
-                                              ),
-                                            ),
-                                            DataCell(
-                                              Text(
-                                                '${activity.burnedCalories!.toStringAsFixed(2)}',
-                                              ),
-                                            ),
-                                            DataCell(
-                                              Text(
-                                                '${activity.distance!.toStringAsFixed(2)} km',
-                                              ),
-                                            ),
-                                            DataCell(
-                                              Text(
-                                                '${activity.elevation!.toStringAsFixed(2)} m',
-                                              ),
-                                            ),
-                                            DataCell(
-                                              Text(
-                                                '${StopWatchTimer.getDisplayTimeMinute(activity.duration!, hours: false)} min',
-                                              ),
-                                            ),
-                                            DataCell(
-                                              Tooltip(
-                                                message: '${activity.weatherData!.weatherDescription}',
-                                                child: Text(
-                                                  '${activity.weatherData!.temperature.toString().replaceAll(RegExp(r'Celsius'), '°C')}',
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                child: Theme(
+                                  data: Theme.of(context).copyWith(
+                                    colorScheme: Theme.of(context).colorScheme.copyWith(
+                                          primary: Color(0xFF496D47),
+                                          onPrimary: Colors.white,
                                         ),
-                                      )
-                                      .toList(),
+                                  ),
+                                  child: DataTable(
+                                    headingTextStyle: TextStyle(color: Color(0xFF496D47), fontWeight: FontWeight.w700),
+                                    dataTextStyle: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.grey.shade600,
+                                    ),
+                                    dataRowColor: MaterialStateProperty.resolveWith(
+                                        (states) => states.contains(MaterialState.selected) ? Color(0xFF496D47).brighten(0.5) : Colors.transparent),
+                                    sortAscending: _isAscending,
+                                    sortColumnIndex: _sortColumnIndex,
+                                    columnSpacing: 20,
+                                    showCheckboxColumn: true,
+                                    columns: [
+                                      DataColumn(
+                                        label: Text('Map'),
+                                        tooltip: 'Long press to see map.',
+                                      ),
+                                      DataColumn(
+                                        label: Text('Date'),
+                                        tooltip: 'The date of the ride session.',
+                                        onSort: (columnIndex, ascending) {
+                                          onSortColumn(columnIndex, ascending);
+                                          setState(() {
+                                            _isAscending = ascending;
+                                            _sortColumnIndex = columnIndex;
+                                          });
+                                        },
+                                      ),
+                                      DataColumn(
+                                        label: Text('Start'),
+                                        tooltip: 'The starting location of the ride session.',
+                                        onSort: (columnIndex, ascending) {
+                                          onSortColumn(columnIndex, ascending);
+                                          setState(() {
+                                            _isAscending = ascending;
+                                            _sortColumnIndex = columnIndex;
+                                          });
+                                        },
+                                      ),
+                                      DataColumn(
+                                        label: Text('End'),
+                                        tooltip: 'The ending location of the ride session.',
+                                        onSort: (columnIndex, ascending) {
+                                          onSortColumn(columnIndex, ascending);
+                                          setState(() {
+                                            _isAscending = ascending;
+                                            _sortColumnIndex = columnIndex;
+                                          });
+                                        },
+                                      ),
+                                      DataColumn(
+                                        label: Text('Average\nSpeed'),
+                                        tooltip: 'The calculated average speed of the ride session.',
+                                        onSort: (columnIndex, ascending) {
+                                          onSortColumn(columnIndex, ascending);
+                                          setState(() {
+                                            _isAscending = ascending;
+                                            _sortColumnIndex = columnIndex;
+                                          });
+                                        },
+                                      ),
+                                      DataColumn(
+                                        label: Text('Calories\nBurned'),
+                                        tooltip: 'The total burned calories during the ride session.',
+                                        onSort: (columnIndex, ascending) {
+                                          onSortColumn(columnIndex, ascending);
+                                          setState(() {
+                                            _isAscending = ascending;
+                                            _sortColumnIndex = columnIndex;
+                                          });
+                                        },
+                                      ),
+                                      DataColumn(
+                                        label: Text('Distance'),
+                                        tooltip: 'The total distance traveled of the ride session.',
+                                        onSort: (columnIndex, ascending) {
+                                          onSortColumn(columnIndex, ascending);
+                                          setState(() {
+                                            _isAscending = ascending;
+                                            _sortColumnIndex = columnIndex;
+                                          });
+                                        },
+                                      ),
+                                      DataColumn(
+                                        label: Text('Max\nElevation'),
+                                        tooltip: 'The maximum elevation attained in the ride session.',
+                                        onSort: (columnIndex, ascending) {
+                                          onSortColumn(columnIndex, ascending);
+                                          setState(() {
+                                            _isAscending = ascending;
+                                            _sortColumnIndex = columnIndex;
+                                          });
+                                        },
+                                      ),
+                                      DataColumn(
+                                        label: Text('Duration'),
+                                        tooltip: 'The total duration of the ride session.',
+                                        onSort: (columnIndex, ascending) {
+                                          onSortColumn(columnIndex, ascending);
+                                          setState(() {
+                                            _isAscending = ascending;
+                                            _sortColumnIndex = columnIndex;
+                                          });
+                                        },
+                                      ),
+                                      DataColumn(
+                                        label: Text('Weather'),
+                                        tooltip: 'The weather status when the ride session started.',
+                                        onSort: (columnIndex, ascending) {
+                                          onSortColumn(columnIndex, ascending);
+                                          setState(() {
+                                            _isAscending = ascending;
+                                            _sortColumnIndex = columnIndex;
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                    rows: _activitiesData
+                                        .map(
+                                          (activity) => DataRow(
+                                            selected: _selected.contains(activity),
+                                            onSelectChanged: (val) {
+                                              onSelectedRow(val!, activity);
+                                            },
+                                            cells: [
+                                              DataCell(
+                                                Ink(
+                                                  width: 30,
+                                                  child: InkWell(
+                                                    child: Icon(
+                                                      Icons.map_outlined,
+                                                      color: Color(0xFF496D47),
+                                                    ),
+                                                    onLongPress: () {
+                                                      showModal<Map<String, dynamic>>(
+                                                        context: (context),
+                                                        configuration: FadeScaleTransitionConfiguration(barrierDismissible: true),
+                                                        builder: (_) => MapDialog(activity: activity),
+                                                      ).then((result) {
+                                                        //DELETES THE FILE GENERATED BY SCREENSHOT CONTROLLER.
+                                                        if (result!['takenScreenshot'] as bool) {
+                                                          FunctionHelper.deleteImage((result['imagePath'] as String));
+                                                        }
+                                                      });
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                              DataCell(
+                                                Text(
+                                                  DateFormat('MM-dd-y hh:mm a').format(activity.activityDate!),
+                                                ),
+                                              ),
+                                              DataCell(
+                                                SizedBox(
+                                                  width: 300,
+                                                  child: Text(
+                                                    activity.startLocation!,
+                                                    maxLines: 3,
+                                                  ),
+                                                ),
+                                              ),
+                                              DataCell(
+                                                SizedBox(
+                                                  width: 300,
+                                                  child: Text(
+                                                    activity.endLocation!,
+                                                    maxLines: 3,
+                                                  ),
+                                                ),
+                                              ),
+                                              DataCell(
+                                                Text(
+                                                  '${activity.averageSpeed!.toStringAsFixed(2)} m/s',
+                                                ),
+                                              ),
+                                              DataCell(
+                                                Text(
+                                                  '${activity.burnedCalories!.toStringAsFixed(2)}',
+                                                ),
+                                              ),
+                                              DataCell(
+                                                Text(
+                                                  '${activity.distance!.toStringAsFixed(2)} km',
+                                                ),
+                                              ),
+                                              DataCell(
+                                                Text(
+                                                  '${activity.elevation!.toStringAsFixed(2)} m',
+                                                ),
+                                              ),
+                                              DataCell(
+                                                Text(
+                                                  '${StopWatchTimer.getDisplayTimeMinute(activity.duration!, hours: false)} min',
+                                                ),
+                                              ),
+                                              DataCell(
+                                                Tooltip(
+                                                  message: '${activity.weatherData!.weatherDescription}',
+                                                  child: Text(
+                                                    '${activity.weatherData!.temperature.toString().replaceAll(RegExp(r'Celsius'), '°C')}',
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                        .toList(),
+                                  ),
                                 ),
                               );
                             }

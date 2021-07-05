@@ -494,7 +494,7 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
     //Initialization of user preference
     _weightInKg = StorageHelper.getDouble('${currentUser!.profileNumber}userWeight') ?? 57.7;
     String locationAccuracy = StorageHelper.getString('${currentUser!.profileNumber}locationAccuracy')?.toLowerCase() ?? 'high';
-    LocationAccuracy userDesiredAccuracy = LocationAccuracy.values.singleWhere((element) => describeEnum(e) == locationAccuracy);
+    LocationAccuracy userDesiredAccuracy = LocationAccuracy.values.singleWhere((element) => describeEnum(element) == locationAccuracy);
     int distanceFilter = StorageHelper.getInt('${currentUser!.profileNumber}distanceFilter') ?? 0;
     String formula = StorageHelper.getString('${currentUser!.profileNumber}formula') ?? 'Haversine';
     int lineWidth = StorageHelper.getInt('${currentUser!.profileNumber}lineWidth') ?? 4;
@@ -739,7 +739,7 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
         if (latLng.longitude < y0!) y0 = latLng.longitude;
       }
     }
-    return LatLngBounds(southwest: LatLng(x1!, y1!), northeast: LatLng(x0!, y0!));
+    return LatLngBounds(northeast:  LatLng(x1!, y1!), southwest: LatLng(x0!, y0!), );
   }
 
   ////CALCULATE TOTAL DISTANCE

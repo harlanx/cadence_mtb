@@ -135,8 +135,10 @@ class _BMIHistoryState extends State<BMIHistory> {
                               scrollDirection: Axis.vertical,
                               child: Theme(
                                 data: Theme.of(context).copyWith(
-                                  unselectedWidgetColor: Color(0xFFF15024),
-                                  accentColor: Color(0xFFF15024),
+                                  colorScheme: Theme.of(context).colorScheme.copyWith(
+                                    primary: Color(0xFFF15024),
+                                    onPrimary: Colors.white,
+                                  ),
                                 ),
                                 child: DataTable(
                                   headingTextStyle: TextStyle(color: Color(0xFFF15024), fontWeight: FontWeight.w700),
@@ -144,6 +146,7 @@ class _BMIHistoryState extends State<BMIHistory> {
                                     fontWeight: FontWeight.w400,
                                     color: Colors.grey.shade600,
                                   ),
+
                                   dataRowColor: MaterialStateProperty.resolveWith(
                                       (states) => states.contains(MaterialState.selected) ? Color(0xFFF15024).brighten(0.3) : Colors.transparent),
                                   sortAscending: _isAscending,
