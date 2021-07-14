@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cadence_mtb/models/content_models.dart';
-import 'package:cadence_mtb/utilities/widget_helper.dart';
+import 'package:cadence_mtb/models/models.dart';
+import 'package:cadence_mtb/utilities/function_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

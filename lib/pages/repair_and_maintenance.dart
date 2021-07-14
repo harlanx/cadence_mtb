@@ -1,9 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cadence_mtb/models/youtube_videos.dart';
+import 'package:cadence_mtb/models/models.dart';
 import 'package:cadence_mtb/services/youtube_service.dart';
 import 'package:cadence_mtb/utilities/keys.dart';
-import 'package:cadence_mtb/utilities/storage_helper.dart';
-import 'package:cadence_mtb/utilities/widget_helper.dart';
+import 'package:cadence_mtb/utilities/function_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

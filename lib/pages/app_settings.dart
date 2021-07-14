@@ -1,6 +1,5 @@
-import 'package:cadence_mtb/models/user_profile.dart';
-import 'package:cadence_mtb/utilities/storage_helper.dart';
-import 'package:cadence_mtb/utilities/widget_helper.dart';
+import 'package:cadence_mtb/models/models.dart';
+import 'package:cadence_mtb/utilities/function_helper.dart';
 import 'package:collection/collection.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/foundation.dart';

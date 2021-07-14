@@ -1,22 +1,4 @@
-import 'dart:async';
-import 'dart:ui';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cadence_mtb/models/content_models.dart';
-import 'package:cadence_mtb/pages/app_browser.dart';
-import 'package:cadence_mtb/pages/weather_forecast.dart';
-import 'package:cadence_mtb/utilities/function_helper.dart';
-import 'package:cadence_mtb/utilities/keys.dart';
-import 'package:cadence_mtb/utilities/widget_helper.dart';
-import 'package:flutter/foundation.dart' show Factory;
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:weather/weather.dart';
+part of '../../pages/trails.dart';
 
 class TrailsItemViewer extends StatefulWidget {
   TrailsItemViewer({

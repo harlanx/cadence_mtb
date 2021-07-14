@@ -1,14 +1,11 @@
 import 'dart:async';
 import 'package:animations/animations.dart';
-import 'package:cadence_mtb/models/bike_activity.dart';
-import 'package:cadence_mtb/models/user_profile.dart';
+import 'package:cadence_mtb/models/models.dart';
 import 'package:cadence_mtb/screens/guides_screen.dart';
 import 'package:cadence_mtb/screens/home_screen.dart';
 import 'package:cadence_mtb/screens/login_screen.dart';
 import 'package:cadence_mtb/screens/profile_screen.dart';
 import 'package:cadence_mtb/utilities/function_helper.dart';
-import 'package:cadence_mtb/utilities/storage_helper.dart';
-import 'package:cadence_mtb/utilities/widget_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';

@@ -1,3 +1,4 @@
+library function_helper;
 import 'dart:convert' show jsonDecode;
 import 'dart:io';
 import 'dart:math';
@@ -10,6 +11,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart' show LatLng, LatLn
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:weather/weather.dart';
+export 'storage_helper.dart';
+export 'widget_helper.dart';
 
 //==================================================
 class FunctionHelper {

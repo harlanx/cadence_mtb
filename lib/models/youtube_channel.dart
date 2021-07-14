@@ -46,7 +46,7 @@ class ChannelItem {
   String? kind;
   String? etag;
   String? id;
-  Snippet? snippet;
+  ChannelSnippet? snippet;
   ContentDetails? contentDetails;
   Statistics? statistics;
 
@@ -63,7 +63,7 @@ class ChannelItem {
     kind = json["kind"];
     etag = json["etag"];
     id = json["id"];
-    snippet = json['snippet'] != null ? Snippet.fromJson(json['snippet']) : null;
+    snippet = json['snippet'] != null ? ChannelSnippet.fromJson(json['snippet']) : null;
     contentDetails = json["contentDetails"] != null ? ContentDetails.fromJson(json["contentDetails"]) : null;
     statistics = json["statistics"] != null ? Statistics.fromJson(json["statistics"]) : null;
   }
@@ -138,15 +138,15 @@ class RelatedPlaylists {
   }
 }
 
-class Snippet {
+class ChannelSnippet {
   String? title;
   String? description;
   DateTime? publishedAt;
-  Thumbnails? thumbnails;
+  ChannelThumbnails? thumbnails;
   Localized? localized;
   String? country;
 
-  Snippet({
+  ChannelSnippet({
     this.title,
     this.description,
     this.publishedAt,
@@ -155,11 +155,11 @@ class Snippet {
     this.country,
   });
 
-  Snippet.fromJson(Map<String, dynamic> json) {
+  ChannelSnippet.fromJson(Map<String, dynamic> json) {
     title = json["title"];
     description = json["description"];
     publishedAt = DateTime.parse(json["publishedAt"]);
-    thumbnails = Thumbnails.fromJson(json["thumbnails"]);
+    thumbnails = ChannelThumbnails.fromJson(json["thumbnails"]);
     localized = Localized.fromJson(json["localized"]);
     country = json["country"];
   }
@@ -198,18 +198,18 @@ class Localized {
   }
 }
 
-class Thumbnails {
+class ChannelThumbnails {
   Default? thumbnailsDefault;
   Default? medium;
   Default? high;
 
-  Thumbnails({
+  ChannelThumbnails({
     this.thumbnailsDefault,
     this.medium,
     this.high,
   });
 
-  factory Thumbnails.fromJson(Map<String, dynamic> json) => Thumbnails(
+  factory ChannelThumbnails.fromJson(Map<String, dynamic> json) => ChannelThumbnails(
         thumbnailsDefault: Default.fromJson(json["default"]),
         medium: Default.fromJson(json["medium"] ?? json["default"]),
         high: Default.fromJson(json["high"] ?? json["medium"] ?? json["default"]),

@@ -1,7 +1,6 @@
-import 'dart:math';
-import 'package:cadence_mtb/models/user_profile.dart';
-import 'package:cadence_mtb/utilities/storage_helper.dart';
-import 'package:cadence_mtb/utilities/widget_helper.dart';
+import 'dart:math' as math;
+import 'package:cadence_mtb/models/models.dart';
+import 'package:cadence_mtb/utilities/function_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -102,7 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       IconButton(
                         icon: Icon(Icons.refresh),
                         onPressed: () {
-                          rawAvatarCode = List.generate(6, (_) => Random().nextInt(48).toString().padLeft(2, '0')).join();
+                          rawAvatarCode = List.generate(6, (_) => math.Random().nextInt(48).toString().padLeft(2, '0')).join();
                           avatarCode = multiavatar(rawAvatarCode);
                           generateAvatar();
                         },

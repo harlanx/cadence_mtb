@@ -1,8 +1,8 @@
-import 'package:cadence_mtb/models/bike_build.dart';
+import 'package:cadence_mtb/data/data.dart';
+import 'package:cadence_mtb/models/models.dart';
 import 'package:cadence_mtb/pages/app_browser.dart';
-import 'package:cadence_mtb/pages/bike_editor.dart';
 import 'package:collection/collection.dart';
-import 'package:cadence_mtb/utilities/widget_helper.dart';
+import 'package:cadence_mtb/utilities/function_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';

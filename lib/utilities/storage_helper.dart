@@ -1,4 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
+export 'package:hive/hive.dart';
+export 'package:hive_flutter/hive_flutter.dart';
 
 class StorageHelper {
   //This class is a singleton of sharedpreferences, so we don't have to create a new instance everytime we need it.

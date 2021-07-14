@@ -50,7 +50,7 @@ class VideoItem {
   String? kind;
   String? etag;
   String? id;
-  Snippet? snippet;
+  VideoSnippet? snippet;
 
   VideoItem({
     this.kind,
@@ -63,7 +63,7 @@ class VideoItem {
     kind = json['kind'];
     etag = json['etag'];
     id = json['id'];
-    snippet = json['snippet'] != null ? Snippet.fromJson(json['snippet']) : null;
+    snippet = json['snippet'] != null ? VideoSnippet.fromJson(json['snippet']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -77,12 +77,12 @@ class VideoItem {
   }
 }
 
-class Snippet {
+class VideoSnippet {
   String? publishedAt;
   String? channelId;
   String title;
   String description;
-  Thumbnails? thumbnails;
+  VideoThumbnails? thumbnails;
   String? channelTitle;
   String? playlistId;
   int? position;
@@ -90,7 +90,7 @@ class Snippet {
   String? videoOwnerChannelTitle;
   String videoOwnerChannelId;
 
-  Snippet({
+  VideoSnippet({
     this.publishedAt,
     this.channelId,
     required this.title,
@@ -104,12 +104,12 @@ class Snippet {
     required this.videoOwnerChannelId,
   });
 
-  Snippet.fromJson(Map<String, dynamic> json) :
+  VideoSnippet.fromJson(Map<String, dynamic> json) :
     publishedAt = json['publishedAt'],
     channelId = json['channelId'],
     title = json['title'],
     description = json['description'],
-    thumbnails = json['thumbnails'] != null ? Thumbnails.fromJson(json['thumbnails']) : null,
+    thumbnails = json['thumbnails'] != null ? VideoThumbnails.fromJson(json['thumbnails']) : null,
     channelTitle = json['channelTitle'],
     playlistId = json['playlistId'],
     position = json['position'],
@@ -136,14 +136,14 @@ class Snippet {
   }
 }
 
-class Thumbnails {
+class VideoThumbnails {
   Default? thumbnailsDefault;
   Default? medium;
   Default? high;
   Default? standard;
   Default? maxres;
 
-  Thumbnails({
+  VideoThumbnails({
     this.thumbnailsDefault,
     this.medium,
     this.high,
@@ -151,7 +151,7 @@ class Thumbnails {
     this.maxres,
   });
 
-  factory Thumbnails.fromJson(Map<String, dynamic> json) => Thumbnails(
+  factory VideoThumbnails.fromJson(Map<String, dynamic> json) => VideoThumbnails(
       thumbnailsDefault: Default.fromJson(json['default']),
       medium: Default.fromJson(json['medium'] ?? json['default']),
       high: Default.fromJson(json['high'] ?? json['medium'] ?? json['default']),

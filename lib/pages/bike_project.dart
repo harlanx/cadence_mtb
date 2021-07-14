@@ -1,12 +1,10 @@
 import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cadence_mtb/models/bike_build.dart';
-import 'package:cadence_mtb/models/content_models.dart';
-import 'package:cadence_mtb/models/user_profile.dart';
+import 'package:cadence_mtb/data/data.dart';
+import 'package:cadence_mtb/models/models.dart';
 import 'package:cadence_mtb/pages/bike_editor.dart';
 import 'package:cadence_mtb/pages/bike_summary.dart';
-import 'package:cadence_mtb/utilities/storage_helper.dart';
-import 'package:cadence_mtb/utilities/widget_helper.dart';
+import 'package:cadence_mtb/utilities/function_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -331,18 +329,18 @@ class _BikeProjectState extends State<BikeProject> {
                     elevation: 0,
                     expansionCallback: (int index, bool isExpanded) {
                       setState(() {
-                        _bikeParts[index].isExpanded = !isExpanded;
+                        bikeParts[index].isExpanded = !isExpanded;
                       });
                     },
                     children: List.generate(
-                      _bikeParts.length,
+                      bikeParts.length,
                       (partIndex) => ExpansionPanel(
                         canTapOnHeader: true,
-                        isExpanded: _bikeParts[partIndex].isExpanded,
+                        isExpanded: bikeParts[partIndex].isExpanded,
                         headerBuilder: (BuildContext context, bool isExpanded) => Align(
                           alignment: Alignment.centerLeft,
                           child: AutoSizeText(
-                            _bikeParts[partIndex].part,
+                            bikeParts[partIndex].part,
                             style: TextStyle(fontWeight: FontWeight.w700),
                             minFontSize: 20,
                           ),
@@ -350,7 +348,7 @@ class _BikeProjectState extends State<BikeProject> {
                         body: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: List.generate(
-                            _bikeParts[partIndex].types.length,
+                            bikeParts[partIndex].types.length,
                             (typeIndex) => Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -358,20 +356,20 @@ class _BikeProjectState extends State<BikeProject> {
                                   width: double.maxFinite,
                                   padding: EdgeInsets.only(left: 15.0),
                                   child: AutoSizeText(
-                                    '• ' + _bikeParts[partIndex].types[typeIndex],
+                                    '• ' + bikeParts[partIndex].types[typeIndex],
                                     textAlign: TextAlign.left,
                                   ),
                                 ),
-                                if (_bikeParts[partIndex].subtypes != null)
+                                if (bikeParts[partIndex].subtypes != null)
                                   Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: List.generate(
-                                      _bikeParts[partIndex].subtypes!.length,
+                                      bikeParts[partIndex].subtypes!.length,
                                       (subTypeIndex) => Container(
                                         padding: EdgeInsets.only(left: 35.0),
                                         width: double.maxFinite,
                                         child: AutoSizeText(
-                                          '-' + _bikeParts[partIndex].subtypes![typeIndex][subTypeIndex],
+                                          '-' + bikeParts[partIndex].subtypes![typeIndex][subTypeIndex],
                                           textAlign: TextAlign.left,
                                         ),
                                       ),
@@ -406,70 +404,3 @@ class _BikeProjectState extends State<BikeProject> {
     }
   }
 }
-
-final List<BikeProjectItem> _bikeParts = [
-  BikeProjectItem(
-    part: 'Brake Caliper',
-    types: ['Disc Brake Caliper'],
-    //preview: '',
-  ),
-  BikeProjectItem(
-    part: 'Cassette',
-    types: [
-      '7 Speed',
-      '8 Speed',
-      '9 Speed',
-      '10 Speed',
-    ],
-    //preview: '',
-  ),
-  BikeProjectItem(
-    part: 'Crankset',
-    types: ['1 Speed', '2 Speed', '3 Speed'],
-    //preview: '',
-  ),
-  BikeProjectItem(
-    part: 'Frame Types and Rear Suspension',
-    types: ['Full Suspension', 'Hard Tail'],
-    //preview: '',
-  ),
-  BikeProjectItem(
-    part: 'Front Derailleur',
-    types: ['Clamp On', 'Direct Mount', 'E Type', 'None'],
-    //preview: '',
-  ),
-  BikeProjectItem(
-    part: 'Front Fork',
-    types: ['Suspension'],
-    //preview: '',
-  ),
-  BikeProjectItem(
-    part: 'Handlebars',
-    types: ['Flat Bar', 'Riser Bar'],
-    //preview: '',
-  ),
-  BikeProjectItem(
-    part: 'Pedal',
-    types: ['Flat', 'Clipless'],
-    //preview: '',
-  ),
-  BikeProjectItem(
-    part: 'Rear Derailleur',
-    types: ['Long Cage'],
-    //preview: '',
-  ),
-  BikeProjectItem(
-    part: 'Saddle',
-    types: ['Racing', 'Cutaway'],
-    //preview: '',
-  ),
-  BikeProjectItem(
-    part: 'Wheel',
-    types: ['Rim', 'Tire'],
-    subtypes: [
-      ['27.5"', '29"'],
-      ['All Mountain', 'Cross Country', 'Trail Riding']
-    ],
-    //preview: '',
-  ),
-];
