@@ -105,6 +105,7 @@ class _AppSettingsState extends State<AppSettings> {
                           child: TextFormField(
                             controller: _massUnitController,
                             focusNode: _massUnitNode,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               isDense: true,
                               border: UnderlineInputBorder(),

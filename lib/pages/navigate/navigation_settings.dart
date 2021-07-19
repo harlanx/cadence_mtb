@@ -274,8 +274,9 @@ class _NavigationSettingsState extends State<NavigationSettings> with SingleTick
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       child: TextFormField(
                         controller: _dfController,
-                        autofocus: false,
                         focusNode: _dfFocusNode,
+                        keyboardType: TextInputType.number,
+                        autofocus: false,
                         onEditingComplete: () {
                           _dfFocusNode.unfocus();
                         },

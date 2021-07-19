@@ -129,6 +129,7 @@ class BMICalculatorState extends State<BMICalculator> {
                               flex: 30,
                               child: TextField(
                                 controller: _weightController,
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   isDense: true,
                                   border: UnderlineInputBorder(),
@@ -184,6 +185,7 @@ class BMICalculatorState extends State<BMICalculator> {
                               flex: 30,
                               child: TextField(
                                 controller: _heightController,
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   isDense: true,
                                   border: UnderlineInputBorder(),
