@@ -131,7 +131,9 @@ class _ActivityChartState extends State<ActivityChart> {
                   margin: 5,
                   reservedSize: 13,
                   showTitles: true,
-                  getTextStyles: (value) => TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w400),
+                  getTextStyles: (_, value) {
+                    return TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w400);
+                  },
                   getTitles: (val) {
                     if (_maxY >= 10000) {
                       return (val / 10000).toString();
@@ -147,7 +149,7 @@ class _ActivityChartState extends State<ActivityChart> {
                   reservedSize: 13,
                   showTitles: true,
                   //rotateAngle: 90,
-                  getTextStyles: (value) => TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w400),
+                  getTextStyles: (_, value) => TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w400),
                   getTitles: (val) {
                     switch (val.round()) {
                       case 1:
