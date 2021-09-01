@@ -42,6 +42,7 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    //ALLOWS US TO UPDATE OUR CONTACT LIST IN CASE OF USER LEAVING THE APP TEMPORARILY AND ADDING A CONTACT
     if (state == AppLifecycleState.resumed) {
       Permission.contacts.status.then((permission) async {
         if (permission.isGranted) {
