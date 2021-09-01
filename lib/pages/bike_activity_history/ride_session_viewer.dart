@@ -1,14 +1,14 @@
 part of '../../pages/bike_activity_history.dart';
 
-class MapDialog extends StatefulWidget {
+class RideSessionViewer extends StatefulWidget {
   final BikeActivity activity;
-  MapDialog({Key? key, required this.activity}) : super(key: key);
+  RideSessionViewer({Key? key, required this.activity}) : super(key: key);
 
   @override
-  _MapDialogDialogState createState() => _MapDialogDialogState();
+  _RideSessionViewerState createState() => _RideSessionViewerState();
 }
 
-class _MapDialogDialogState extends State<MapDialog> {
+class _RideSessionViewerState extends State<RideSessionViewer> {
   late BikeActivity _userActivity;
   Completer<GoogleMapController> _sessionMapCompleter = Completer();
   Uint8List? _mapScreenshotBytes;

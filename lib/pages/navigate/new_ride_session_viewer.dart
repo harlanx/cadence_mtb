@@ -3,15 +3,15 @@ part of '../../pages/navigate.dart';
 //==================SESSION RESULT DIALOG V2====================//
 //Show Result Dialog of the Session When the User Stops the Session Activity.
 //V1 WAS KINDA BAD
-class SessionResultDialog extends StatefulWidget {
+class NewRideSessionViewer extends StatefulWidget {
   final BikeActivity result;
-  SessionResultDialog({Key? key, required this.result}) : super(key: key);
+  NewRideSessionViewer({Key? key, required this.result}) : super(key: key);
 
   @override
-  _SessionResultDialogState createState() => _SessionResultDialogState();
+  _NewRideSessionViewerState createState() => _NewRideSessionViewerState();
 }
 
-class _SessionResultDialogState extends State<SessionResultDialog> {
+class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
   late BikeActivity _userActivity;
   final Completer<GoogleMapController> _sessionMapCompleter = Completer();
   Uint8List? _mapScreenshotBytes;
