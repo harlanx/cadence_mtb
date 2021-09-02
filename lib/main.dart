@@ -6,6 +6,7 @@ import 'package:cadence_mtb/screens/main_screen.dart';
 import 'package:cadence_mtb/utilities/function_helper.dart';
 import 'package:cadence_mtb/utilities/storage_helper.dart';
 import 'package:cadence_mtb/utilities/widget_helper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
@@ -18,6 +19,11 @@ import 'package:provider/provider.dart';
 void main() async {
   //We need this to be called so we can initialize our storage helper and other asynchronous methods
   WidgetsFlutterBinding.ensureInitialized();
+  //Add your additional third party licenses here.
+  LicenseRegistry.addLicense(() async* {
+    final gcnLicense = await rootBundle.loadString('assets/licenses/global_cycling_network.txt');
+    yield LicenseEntryWithLineBreaks(<String>['global_cycling_network'], gcnLicense);
+  });
   //StorageHelper (SharedPreferences Singleton).
   await StorageHelper.init();
   //Hive NoSQL Database (Good for small apps. For larger apps with above 10K items in a list should use SQLite instead)
@@ -72,6 +78,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     //Instance of the Notifier class we made.
     final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+
     return MaterialApp(
       //App title to show when Overview(Tasks) button in android device is pressed.
       title: 'Cadence MTB',
