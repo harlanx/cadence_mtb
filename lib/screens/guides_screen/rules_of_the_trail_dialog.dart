@@ -15,14 +15,12 @@ class RulesOfTheTrailDialog extends StatelessWidget {
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(13.0),
         ),
-        height: _size.height * 0.6,
+        height: _size.height * 0.7,
         width: _size.width * 0.9,
         child: Stack(
           clipBehavior: Clip.none,
           children: <Widget>[
             Container(
-              width: double.infinity,
-              height: _size.height * 0.6,
               decoration: BoxDecoration(
                 color: Theme.of(context).scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(13.0),
