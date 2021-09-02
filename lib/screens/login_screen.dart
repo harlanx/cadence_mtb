@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:multiavatar/multiavatar.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 part 'login_screen/delete_profile.dart';
@@ -141,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           configuration: FadeScaleTransitionConfiguration(barrierDismissible: true),
                                           builder: (_) {
                                             return AlertDialog(
-                                              content: Text('Are you sure you want to delete "${snapshot.data![index - 1].profileName}"?'),
+                                              content: Text('Are you sure you want to delete the profile "${snapshot.data![index - 1].profileName}"?'),
                                               actions: [
                                                 TextButton(
                                                   onPressed: () {
