@@ -15,17 +15,19 @@ class AppSettings extends StatefulWidget {
 class _AppSettingsState extends State<AppSettings> {
   final FocusNode _massUnitNode = FocusNode();
   final TextEditingController _massUnitController = TextEditingController();
-  String _massUnit = 'kg';
-  int _appTheme = 1;
   final Map<int, List<dynamic>> _appThemes = {
     1: ['System Default', Icons.settings],
     2: ['Light Mode', Icons.wb_sunny_outlined],
     3: ['Dark Mode', Icons.brightness_2_outlined]
   };
+  late Future <PackageInfo> _futureHolder;
+  String _massUnit = 'kg';
+  int _appTheme = 1;
 
   @override
   void initState() {
     super.initState();
+    _futureHolder = PackageInfo.fromPlatform();
     getSavedValues();
   }
 
@@ -250,7 +252,7 @@ class _AppSettingsState extends State<AppSettings> {
               ),
               Divider(),
               FutureBuilder<PackageInfo>(
-                future: PackageInfo.fromPlatform(),
+                future: _futureHolder,
                 builder: (_, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.done:
@@ -265,68 +267,53 @@ class _AppSettingsState extends State<AppSettings> {
                             await deviceInfo.androidInfo.then((info) {
                               showAboutDialog(
                                 context: context,
+                                applicationLegalese: '© ERHStudios, 2021',
                                 applicationIcon: Image.asset(
                                   'assets/icons/final_app_icon.png',
-                                  height: 50,
-                                  width: 50,
+                                  height: 48,
+                                  width: 48,
                                 ),
                                 applicationName: 'Cadence MTB',
                                 //Update app version in pubspec.yaml when releasing new version
                                 applicationVersion: snapshot.data!.version,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 40,
-                                        child: Text('Build Date: '),
-                                      ),
-                                      Expanded(
-                                        flex: 60,
-                                        child: Text(
-                                          //Update date when releasing new version
-                                          '05/22/2021 14:57',
-                                          style: TextStyle(color: Colors.grey),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 40,
-                                        child: Text('Model :'),
-                                      ),
-                                      Expanded(
-                                        flex: 60,
-                                        child: Text(
-                                          '${info.brand} ${info.model}',
-                                          style: TextStyle(color: Colors.grey),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 40,
-                                        child: Text('OS Version :'),
-                                      ),
-                                      Expanded(
-                                        flex: 60,
-                                        child: Text(
-                                          'Android ${info.version.release} sdk ${info.version.sdkInt}',
-                                          style: TextStyle(color: Colors.grey),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 10),
+                                  SizedBox(height: 15),
                                   Text(
                                     'Cadence MTB was made to serve as a guide and application tool for mountain bikers in the Philippines.',
-                                    style: TextStyle(color: Colors.grey),
+                                    style: TextStyle(color: Colors.grey, fontSize: 15),
                                     textAlign: TextAlign.center,
                                   ),
-                                  SizedBox(height: 5),
+                                  // Row(
+                                  //   children: [
+                                  //     Expanded(
+                                  //       flex: 40,
+                                  //       child: Text('Model :'),
+                                  //     ),
+                                  //     Expanded(
+                                  //       flex: 60,
+                                  //       child: Text(
+                                  //         '${info.brand} ${info.model}',
+                                  //         style: TextStyle(color: Colors.grey),
+                                  //       ),
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                  // Row(
+                                  //   children: [
+                                  //     Expanded(
+                                  //       flex: 40,
+                                  //       child: Text('OS Version :'),
+                                  //     ),
+                                  //     Expanded(
+                                  //       flex: 60,
+                                  //       child: Text(
+                                  //         'Android ${info.version.release} sdk ${info.version.sdkInt}',
+                                  //         style: TextStyle(color: Colors.grey),
+                                  //       ),
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                  // SizedBox(height: 15),
                                   Row(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
