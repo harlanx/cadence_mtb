@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:animations/animations.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cadence_mtb/models/models.dart';
 import 'package:cadence_mtb/pages/navigate.dart';
 import 'package:cadence_mtb/utilities/function_helper.dart';
