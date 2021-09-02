@@ -95,6 +95,7 @@ class _ActivityChartState extends State<ActivityChart> {
             LineChartData(
               lineTouchData: LineTouchData(
                   touchTooltipData: LineTouchTooltipData(
+                    tooltipBgColor: Colors.white,
                       tooltipPadding: EdgeInsets.all(3),
                       getTooltipItems: (data) {
                         if (_dataToShow == 'Duration') {
