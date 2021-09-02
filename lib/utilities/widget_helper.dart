@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 //import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:multiavatar/multiavatar.dart';
 import 'package:permission_handler/permission_handler.dart';
 export 'package:cadence_mtb/utilities/custom_widgets/custom_widgets.dart';
 
@@ -162,7 +163,49 @@ class CustomRoutes {
 }
 
 //=======================================================================
-//Avatar Painter
+//Avatar Generator
+
+class AvatarBox extends StatefulWidget {
+  const AvatarBox({Key? key, required this.code, required this.size}) : super(key: key);
+  final String code;
+  final double size;
+
+  @override
+  _AvatarBoxState createState() => _AvatarBoxState();
+}
+
+class _AvatarBoxState extends State<AvatarBox> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<DrawableRoot?>(
+      future: generateAvatar(widget.code),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return SizedBox.shrink();
+        }
+        switch (snapshot.connectionState) {
+          case ConnectionState.done:
+            return CustomPaint(
+              foregroundPainter: AvatarPainter(snapshot.data!, Size(widget.size, widget.size)),
+              child: Container(),
+            );
+          default:
+            return SizedBox.shrink();
+        }
+      },
+    );
+  }
+
+  Future<DrawableRoot?> generateAvatar(String code) async {
+    try {
+      return await svg.fromSvgString(multiavatar(code), multiavatar(code));
+    } catch (e) {
+      Future.error(e);
+    }
+    //return SvgWrapper(multiavatar(code)).generateLogo();
+  }
+}
+
 class AvatarPainter extends CustomPainter {
   AvatarPainter(this.svg, [this.size = const Size(50, 50)]);
 
