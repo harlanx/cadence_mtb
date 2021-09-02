@@ -18,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:multiavatar/multiavatar.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 part 'home_screen/home_video_carousel.dart';
@@ -39,7 +38,6 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
   /* This is to prevent the whole "Widget build()" to not be rebuilt when a setstate is triggered.
   This will ensure that the _loadHomeVideos function only runs the future builder once. */
   late Future _futureHolder;
-  DrawableRoot? svgRoot;
 
   @override
   bool get wantKeepAlive => true;
@@ -62,7 +60,6 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
   @override
   void initState() {
     super.initState();
-    generateAvatar();
     _homeVideosList.items ??= <VideoItem>[];
     _futureHolder = _loadHomeVideos();
     WidgetsBinding.instance!.addObserver(this);
@@ -144,34 +141,20 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: InkWell(
-                        onTap: () {
-                          Scaffold.of(context).openDrawer();
-                        },
-                        child: svgRoot == null
-                            ? SvgPicture.asset(
-                                'assets/icons/home_dashboard/final_app_icon.svg',
-                                height: 50,
-                                width: 50,
-                              )
-                            : CustomPaint(
-                                foregroundPainter: AvatarPainter(svgRoot!, Size(50.0, 50.0)),
-                                child: Container(),
-                              ),
+                InkWell(
+                  onTap: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: AvatarBox(code: currentUser!.avatarCode, size: 48),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15.0),
-                      child: InkWell(
-                        onTap: () {
-                          Scaffold.of(context).openDrawer();
-                        },
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15.0),
                         child: Text(
                           '${currentUser!.profileName}',
                           style: TextStyle(
@@ -181,8 +164,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 OpenContainer(
                   closedElevation: 0,
@@ -432,14 +415,6 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
     );
   }
 
-  void generateAvatar() async {
-    return SvgWrapper(multiavatar(currentUser!.avatarCode)).generateLogo().then((value) {
-      setState(() {
-        svgRoot = value;
-      });
-    });
-  }
-
   void closePanel() {
     if (_slidePanelController.isPanelOpen && _slidePanelController.isPanelShown) {
       _slidePanelController.close();
@@ -485,5 +460,3 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
     _loadHomeVideos().then((value) => setState(() {}));
   }
 }
-
-

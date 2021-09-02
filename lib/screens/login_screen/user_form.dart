@@ -21,7 +21,6 @@ class _UserFormState extends State<UserForm> {
   final TextEditingController profileNameController = TextEditingController();
   final TextEditingController pinCodeController = TextEditingController();
   final TextEditingController pinCodeConfirmController = TextEditingController();
-  DrawableRoot? svgRoot;
   /* Sample Male Generated
   [074142121646,303028311032,334606193403,111500050820,253039420134,
   224311353805,193035190836,370228202837,131515101046, 141243361946]
@@ -32,15 +31,12 @@ class _UserFormState extends State<UserForm> {
   */
   //It needs 6 of double digits from 01 to 47
   //Max is 474747474747
-  String rawAvatarCode = List.generate(6, (_) => Random().nextInt(48).toString().padLeft(2, '0')).join();
-  late String avatarCode;
+  String avatarCode = List.generate(6, (_) => Random().nextInt(48).toString().padLeft(2, '0')).join();
   int? pinCodeHolder;
 
   @override
   void initState() {
     super.initState();
-    avatarCode = multiavatar(rawAvatarCode);
-    generateAvatar();
   }
 
   @override
@@ -84,7 +80,7 @@ class _UserFormState extends State<UserForm> {
                   int curProfNum = StorageHelper.getInt('curProfNum') ?? 1;
                   widget.onSave!(UserProfile(
                     profileNumber: curProfNum,
-                    avatarCode: rawAvatarCode,
+                    avatarCode: avatarCode,
                     profileName: profileNameController.value.text,
                     pinCode: pinCodeController.value.text,
                   ));
@@ -147,24 +143,20 @@ class _UserFormState extends State<UserForm> {
                     Container(
                       height: 100.0,
                       width: 100.0,
-                      child: svgRoot == null
-                          ? SizedBox.shrink()
-                          : CustomPaint(
-                              foregroundPainter: AvatarPainter(svgRoot!, Size(50.0, 50.0)),
-                              child: Container(),
-                            ),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         shape: BoxShape.circle,
                       ),
+                      child: AvatarBox(code: avatarCode, size: 50),
                     ),
                     IconButton(
                       icon: Icon(Icons.refresh),
                       onPressed: () {
-                        rawAvatarCode = List.generate(6, (_) => Random().nextInt(48).toString().padLeft(2, '0')).join();
-                        //print(rawAvatarCode);
-                        avatarCode = multiavatar(rawAvatarCode);
-                        generateAvatar();
+                        setState(() {
+                        avatarCode = List.generate(6, (_) => Random().nextInt(48).toString().padLeft(2, '0')).join();
+                          
+                        });
+                        //print(avatarCode);
                       },
                     ),
                   ],
@@ -300,13 +292,5 @@ class _UserFormState extends State<UserForm> {
         ),
       ),
     );
-  }
-
-  generateAvatar() async {
-    return SvgWrapper(avatarCode).generateLogo().then((value) {
-      setState(() {
-        svgRoot = value;
-      });
-    });
   }
 }

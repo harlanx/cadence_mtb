@@ -4,7 +4,6 @@ import 'package:cadence_mtb/utilities/function_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:multiavatar/multiavatar.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -18,8 +17,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   //Disposing controllers in dialogs is not required since it is disposed either way by the dialog itself.
   final TextEditingController profileNameController = TextEditingController();
-  DrawableRoot? svgRoot;
-  String rawAvatarCode = '';
   String avatarCode = '';
   late UserProfile userProfile;
   bool changePin = true;
@@ -29,11 +26,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    rawAvatarCode = widget.profile.avatarCode;
-    avatarCode = multiavatar(rawAvatarCode);
+    avatarCode = widget.profile.avatarCode;
     userProfile = widget.profile;
     profileNameController.text = userProfile.profileName;
-    generateAvatar();
   }
 
   @override
@@ -87,23 +82,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Container(
                         height: 100.0,
                         width: 100.0,
-                        child: svgRoot == null
-                            ? SizedBox.shrink()
-                            : CustomPaint(
-                                foregroundPainter: AvatarPainter(svgRoot!, Size(50.0, 50.0)),
-                                child: Container(),
-                              ),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
                         ),
+                        child: AvatarBox(code: avatarCode, size: 50),
                       ),
                       IconButton(
                         icon: Icon(Icons.refresh),
                         onPressed: () {
-                          rawAvatarCode = List.generate(6, (_) => math.Random().nextInt(48).toString().padLeft(2, '0')).join();
-                          avatarCode = multiavatar(rawAvatarCode);
-                          generateAvatar();
+                          setState(() {
+                            avatarCode = List.generate(6, (_) => math.Random().nextInt(48).toString().padLeft(2, '0')).join();
+                          });
                         },
                       ),
                       Text(
@@ -304,7 +294,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             if (element.profileNumber == userProfile.profileNumber) {
                               edittedProfiles.add(UserProfile(
                                 profileNumber: userProfile.profileNumber,
-                                avatarCode: rawAvatarCode,
+                                avatarCode: avatarCode,
                                 profileName: profileNameController.value.text,
                                 pinCode: newPin,
                               ));
@@ -338,13 +328,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           }
                           return;
                         } else {
-                          List<UserProfile> jsonToProfiles = StorageHelper.getStringList('userProfiles')!.map((e) => UserProfile.fromJson(e)).toList();
+                          List<UserProfile> jsonToProfiles =
+                              StorageHelper.getStringList('userProfiles')!.map((e) => UserProfile.fromJson(e)).toList();
                           List<UserProfile> edittedProfiles = [];
                           jsonToProfiles.forEach((element) {
                             if (element.profileNumber == userProfile.profileNumber) {
                               edittedProfiles.add(UserProfile(
                                 profileNumber: userProfile.profileNumber,
-                                avatarCode: rawAvatarCode,
+                                avatarCode: avatarCode,
                                 profileName: profileNameController.value.text,
                                 pinCode: userProfile.pinCode,
                               ));
@@ -371,13 +362,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
-  }
-
-  generateAvatar() async {
-    return SvgWrapper(avatarCode).generateLogo().then((value) {
-      setState(() {
-        svgRoot = value;
-      });
-    });
   }
 }

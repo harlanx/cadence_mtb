@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive/hive.dart';
-import 'package:multiavatar/multiavatar.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class MainScreen extends StatefulWidget {
@@ -22,7 +21,6 @@ class MainScreen extends StatefulWidget {
 class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   final GlobalKey<HomeScreenState> _homeKey = GlobalKey<HomeScreenState>();
   final PageController _pageController = PageController(initialPage: 0, keepPage: true);
-  DrawableRoot? svgRoot;
   ValueNotifier<int> _currentIndex = ValueNotifier<int>(0);
   late List<Widget> _pages;
   late Future _futureHolder;
@@ -30,7 +28,6 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    generateAvatar();
     _futureHolder = _openBikeActivitiesBox();
     _pages = [HomeScreen(key: _homeKey), GuidesScreen()];
     WidgetsBinding.instance!.addObserver(this);
@@ -86,16 +83,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                   SizedBox(
                     height: 100,
                     width: 100,
-                    child: svgRoot == null
-                        ? SvgPicture.asset(
-                            'assets/icons/home_dashboard/final_app_icon.svg',
-                            height: 50,
-                            width: 50,
-                          )
-                        : CustomPaint(
-                            foregroundPainter: AvatarPainter(svgRoot!, Size(50.0, 50.0)),
-                            child: Container(),
-                          ),
+                    child: AvatarBox(code: currentUser!.avatarCode, size: 100),
                   ),
                   Text(
                     currentUser!.profileName,
@@ -124,8 +112,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                                 ),
                               ),
                             ).then((value) {
-                              generateAvatar();
-                              _homeKey.currentState!.generateAvatar();
+                              setState(() {});
                             });
                           },
                         ),
@@ -342,13 +329,5 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
 
   Future<Box> _openBikeActivitiesBox() async {
     return await Hive.openBox<BikeActivity>('${currentUser!.profileNumber}bikeActivities');
-  }
-
-  generateAvatar() async {
-    return SvgWrapper(multiavatar(currentUser!.avatarCode)).generateLogo().then((value) {
-      setState(() {
-        svgRoot = value;
-      });
-    });
   }
 }
