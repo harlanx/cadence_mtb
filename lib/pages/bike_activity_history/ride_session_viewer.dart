@@ -100,7 +100,7 @@ class _RideSessionViewerState extends State<RideSessionViewer> {
                                       polylines: _sessionLines,
                                       initialCameraPosition: CameraPosition(
                                         //DEFAULT CAMERA POSITION (IT IS A REQUIRED PARAMETER SO WE JUST USED MIDDLE OF COORDINATES)
-                                        target: _userActivity.coordinates![0]!,
+                            target: _userActivity.coordinates![0],
                                         zoom: 18,
                                       ),
                                       onMapCreated: (controller) {
@@ -428,7 +428,7 @@ class _RideSessionViewerState extends State<RideSessionViewer> {
         visible: true,
         zIndex: 0,
         polylineId: PolylineId('border'),
-        points: _userActivity.coordinates as List<LatLng>,
+        points: _userActivity.coordinates!,
       ),
     );
     _sessionLines.add(
@@ -452,7 +452,7 @@ class _RideSessionViewerState extends State<RideSessionViewer> {
         flat: true,
         draggable: false,
         anchor: Offset(0.5, 0.5),
-        position: _userActivity.coordinates!.first!,
+        position: _userActivity.coordinates!.first,
         icon: startIcon,
       ),
     );
@@ -463,7 +463,7 @@ class _RideSessionViewerState extends State<RideSessionViewer> {
         flat: true,
         draggable: false,
         anchor: Offset(0.5, 0.5),
-        position: _userActivity.coordinates!.last!,
+        position: _userActivity.coordinates!.last,
         icon: endIcon,
       ),
     );
@@ -480,8 +480,7 @@ class _RideSessionViewerState extends State<RideSessionViewer> {
   void _sessionLocations() async {
     if (_startLocation.isEmpty) {
       await GeocodingPlatform.instance
-          .placemarkFromCoordinates(_userActivity.coordinates!.first!.latitude, _userActivity.coordinates!.first!.longitude,
-              localeIdentifier: 'en_PH')
+          .placemarkFromCoordinates(_userActivity.coordinates!.first.latitude, _userActivity.coordinates!.first.longitude, localeIdentifier: 'en_PH')
           .then((startPoint) {
         _startLocation =
             '${startPoint[0].street}, ${startPoint[1].street}. ${startPoint[0].locality}, ${startPoint[0].subAdministrativeArea}, ${startPoint[0].administrativeArea}.';
@@ -489,7 +488,7 @@ class _RideSessionViewerState extends State<RideSessionViewer> {
     }
     if (_endLocation.isEmpty) {
       await GeocodingPlatform.instance
-          .placemarkFromCoordinates(_userActivity.coordinates!.last!.latitude, _userActivity.coordinates!.last!.longitude, localeIdentifier: 'en_PH')
+          .placemarkFromCoordinates(_userActivity.coordinates!.last.latitude, _userActivity.coordinates!.last.longitude, localeIdentifier: 'en_PH')
           .then((endPoint) {
         _endLocation =
             '${endPoint[0].street}, ${endPoint[1].street}, ${endPoint[0].locality}, ${endPoint[0].subAdministrativeArea}, ${endPoint[0].administrativeArea}.';

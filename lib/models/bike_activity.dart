@@ -29,7 +29,7 @@ class BikeActivity {
   @HiveField(8)
   Weather? weatherData;
   @HiveField(9)
-  List<LatLng?>? coordinates;
+  List<LatLng>? coordinates;
   Set<Polyline>? polylines;
   @HiveField(10)
   LatLngBounds? latLngBounds;
@@ -69,7 +69,7 @@ class BikeActivity {
     elevation = json['elevation'] ?? null;
     duration = json['duration'] ?? null;
     weatherData = json['weatherData'] != null ? Weather(json['weatherData']) : null;
-    coordinates = json['coordinates'].forEach((coords) => coordinates!.add(LatLng.fromJson(coords)));
+    coordinates = json['coordinates'].forEach((coords) => coordinates!.add(LatLng.fromJson(coords)!));
     latLngBounds = json['latLngBounds'] != null
         ? LatLngBounds(southwest: LatLng.fromJson(json['latLngBounds'][0])!, northeast: LatLng.fromJson(json['latLngBounds'][1])!)
         : null;
@@ -85,7 +85,7 @@ class BikeActivity {
         'elevation': elevation,
         'duration': duration,
         'weatherData': weatherData!.toJson(),
-        'coordinates': coordinates!.map((v) => v!.toJson()).toList(),
+        'coordinates': coordinates!.map((v) => v.toJson()).toList(),
         'latLngBounds': latLngBounds!.toJson(),
       };
 }

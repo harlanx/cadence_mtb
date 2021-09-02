@@ -113,10 +113,10 @@ class FunctionHelper {
   static Weather sampleWeather() => Weather(jsonDecode(
       '{"coord":{"lon":120.9893,"lat":15.7844},"weather":[{"id":804,"main":"Clouds","description":"overcast clouds","icon":"04n"}],"base":"stations","main":{"temp":${randomDouble(min: 290, max: 310)},"feels_like":296.41,"temp_min":295.14,"temp_max":295.14,"pressure":1014,"humidity":81,"sea_level":1014,"grnd_level":1002},"visibility":10000,"wind":{"speed":2.54,"deg":55},"clouds":{"all":100},"dt":1613912483,"sys":{"country":"PH","sunrise":1613859509,"sunset":1613901674},"timezone":28800,"id":1689431,"name":"San Jose","cod":200}'));
 
-  static List<LatLng?> sampleCoordinates() {
+  static List<LatLng>? sampleCoordinates() {
     List<dynamic> json = jsonDecode(
         '[[15.855859413795411, 120.9928647189144], [15.856096788054394, 120.99295591402391], [15.85627223841336, 120.9930578379696],[15.856323841431005, 120.9932455926061],[15.856298039923427, 120.99345480491209],[15.856246436899104, 120.99366938163939],[15.856215475078118, 120.99388932278275],[15.856184513252437, 120.9940717130014],[15.856153551423132, 120.99431311180197],[15.856138070506857, 120.99450623085225],[15.856189673558887, 120.99471544316187],[15.856236116294433, 120.9949031977987],[15.85633416203435, 120.99505340150817],[15.856421887129677, 120.99517141870847],[15.85641672683101, 120.99532698683612],[15.856246436900873, 120.99535917334529],[15.856086467441617, 120.99530552916336]]');
-    return json.map((e) => LatLng.fromJson(e)).toList();
+    return json.map((e) => LatLng.fromJson(e)!).toList();
   }
 
   static LatLngBounds sampleLatLngBounds() {
