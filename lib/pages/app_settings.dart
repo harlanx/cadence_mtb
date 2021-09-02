@@ -2,7 +2,6 @@ import 'package:cadence_mtb/models/models.dart';
 import 'package:cadence_mtb/utilities/function_helper.dart';
 import 'package:collection/collection.dart';
 import 'package:device_info/device_info.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info/package_info.dart';
@@ -264,30 +263,6 @@ class _AppSettingsState extends State<AppSettings> {
                           onTap: () async {
                             DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
                             await deviceInfo.androidInfo.then((info) {
-                              bool licensesAdded = StorageHelper.getBool('licensesAdded') ?? false;
-                              if (!licensesAdded) {
-                                //Add your additional third party licenses here.
-                                StorageHelper.setBool('licensesAdded', true);
-                                LicenseRegistry.addLicense(() async* {
-                                  yield LicenseEntryWithLineBreaks(<String>['global_cycling_network'], '''
-Global Cycling Network
-Copyright Notice
-
-Any redistribution or reproduction of part or all of the contents
-in any form is prohibited other than the following:
-
-   * You may print or download to a local hard disk extracts for 
-your personal and non-commercial use only.
-   * You may copy the content to individual third parties for their
-personal use, but only if you acknowledge the website as the source
-of the material.
-   * You may not, except with our express written permission, 
-distribute or commercially exploit the content. Nor may you
-transmit it or store it in any other website or other form of
-electronic retrieval system.
-''');
-                                });
-                              }
                               showAboutDialog(
                                 context: context,
                                 applicationIcon: Image.asset(
