@@ -30,7 +30,6 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
           color: Color(0xFF496D47),
         ),
       ),
-      backgroundColor: Theme.of(context).primaryColor,
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
