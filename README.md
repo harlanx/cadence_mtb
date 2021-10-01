@@ -1,16 +1,27 @@
 # cadence_mtb
 
-A new Flutter project.
+A mountain bike app created as a guide and tool for mountain bikers in the Philippines. (Undergraduate Thesis).
 
-## Getting Started
+## Developers
+- [Ezekiel Gutierrez](https://github.com/zeekemeister) 
+- Renzo Relos
+- [Harry Silan](https://github.com/harlanx)
 
-This project is a starting point for a Flutter application.
+## Project Specifications
+**Methodoly:** Agile with Scrum\
+**Languge:** Dart\
+**Framework:** Flutter\
+**Completion Time:** 6 1/2 Months
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Features/Modules
+- Allows Max(5) Profiles
+- Top 10 Philippine Trails
+- Navigation Tracking
+- Activity Tracker
+- 2D Bike Projector Creator
+- First Aid Details (Description, Treatment, Prevention)
+- Incorporated International Mountain Biking Association's rules and objectives
+- Video Tutorials(Repair and Maintenance, and Body Conditioning)
+- Extensive Cheklist with Item Preview
+- Tips and Benefits for MTB Activity
+- List of MTB Organizations in the Philippines including their SocMed group page.
