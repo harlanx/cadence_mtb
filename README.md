@@ -1,4 +1,10 @@
-# cadence_mtb
+<h1 align="center">
+Cadence MTB
+</h1>
+<p align="center">
+<img src="docs/images/final_app_icon.png" height="150"/>
+</p>
+
 
 A mountain bike app created as a guide and tool for mountain bikers in the Philippines. (Undergraduate Thesis).
 
@@ -6,6 +12,34 @@ A mountain bike app created as a guide and tool for mountain bikers in the Phili
 - [Ezekiel Gutierrez](https://github.com/zeekemeister) 
 - Renzo Relos
 - [Harry Silan](https://github.com/harlanx)
+
+## Preview
+<p align="center">
+<video src="https://github.com/user-attachments/assets/1ef9d7c1-1a1b-4a39-a137-e917844f17d2"></video>
+</p>
+
+<details>
+<summary>More Preview</summary>
+<p align="center">
+<img src="docs/images/1.jpg" height="150"/>
+<img src="docs/images/2.jpg"  height="150"/>
+<img src="docs/images/3.jpg"  height="150"/>
+<img src="docs/images/4.jpg"  height="150"/>
+<img src="docs/images/5.1.jpg"  height="150"/>
+<img src="docs/images/5.2.jpg"  height="150"/>
+<img src="docs/images/5.3.jpg"  height="150"/>
+<img src="docs/images/6.1.jpg"  height="150"/>
+<img src="docs/images/6.2.jpg"  height="150"/>
+<img src="docs/images/7.1.jpg"  height="150"/>
+<img src="docs/images/7.2.jpg"  height="150"/>
+<img src="docs/images/8.jpg"  height="150"/>
+<img src="docs/images/9.jpg"  height="150"/>
+<img src="docs/images/10.jpg"  height="150"/>
+<img src="docs/images/11.jpg"  height="150"/>
+<img src="docs/images/12.jpg"  height="150"/>
+<img src="docs/images/13.jpg"  height="150"/>
+</p>
+</details>
 
 ## Project Specifications
 **Methodoly:** Agile with Scrum\
