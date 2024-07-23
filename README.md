@@ -4,9 +4,11 @@ Cadence MTB
 <p align="center">
 <img src="docs/images/final_app_icon.png" height="150"/>
 </p>
-
-
-A mountain bike app created as a guide and tool for mountain bikers in the Philippines. (Undergraduate Thesis).
+<p align="center">
+A mountain bike app created as a guide and tool for mountain bikers in the Philippines.
+</br>
+A Final Year Project Presented to STI College San Jose
+</p>
 
 ## Developers
 - [Ezekiel Gutierrez](https://github.com/zeekemeister) 
