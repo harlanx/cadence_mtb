@@ -9,7 +9,6 @@ import 'package:cadence_mtb/utilities/widget_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:form_builder_fields/form_builder_fields.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -34,25 +33,32 @@ class EmergencyButton extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       onPressed: null,
       child: InkWell(
-        overlayColor: MaterialStateProperty.resolveWith<Color>(
-          (states) => states.contains(MaterialState.pressed) ? Color(0xFF496D47).withOpacity(0.8) : Colors.transparent,
+        overlayColor: WidgetStateProperty.resolveWith<Color>(
+          (states) => states.contains(WidgetState.pressed)
+              ? Color(0xFF496D47).withOpacity(0.8)
+              : Colors.transparent,
         ),
         onTap: () {
-          final bool alreadySetup = StorageHelper.getBool('${currentUser!.profileNumber}haveSOSDetails') ?? false;
+          final bool alreadySetup = StorageHelper.getBool(
+                  '${currentUser!.profileNumber}haveSOSDetails') ??
+              false;
           if (!alreadySetup) {
             Permission.contacts.status.then(
               (permission) async {
                 if (permission.isGranted) {
-                  userContacts = (await ContactsService.getContacts(withThumbnails: true)).toList();
+                  userContacts =
+                      (await ContactsService.getContacts(withThumbnails: true))
+                          .toList();
                 } else {
                   userContacts = [];
                 }
                 showModal(
                   context: context,
-                  configuration: FadeScaleTransitionConfiguration(barrierDismissible: false),
+                  configuration: FadeScaleTransitionConfiguration(
+                      barrierDismissible: false),
                   builder: (_) {
-                    return WillPopScope(
-                      onWillPop: () => Future.value(false),
+                    return PopScope(
+                      canPop: false,
                       child: EmergencyForm(),
                     );
                   },
@@ -62,21 +68,26 @@ class EmergencyButton extends StatelessWidget {
           }
         },
         onDoubleTap: () {
-          final bool alreadySetup = StorageHelper.getBool('${currentUser!.profileNumber}haveSOSDetails') ?? false;
+          final bool alreadySetup = StorageHelper.getBool(
+                  '${currentUser!.profileNumber}haveSOSDetails') ??
+              false;
           if (!alreadySetup) {
             Permission.contacts.status.then(
               (permission) async {
                 if (permission.isGranted) {
-                  userContacts = (await ContactsService.getContacts(withThumbnails: true)).toList();
+                  userContacts =
+                      (await ContactsService.getContacts(withThumbnails: true))
+                          .toList();
                 } else {
                   userContacts = <Contact>[];
                 }
                 showModal(
                   context: context,
-                  configuration: FadeScaleTransitionConfiguration(barrierDismissible: false),
+                  configuration: FadeScaleTransitionConfiguration(
+                      barrierDismissible: false),
                   builder: (_) {
-                    return WillPopScope(
-                      onWillPop: () => Future.value(false),
+                    return PopScope(
+                      canPop: false,
                       child: EmergencyForm(),
                     );
                   },
@@ -91,16 +102,19 @@ class EmergencyButton extends StatelessWidget {
           Permission.contacts.status.then(
             (permission) async {
               if (permission.isGranted) {
-                userContacts = (await ContactsService.getContacts(withThumbnails: true)).toList();
+                userContacts =
+                    (await ContactsService.getContacts(withThumbnails: true))
+                        .toList();
               } else {
                 userContacts = <Contact>[];
               }
               showModal(
                 context: context,
-                configuration: FadeScaleTransitionConfiguration(barrierDismissible: false),
+                configuration:
+                    FadeScaleTransitionConfiguration(barrierDismissible: false),
                 builder: (_) {
-                  return WillPopScope(
-                    onWillPop: () => Future.value(false),
+                  return PopScope(
+                    canPop: false,
                     child: EmergencyForm(),
                   );
                 },
@@ -117,7 +131,10 @@ class EmergencyButton extends StatelessWidget {
                 padding: const EdgeInsets.all(5),
                 child: SvgPicture.asset(
                   'assets/icons/home_dashboard/emergency.svg',
-                  color: Color(0xFF496D47),
+                  colorFilter: ColorFilter.mode(
+                    Color(0xFF496D47),
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
             ),
@@ -133,23 +150,39 @@ class EmergencyButton extends StatelessWidget {
   }
 
   void sendSOS() async {
-    final String? sosMessage = StorageHelper.getString('${currentUser!.profileNumber}sosMessage');
-    final List<String>? sosContacts = StorageHelper.getStringList('${currentUser!.profileNumber}sosContacts');
-    final bool appendLocation = StorageHelper.getBool('${currentUser!.profileNumber}appendLocation') ?? false;
+    final String? sosMessage =
+        StorageHelper.getString('${currentUser!.profileNumber}sosMessage');
+    final List<String>? sosContacts =
+        StorageHelper.getStringList('${currentUser!.profileNumber}sosContacts');
+    final bool appendLocation =
+        StorageHelper.getBool('${currentUser!.profileNumber}appendLocation') ??
+            false;
     String sosPosition = '';
     if (sosContacts != null || sosMessage != null) {
       if (appendLocation) {
-        await GeolocatorPlatform.instance.isLocationServiceEnabled().then((isEnabled) async {
-          await GeolocatorPlatform.instance.checkPermission().then((permission) async {
+        await GeolocatorPlatform.instance
+            .isLocationServiceEnabled()
+            .then((isEnabled) async {
+          await GeolocatorPlatform.instance
+              .checkPermission()
+              .then((permission) async {
             switch (permission) {
               case LocationPermission.always:
               case LocationPermission.whileInUse:
-                await GeolocatorPlatform.instance.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((position) async {
-                  await GeocodingPlatform.instance.placemarkFromCoordinates(position.latitude, position.longitude).then((addresses) {
+                await GeolocatorPlatform.instance
+                    .getCurrentPosition(
+                        locationSettings:
+                            LocationSettings(accuracy: LocationAccuracy.high))
+                    .then((position) async {
+                  await GeocodingPlatform.instance
+                      ?.placemarkFromCoordinates(
+                          position.latitude, position.longitude)
+                      .then((addresses) {
                     sosPosition =
                         'Latitude: ${position.latitude}\nLongitude: ${position.longitude}\nAddress: ${addresses[0].street}, ${addresses[1].street}. ${addresses[0].locality}, ${addresses[0].subAdministrativeArea}, ${addresses[0].administrativeArea}.';
                   }).catchError((e) {
-                    sosPosition = 'Latitude: ${position.latitude}, Longitude: ${position.longitude}';
+                    sosPosition =
+                        'Latitude: ${position.latitude}, Longitude: ${position.longitude}';
                   });
                 });
                 break;

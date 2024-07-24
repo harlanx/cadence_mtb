@@ -49,7 +49,8 @@ class RulesOfTheTrailDialog extends StatelessWidget {
                           child: FittedBox(
                             child: SvgPicture.asset(
                               'assets/icons/guides_dashboard/imba_logo.svg',
-                              color: Colors.white,
+                              colorFilter: ColorFilter.mode(
+                                  Colors.white, BlendMode.srcIn),
                               height: 80,
                               width: 272,
                               fit: BoxFit.fitWidth,
@@ -112,7 +113,8 @@ class RulesOfTheTrailDialog extends StatelessWidget {
                   child: PageView.builder(
                     physics: BouncingScrollPhysics(),
                     itemCount: rOTTItem.length + 1,
-                    itemBuilder: (BuildContext context, int index) => _buildRottItem(context, index),
+                    itemBuilder: (BuildContext context, int index) =>
+                        _buildRottItem(context, index),
                     onPageChanged: (int index) {
                       _currentIndex.value = index;
                     },
@@ -188,7 +190,7 @@ class RulesOfTheTrailDialog extends StatelessWidget {
               flex: 70,
               child: Container(
                 child: Scrollbar(
-                  isAlwaysShown: true,
+                  trackVisibility: true,
                   controller: _scrollController,
                   child: SingleChildScrollView(
                     controller: _scrollController,
@@ -251,7 +253,8 @@ class RulesOfTheTrailDialog extends StatelessWidget {
                               context,
                               CustomRoutes.fadeThrough(
                                 page: AppBrowser(
-                                  link: 'https://www.imba.com/explore-imba/meet-imba/',
+                                  link:
+                                      'https://www.imba.com/explore-imba/meet-imba/',
                                 ),
                               ),
                             );
@@ -260,7 +263,11 @@ class RulesOfTheTrailDialog extends StatelessWidget {
                             "visit the webpage of IMBA.",
                             maxLines: 1,
                             style: TextStyle(
-                              shadows: [const Shadow(color: Color(0xFF496D47), offset: Offset(0, -5))],
+                              shadows: [
+                                const Shadow(
+                                    color: Color(0xFF496D47),
+                                    offset: Offset(0, -5))
+                              ],
                               decoration: TextDecoration.underline,
                               decorationColor: Color(0xFF496D47).darken(0.1),
                               decorationThickness: 2,

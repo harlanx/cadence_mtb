@@ -41,7 +41,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size;
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(statusBarColor: Color(0xFF496D47), statusBarIconBrightness: Brightness.light),
+      value: SystemUiOverlayStyle(
+          statusBarColor: Color(0xFF496D47),
+          statusBarIconBrightness: Brightness.light),
       child: SafeArea(
         bottom: false,
         child: Scaffold(
@@ -92,7 +94,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         icon: Icon(Icons.refresh),
                         onPressed: () {
                           setState(() {
-                            avatarCode = List.generate(6, (_) => math.Random().nextInt(48).toString().padLeft(2, '0')).join();
+                            avatarCode = List.generate(
+                                6,
+                                (_) => math.Random()
+                                    .nextInt(48)
+                                    .toString()
+                                    .padLeft(2, '0')).join();
                           });
                         },
                       ),
@@ -164,10 +171,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               obscuringWidget: SvgPicture.asset(
                                 'assets/images/navigate/wheel.svg',
                                 fit: BoxFit.contain,
-                                color: Color(0xFF496D47),
+                                colorFilter: ColorFilter.mode(
+                                  Color(0xFF496D47),
+                                  BlendMode.srcIn,
+                                ),
                               ),
                               textStyle: TextStyle(
-                                color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black
+                                    : Colors.white,
                               ),
                               pinTheme: PinTheme(
                                 activeColor: Color(0xFF496D47),
@@ -178,7 +191,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 if (value!.isEmpty) {
                                   return 'Required';
                                 }
-                                if (value == userProfile.pinCode && value == newPinConfirm) {
+                                if (value == userProfile.pinCode &&
+                                    value == newPinConfirm) {
                                   return 'New pin cannot be the same as old pin';
                                 }
                                 return null;
@@ -208,10 +222,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               obscuringWidget: SvgPicture.asset(
                                 'assets/images/navigate/wheel.svg',
                                 fit: BoxFit.contain,
-                                color: Color(0xFF496D47),
+                                colorFilter: ColorFilter.mode(
+                                  Color(0xFF496D47),
+                                  BlendMode.srcIn,
+                                ),
                               ),
                               textStyle: TextStyle(
-                                color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black
+                                    : Colors.white,
                               ),
                               pinTheme: PinTheme(
                                 activeColor: Color(0xFF496D47),
@@ -222,7 +242,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 if (value != newPin) {
                                   return 'Pin code does not match';
                                 }
-                                if (value == userProfile.pinCode && value == newPinConfirm) {
+                                if (value == userProfile.pinCode &&
+                                    value == newPinConfirm) {
                                   return 'New pin cannot be the same as old pin';
                                 }
                                 return null;
@@ -245,8 +266,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                           child: Text(changePin ? 'Change Pin' : 'Cancel'),
                           style: TextButton.styleFrom(
+                            foregroundColor: Colors.white,
                             backgroundColor: Color(0xFF496D47),
-                            primary: Colors.white,
                           ),
                         ),
                       ),
@@ -269,21 +290,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     onTap: () {
-                      List<UserProfile> jsonToProfiles = StorageHelper.getStringList('userProfiles')!.map((e) => UserProfile.fromJson(e)).toList();
+                      List<UserProfile> jsonToProfiles =
+                          StorageHelper.getStringList('userProfiles')!
+                              .map((e) => UserProfile.fromJson(e))
+                              .toList();
                       if (!changePin) {
                         if ((newPin.isEmpty || newPinConfirm.isEmpty) ||
                             (newPin.length < 4 || newPinConfirm.length < 4) ||
-                            (newPin == userProfile.pinCode || newPinConfirm == userProfile.pinCode) ||
+                            (newPin == userProfile.pinCode ||
+                                newPinConfirm == userProfile.pinCode) ||
                             (newPin != newPinConfirm) ||
                             jsonToProfiles
                                 .map((e) => e.profileNumber)
-                                .skipWhile((value) => value == userProfile.profileNumber)
+                                .skipWhile((value) =>
+                                    value == userProfile.profileNumber)
                                 .contains(profileNameController.value.text)) {
                           if (jsonToProfiles
                               .map((e) => e.profileNumber)
-                              .skipWhile((value) => value == userProfile.profileNumber)
+                              .skipWhile(
+                                  (value) => value == userProfile.profileNumber)
                               .contains(profileNameController.value.text)) {
-                            CustomToast.showToastSimple(context: context, simpleMessage: 'Profile Name Already Exist');
+                            CustomToast.showToastSimple(
+                                context: context,
+                                simpleMessage: 'Profile Name Already Exist');
                           } else {
                             formKey.currentState!.validate();
                           }
@@ -291,7 +320,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         } else {
                           List<UserProfile> edittedProfiles = [];
                           jsonToProfiles.forEach((element) {
-                            if (element.profileNumber == userProfile.profileNumber) {
+                            if (element.profileNumber ==
+                                userProfile.profileNumber) {
                               edittedProfiles.add(UserProfile(
                                 profileNumber: userProfile.profileNumber,
                                 avatarCode: avatarCode,
@@ -302,37 +332,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               edittedProfiles.add(element);
                             }
                           });
-                          StorageHelper.setStringList('userProfiles', edittedProfiles.map((e) => e.toJson()).toList());
+                          StorageHelper.setStringList('userProfiles',
+                              edittedProfiles.map((e) => e.toJson()).toList());
                           setState(() {
                             userProfile = edittedProfiles.firstWhere(
-                              (element) => element.profileNumber == userProfile.profileNumber,
+                              (element) =>
+                                  element.profileNumber ==
+                                  userProfile.profileNumber,
                             );
                             currentUser = userProfile;
                             changePin = true;
                           });
-                          CustomToast.showToastSetupAction(context, 'Changes Applied', true);
+                          CustomToast.showToastSetupAction(
+                              context, 'Changes Applied', true);
                         }
                       } else {
                         if (profileNameController.value.text.isEmpty ||
                             jsonToProfiles
                                 .map((e) => e.profileNumber)
-                                .skipWhile((value) => value == userProfile.profileNumber)
+                                .skipWhile((value) =>
+                                    value == userProfile.profileNumber)
                                 .contains(profileNameController.value.text)) {
                           if (jsonToProfiles
                               .map((e) => e.profileNumber)
-                              .skipWhile((value) => value == userProfile.profileNumber)
+                              .skipWhile(
+                                  (value) => value == userProfile.profileNumber)
                               .contains(profileNameController.value.text)) {
-                            CustomToast.showToastSimple(context: context, simpleMessage: 'Profile Name Already Exist');
+                            CustomToast.showToastSimple(
+                                context: context,
+                                simpleMessage: 'Profile Name Already Exist');
                           } else {
                             formKey.currentState!.validate();
                           }
                           return;
                         } else {
                           List<UserProfile> jsonToProfiles =
-                              StorageHelper.getStringList('userProfiles')!.map((e) => UserProfile.fromJson(e)).toList();
+                              StorageHelper.getStringList('userProfiles')!
+                                  .map((e) => UserProfile.fromJson(e))
+                                  .toList();
                           List<UserProfile> edittedProfiles = [];
                           jsonToProfiles.forEach((element) {
-                            if (element.profileNumber == userProfile.profileNumber) {
+                            if (element.profileNumber ==
+                                userProfile.profileNumber) {
                               edittedProfiles.add(UserProfile(
                                 profileNumber: userProfile.profileNumber,
                                 avatarCode: avatarCode,
@@ -343,14 +384,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               edittedProfiles.add(element);
                             }
                           });
-                          StorageHelper.setStringList('userProfiles', edittedProfiles.map((e) => e.toJson()).toList());
+                          StorageHelper.setStringList('userProfiles',
+                              edittedProfiles.map((e) => e.toJson()).toList());
                           setState(() {
                             userProfile = edittedProfiles.firstWhere(
-                              (element) => element.profileNumber == userProfile.profileNumber,
+                              (element) =>
+                                  element.profileNumber ==
+                                  userProfile.profileNumber,
                             );
                             currentUser = userProfile;
                           });
-                          CustomToast.showToastSetupAction(context, 'Changes Applied', true);
+                          CustomToast.showToastSetupAction(
+                              context, 'Changes Applied', true);
                         }
                       }
                     },

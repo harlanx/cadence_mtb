@@ -87,11 +87,14 @@ class BMICalculatorState extends State<BMICalculator> {
                   child: Text.rich(
                     TextSpan(
                       text: 'BMI: ',
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w700),
                       children: [
                         TextSpan(
-                          text: '${_calculatedResult.toStringAsFixed(2)}\n($_bmiResult)',
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
+                          text:
+                              '${_calculatedResult.toStringAsFixed(2)}\n($_bmiResult)',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w300),
                         ),
                       ],
                     ),
@@ -133,17 +136,23 @@ class BMICalculatorState extends State<BMICalculator> {
                                 decoration: InputDecoration(
                                   isDense: true,
                                   border: UnderlineInputBorder(),
-                                  focusedBorder: UnderlineInputBorder(borderSide: BorderSide(width: 2)),
+                                  focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(width: 2)),
                                   contentPadding: EdgeInsets.zero,
                                   errorStyle: TextStyle(height: 0),
                                 ),
-                                inputFormatters: [LengthLimitingTextInputFormatter(6), FilteringTextInputFormatter.allow(RegExp(r'[0-9,\.]'))],
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(6),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[0-9,\.]'))
+                                ],
                               ),
                             ),
                             Expanded(
                               flex: 35,
                               child: Listener(
-                                onPointerDown: (_) => FocusScope.of(context).unfocus(),
+                                onPointerDown: (_) =>
+                                    FocusScope.of(context).unfocus(),
                                 child: ButtonTheme(
                                   alignedDropdown: true,
                                   child: DropdownButton<String>(
@@ -151,11 +160,25 @@ class BMICalculatorState extends State<BMICalculator> {
                                     elevation: 0,
                                     isDense: true,
                                     isExpanded: true,
-                                    style: TextStyle(color: Theme.of(context).textTheme.subtitle1!.color, fontWeight: FontWeight.w400, fontSize: 14),
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium!
+                                            .color,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14),
                                     value: _massUnit,
                                     items: [
-                                      DropdownMenuItem(child: FittedBox(fit: BoxFit.scaleDown, child: Text('kg')), value: 'kg'),
-                                      DropdownMenuItem(child: FittedBox(fit: BoxFit.scaleDown, child: Text('lb')), value: 'lb'),
+                                      DropdownMenuItem(
+                                          child: FittedBox(
+                                              fit: BoxFit.scaleDown,
+                                              child: Text('kg')),
+                                          value: 'kg'),
+                                      DropdownMenuItem(
+                                          child: FittedBox(
+                                              fit: BoxFit.scaleDown,
+                                              child: Text('lb')),
+                                          value: 'lb'),
                                     ],
                                     onChanged: (val) {
                                       setState(() {
@@ -189,17 +212,23 @@ class BMICalculatorState extends State<BMICalculator> {
                                 decoration: InputDecoration(
                                   isDense: true,
                                   border: UnderlineInputBorder(),
-                                  focusedBorder: UnderlineInputBorder(borderSide: BorderSide(width: 2)),
+                                  focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(width: 2)),
                                   contentPadding: EdgeInsets.zero,
                                   errorStyle: TextStyle(height: 0),
                                 ),
-                                inputFormatters: [LengthLimitingTextInputFormatter(6), FilteringTextInputFormatter.allow(RegExp(r'[0-9,\.]'))],
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(6),
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[0-9,\.]'))
+                                ],
                               ),
                             ),
                             Expanded(
                               flex: 35,
                               child: Listener(
-                                onPointerDown: (_) => FocusScope.of(context).unfocus(),
+                                onPointerDown: (_) =>
+                                    FocusScope.of(context).unfocus(),
                                 child: ButtonTheme(
                                   alignedDropdown: true,
                                   child: DropdownButton<String>(
@@ -207,11 +236,25 @@ class BMICalculatorState extends State<BMICalculator> {
                                     elevation: 0,
                                     isDense: true,
                                     isExpanded: true,
-                                    style: TextStyle(color: Theme.of(context).textTheme.subtitle1!.color, fontWeight: FontWeight.w400, fontSize: 14),
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium!
+                                            .color,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14),
                                     value: _heightUnit,
                                     items: [
-                                      DropdownMenuItem(child: FittedBox(fit: BoxFit.scaleDown, child: Text('cm')), value: 'cm'),
-                                      DropdownMenuItem(child: FittedBox(fit: BoxFit.scaleDown, child: Text('ft')), value: 'ft'),
+                                      DropdownMenuItem(
+                                          child: FittedBox(
+                                              fit: BoxFit.scaleDown,
+                                              child: Text('cm')),
+                                          value: 'cm'),
+                                      DropdownMenuItem(
+                                          child: FittedBox(
+                                              fit: BoxFit.scaleDown,
+                                              child: Text('ft')),
+                                          value: 'ft'),
                                     ],
                                     onChanged: (val) {
                                       setState(() {
@@ -236,34 +279,42 @@ class BMICalculatorState extends State<BMICalculator> {
                       OutlinedButton(
                         child: Text('Save'),
                         style: ButtonStyle(
-                          foregroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-                            if (states.contains(MaterialState.pressed)) {
+                          foregroundColor:
+                              WidgetStateProperty.resolveWith<Color>((states) {
+                            if (states.contains(WidgetState.pressed)) {
                               return Colors.white;
-                            } else if (states.contains(MaterialState.disabled)) {
+                            } else if (states.contains(WidgetState.disabled)) {
                               return Colors.grey;
                             } else {
                               return Color(0xFFF15024);
                             }
                           }),
-                          side: MaterialStateProperty.resolveWith<BorderSide>((states) {
-                            if (states.contains(MaterialState.pressed)) {
+                          side: WidgetStateProperty.resolveWith<BorderSide>(
+                              (states) {
+                            if (states.contains(WidgetState.pressed)) {
                               return BorderSide(color: Colors.transparent);
-                            } else if (states.contains(MaterialState.disabled)) {
+                            } else if (states.contains(WidgetState.disabled)) {
                               return BorderSide(color: Colors.grey);
                             } else {
                               return BorderSide(color: Color(0xFFF15024));
                             }
                           }),
-                          overlayColor: MaterialStateProperty.resolveWith<Color>(
-                              (states) => states.contains(MaterialState.pressed) ? Color(0xFFF15024).withOpacity(0.8) : Colors.transparent),
+                          overlayColor: WidgetStateProperty.resolveWith<Color>(
+                              (states) => states.contains(WidgetState.pressed)
+                                  ? Color(0xFFF15024).withOpacity(0.8)
+                                  : Colors.transparent),
                         ),
                         onPressed: _calculatedResult == 0.0
                             ? null
                             : () {
-                                double weight =
-                                    _massUnit == 'lb' ? double.parse(_weightController.text) * 0.453592 : double.parse(_weightController.text);
-                                double height =
-                                    _heightUnit == 'ft' ? double.parse(_heightController.text) * 0.3048 : double.parse(_heightController.text);
+                                double weight = _massUnit == 'lb'
+                                    ? double.parse(_weightController.text) *
+                                        0.453592
+                                    : double.parse(_weightController.text);
+                                double height = _heightUnit == 'ft'
+                                    ? double.parse(_heightController.text) *
+                                        0.3048
+                                    : double.parse(_heightController.text);
                                 widget.onSavePressed({
                                   'weight': weight.toStringAsFixed(2),
                                   'height': height.toStringAsFixed(2),
@@ -274,11 +325,17 @@ class BMICalculatorState extends State<BMICalculator> {
                       OutlinedButton(
                         child: Text('Calculate'),
                         style: ButtonStyle(
-                          foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                              (states) => states.contains(MaterialState.pressed) ? Colors.white : Color(0xFFF15024)),
-                          side: MaterialStateProperty.all(BorderSide(color: Colors.red)),
-                          overlayColor: MaterialStateProperty.resolveWith<Color>(
-                              (states) => states.contains(MaterialState.pressed) ? Color(0xFFF15024).withOpacity(0.8) : Colors.transparent),
+                          foregroundColor:
+                              WidgetStateProperty.resolveWith<Color>((states) =>
+                                  states.contains(WidgetState.pressed)
+                                      ? Colors.white
+                                      : Color(0xFFF15024)),
+                          side: WidgetStateProperty.all(
+                              BorderSide(color: Colors.red)),
+                          overlayColor: WidgetStateProperty.resolveWith<Color>(
+                              (states) => states.contains(WidgetState.pressed)
+                                  ? Color(0xFFF15024).withOpacity(0.8)
+                                  : Colors.transparent),
                         ),
                         onPressed: () {
                           _calculateBMI();
@@ -307,10 +364,16 @@ class BMICalculatorState extends State<BMICalculator> {
   }
 
   void _calculateBMI() {
-    if (_weightController.text.isNotEmpty && _heightController.text.isNotEmpty) {
-      if (double.tryParse(_weightController.text)!.round() != 0 && double.tryParse(_heightController.text)!.round() != 0) {
-        double _weightInKg = _massUnit == 'lb' ? double.parse(_weightController.text) * 0.453592 : double.parse(_weightController.text);
-        double _heightInM = _heightUnit == 'ft' ? double.parse(_heightController.text) * 0.3048 : double.parse(_heightController.text) / 100;
+    if (_weightController.text.isNotEmpty &&
+        _heightController.text.isNotEmpty) {
+      if (double.tryParse(_weightController.text)!.round() != 0 &&
+          double.tryParse(_heightController.text)!.round() != 0) {
+        double _weightInKg = _massUnit == 'lb'
+            ? double.parse(_weightController.text) * 0.453592
+            : double.parse(_weightController.text);
+        double _heightInM = _heightUnit == 'ft'
+            ? double.parse(_heightController.text) * 0.3048
+            : double.parse(_heightController.text) / 100;
         _calculatedResult = _weightInKg / pow(_heightInM, 2);
         //Underweight
         if (_calculatedResult < 18.5) {
@@ -328,7 +391,9 @@ class BMICalculatorState extends State<BMICalculator> {
           if (_bmiResult == 'None') {
             _artboard.addController(SimpleAnimation('defaultToHappy'));
           } else {
-            if (_bmiResult == 'Underweight' || _bmiResult == 'Overweight' || _bmiResult == 'Obese') {
+            if (_bmiResult == 'Underweight' ||
+                _bmiResult == 'Overweight' ||
+                _bmiResult == 'Obese') {
               _artboard.addController(SimpleAnimation('sadToHappy'));
             }
           }

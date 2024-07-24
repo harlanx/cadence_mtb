@@ -5,29 +5,46 @@ class NavigationSettings extends StatefulWidget {
   _NavigationSettingsState createState() => _NavigationSettingsState();
 }
 
-class _NavigationSettingsState extends State<NavigationSettings> with SingleTickerProviderStateMixin {
+class _NavigationSettingsState extends State<NavigationSettings>
+    with SingleTickerProviderStateMixin {
   final Map<String, String> _accuracyChoices = {
-    'Low': 'Accurate within 500m distance. Consumes less battery power but less accurate.',
-    'Medium': 'Accurate between 100m-500m distance . Consumes average battery power and slightly accurate.',
-    'High': 'Accurate between 0m and 100m distance. Consumes more battery power but more accurate.'
+    'Low':
+        'Accurate within 500m distance. Consumes less battery power but less accurate.',
+    'Medium':
+        'Accurate between 100m-500m distance . Consumes average battery power and slightly accurate.',
+    'High':
+        'Accurate between 0m and 100m distance. Consumes more battery power but more accurate.'
   };
-  String? _selectedAccuracy = StorageHelper.getString('${currentUser!.profileNumber}locationAccuracy') ?? 'High';
+  String? _selectedAccuracy = StorageHelper.getString(
+          '${currentUser!.profileNumber}locationAccuracy') ??
+      'High';
 
   final _dfKey = GlobalKey<FormState>();
   final TextEditingController _dfController = TextEditingController();
   final FocusNode _dfFocusNode = FocusNode();
-  final int _distanceFilter = StorageHelper.getInt('${currentUser!.profileNumber}distanceFilter') ?? 0;
+  final int _distanceFilter =
+      StorageHelper.getInt('${currentUser!.profileNumber}distanceFilter') ?? 0;
   String? _dfError;
 
   final Map<String, String> _formulaChoices = {
     'Haversine': 'Consumes less battery power but less accurate.',
     'Vincenty': 'Consumes more battery power but more accurate.',
   };
-  String? _selectedFormula = StorageHelper.getString('${currentUser!.profileNumber}formula') ?? 'Haversine';
+  String? _selectedFormula =
+      StorageHelper.getString('${currentUser!.profileNumber}formula') ??
+          'Haversine';
 
-  double _lineWidth = StorageHelper.getInt('${currentUser!.profileNumber}lineWidth')?.toDouble() ?? 4.0;
-  double _borderWidth = StorageHelper.getInt('${currentUser!.profileNumber}borderWidth')?.toDouble() ?? 6.0;
-  bool? _includeBorder = StorageHelper.getBool('${currentUser!.profileNumber}includeBorder') ?? true;
+  double _lineWidth =
+      StorageHelper.getInt('${currentUser!.profileNumber}lineWidth')
+              ?.toDouble() ??
+          4.0;
+  double _borderWidth =
+      StorageHelper.getInt('${currentUser!.profileNumber}borderWidth')
+              ?.toDouble() ??
+          6.0;
+  bool? _includeBorder =
+      StorageHelper.getBool('${currentUser!.profileNumber}includeBorder') ??
+          true;
   Set<Polyline> _samplePolyline = {};
   final List<LatLng> _sampleCoordinates = [
     LatLng(15.855859413795411, 120.9928647189144),
@@ -106,27 +123,39 @@ class _NavigationSettingsState extends State<NavigationSettings> with SingleTick
         TextButton(
           child: Text('Save'),
           style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all(Colors.white),
-            backgroundColor: MaterialStateProperty.all(Color(0xFF496D47)),
-            overlayColor: MaterialStateProperty.resolveWith(
-                (states) => states.contains(MaterialState.pressed) ? Color(0xFF496D47).darken(0.1) : Colors.transparent),
+            foregroundColor: WidgetStateProperty.all(Colors.white),
+            backgroundColor: WidgetStateProperty.all(Color(0xFF496D47)),
+            overlayColor: WidgetStateProperty.resolveWith((states) =>
+                states.contains(WidgetState.pressed)
+                    ? Color(0xFF496D47).darken(0.1)
+                    : Colors.transparent),
           ),
           onPressed: () {
-            StorageHelper.setString('${currentUser!.profileNumber}locationAccuracy', _selectedAccuracy!);
-            StorageHelper.setInt('${currentUser!.profileNumber}distanceFilter', double.parse(_dfController.text).floor());
-            StorageHelper.setString('${currentUser!.profileNumber}formula', _selectedFormula!);
-            StorageHelper.setInt('${currentUser!.profileNumber}lineWidth', _lineWidth.floor());
-            StorageHelper.setInt('${currentUser!.profileNumber}borderWidth', _borderWidth.floor());
-            StorageHelper.setBool('${currentUser!.profileNumber}includeBorder', _includeBorder!);
+            StorageHelper.setString(
+                '${currentUser!.profileNumber}locationAccuracy',
+                _selectedAccuracy!);
+            StorageHelper.setInt('${currentUser!.profileNumber}distanceFilter',
+                double.parse(_dfController.text).floor());
+            StorageHelper.setString(
+                '${currentUser!.profileNumber}formula', _selectedFormula!);
+            StorageHelper.setInt(
+                '${currentUser!.profileNumber}lineWidth', _lineWidth.floor());
+            StorageHelper.setInt('${currentUser!.profileNumber}borderWidth',
+                _borderWidth.floor());
+            StorageHelper.setBool(
+                '${currentUser!.profileNumber}includeBorder', _includeBorder!);
             Navigator.pop(context);
           },
         ),
         TextButton(
           child: Text('Default'),
           style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all(Colors.white),
-            backgroundColor: MaterialStateProperty.all(Colors.orange.shade400),
-            overlayColor: MaterialStateProperty.resolveWith((states) => states.contains(MaterialState.pressed) ? Colors.orange : Colors.transparent),
+            foregroundColor: WidgetStateProperty.all(Colors.white),
+            backgroundColor: WidgetStateProperty.all(Colors.orange.shade400),
+            overlayColor: WidgetStateProperty.resolveWith((states) =>
+                states.contains(WidgetState.pressed)
+                    ? Colors.orange
+                    : Colors.transparent),
           ),
           onPressed: () {
             setState(() {
@@ -143,10 +172,12 @@ class _NavigationSettingsState extends State<NavigationSettings> with SingleTick
         TextButton(
           child: Text('Cancel'),
           style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all(Colors.white),
-              backgroundColor: MaterialStateProperty.all(Colors.grey),
-              overlayColor:
-                  MaterialStateProperty.resolveWith((states) => states.contains(MaterialState.pressed) ? Colors.grey.shade600 : Colors.transparent)),
+              foregroundColor: WidgetStateProperty.all(Colors.white),
+              backgroundColor: WidgetStateProperty.all(Colors.grey),
+              overlayColor: WidgetStateProperty.resolveWith((states) =>
+                  states.contains(WidgetState.pressed)
+                      ? Colors.grey.shade600
+                      : Colors.transparent)),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -198,14 +229,20 @@ class _NavigationSettingsState extends State<NavigationSettings> with SingleTick
                           style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 15,
-                            color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Colors.black
+                                    : Colors.white,
                           ),
                           onChanged: (value) {
                             setState(() {
                               _selectedAccuracy = value;
                             });
                           },
-                          items: _accuracyChoices.keys.map((item) => DropdownMenuItem(value: item, child: Text(item))).toList(),
+                          items: _accuracyChoices.keys
+                              .map((item) => DropdownMenuItem(
+                                  value: item, child: Text(item)))
+                              .toList(),
                         ),
                       ),
                     ),
@@ -283,7 +320,10 @@ class _NavigationSettingsState extends State<NavigationSettings> with SingleTick
                         onFieldSubmitted: (val) {
                           _dfFocusNode.unfocus();
                         },
-                        inputFormatters: [LengthLimitingTextInputFormatter(3), FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))],
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(3),
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                        ],
                         decoration: InputDecoration(
                           isDense: true,
                           border: UnderlineInputBorder(
@@ -346,7 +386,10 @@ class _NavigationSettingsState extends State<NavigationSettings> with SingleTick
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 15,
-                          color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
+                          color:
+                              Theme.of(context).brightness == Brightness.light
+                                  ? Colors.black
+                                  : Colors.white,
                         ),
                         onChanged: (value) {
                           setState(() {
@@ -515,7 +558,8 @@ class _NavigationSettingsState extends State<NavigationSettings> with SingleTick
   }
 
   void _dfListener() {
-    if (!_dfFocusNode.hasFocus) FocusScope.of(context).requestFocus(new FocusNode());
+    if (!_dfFocusNode.hasFocus)
+      FocusScope.of(context).requestFocus(new FocusNode());
   }
 
   void _dfFormValidator() {

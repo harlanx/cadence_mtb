@@ -34,7 +34,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     );
 
     _futureHolder = _fetchChannelInfo();
-    backIcon = _controller.value.isFullScreen ? Icons.arrow_back_ios : Icons.close;
+    backIcon =
+        _controller.value.isFullScreen ? Icons.arrow_back_ios : Icons.close;
   }
 
   @override
@@ -46,26 +47,37 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   @override
   void dispose() {
     _controller.dispose();
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight
+    ]);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     if (MediaQuery.of(context).orientation == Orientation.landscape) {
-      SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+          overlays: [SystemUiOverlay.bottom]);
     }
     return YoutubePlayerBuilder(
       onEnterFullScreen: () {
-        SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+        SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+            overlays: [SystemUiOverlay.bottom]);
         setState(() {
-          backIcon = _controller.value.isFullScreen ? Icons.arrow_back_ios : Icons.close;
+          backIcon = _controller.value.isFullScreen
+              ? Icons.arrow_back_ios
+              : Icons.close;
         });
       },
       onExitFullScreen: () {
-        SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+        SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+            overlays: SystemUiOverlay.values);
         setState(() {
-          backIcon = _controller.value.isFullScreen ? Icons.arrow_back_ios : Icons.close;
+          backIcon = _controller.value.isFullScreen
+              ? Icons.arrow_back_ios
+              : Icons.close;
         });
       },
       player: YoutubePlayer(
@@ -84,7 +96,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
             ),
             onPressed: () {
               if (_controller.value.isFullScreen) {
-                SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+                SystemChrome.setPreferredOrientations(
+                    [DeviceOrientation.portraitUp]);
               } else {
                 Navigator.pop(context);
               }
@@ -123,7 +136,9 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
       ),
       builder: (context, player) {
         return AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle(statusBarColor: Color(0xFF496D47), statusBarIconBrightness: Brightness.light),
+          value: SystemUiOverlayStyle(
+              statusBarColor: Color(0xFF496D47),
+              statusBarIconBrightness: Brightness.light),
           child: SafeArea(
             bottom: false,
             child: Scaffold(
@@ -148,33 +163,43 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                                   contentPadding: EdgeInsets.zero,
                                   child: ListTile(
                                     leading: CachedNetworkImage(
-                                      imageUrl: snapshot.data!.items!.first.snippet!.thumbnails!.high!.url!,
-                                      errorWidget: (context, url, error) => Icon(Icons.error),
-                                      placeholder: (context, url) => Icon(Icons.person),
+                                      imageUrl: snapshot.data!.items!.first
+                                          .snippet!.thumbnails!.high!.url!,
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
+                                      placeholder: (context, url) =>
+                                          Icon(Icons.person),
                                       height: 50,
                                       width: 50,
                                       fit: BoxFit.contain,
                                     ),
                                     title: Text(
-                                      snapshot.data!.items!.first.snippet!.title!,
-                                      style: TextStyle(fontWeight: FontWeight.w700),
+                                      snapshot
+                                          .data!.items!.first.snippet!.title!,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700),
                                     ),
-                                    subtitle: !snapshot.data!.items!.first.statistics!.hiddenSubscriberCount!
+                                    subtitle: !snapshot.data!.items!.first
+                                            .statistics!.hiddenSubscriberCount!
                                         ? Text(
                                             'Subscribers: ${numFormat.format(int.parse(snapshot.data!.items!.first.statistics!.subscriberCount!))}',
-                                            style: TextStyle(fontWeight: FontWeight.w400),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w400),
                                           )
                                         : SizedBox.shrink(),
                                     trailing: TextButton(
                                       child: Text('Visit Channel'),
                                       style: TextButton.styleFrom(
+                                        foregroundColor: Colors.white,
                                         backgroundColor: Color(0xFFFF0000),
-                                        shadowColor: Color(0xFFFF0000).darken(0.1),
-                                        primary: Colors.white,
-                                        textStyle: TextStyle(fontWeight: FontWeight.w700),
+                                        shadowColor:
+                                            Color(0xFFFF0000).darken(0.1),
+                                        textStyle: TextStyle(
+                                            fontWeight: FontWeight.w700),
                                       ),
                                       onPressed: () {
-                                        FunctionHelper.launchURL('https://www.youtube.com/channel/${widget.videoItem.snippet!.videoOwnerChannelId}');
+                                        FunctionHelper.launchURL(
+                                            'https://www.youtube.com/channel/${widget.videoItem.snippet!.videoOwnerChannelId}');
                                       },
                                     ),
                                   ),
@@ -187,7 +212,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                         ),
                         Text(
                           widget.videoItem.snippet!.title,
-                          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 20),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -195,7 +221,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                           padding: EdgeInsets.only(top: 10),
                           child: Text(
                             widget.videoItem.snippet!.description,
-                            style: TextStyle(fontWeight: FontWeight.w300, fontSize: 15),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300, fontSize: 15),
                           ),
                         ),
                       ],
@@ -211,6 +238,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   }
 
   Future<YoutubeChannel> _fetchChannelInfo() async {
-    return await YoutubeService.getChannelInfo(channelID: widget.videoItem.snippet!.videoOwnerChannelId);
+    return await YoutubeService.getChannelInfo(
+        channelID: widget.videoItem.snippet!.videoOwnerChannelId);
   }
 }

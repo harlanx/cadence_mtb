@@ -29,10 +29,12 @@ class HomeScreen extends StatefulWidget {
   HomeScreenState createState() => HomeScreenState();
 }
 
-class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, AutomaticKeepAliveClientMixin {
+class HomeScreenState extends State<HomeScreen>
+    with WidgetsBindingObserver, AutomaticKeepAliveClientMixin {
   YoutubeVideos _homeVideosList = YoutubeVideos();
   final PanelController _slidePanelController = PanelController();
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
   ScrollController _sPContentController = ScrollController();
   bool _wantToRefresh = false;
   /* This is to prevent the whole "Widget build()" to not be rebuilt when a setstate is triggered.
@@ -47,7 +49,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
     /* NOTE: didChangeMetrics runs before any MediaQueryData is updated by the framework.
     So if you did a MediaQuery.of(context).orientation here, you will get the value
     before the orientation change is finished. To fix this, use  WidgetsBinding.instance.addPostFrameCallback() */
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final _orientation = MediaQuery.of(context).orientation;
       if (_orientation == Orientation.portrait) {
         _slidePanelController.show();
@@ -62,8 +64,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
     super.initState();
     _homeVideosList.items ??= <VideoItem>[];
     _futureHolder = _loadHomeVideos();
-    WidgetsBinding.instance!.addObserver(this);
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final _orientation = MediaQuery.of(context).orientation;
       if (_orientation != Orientation.portrait) {
         _slidePanelController.hide();
@@ -73,7 +75,7 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -81,7 +83,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
   Widget build(BuildContext context) {
     super.build(context);
     Size _screenSize = MediaQuery.of(context).size;
-    bool _isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    bool _isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     return SlidingUpPanel(
       margin: EdgeInsets.zero,
       controller: _slidePanelController,
@@ -151,7 +154,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
                       SizedBox(
                         height: 50,
                         width: 50,
-                        child: AvatarBox(code: currentUser!.avatarCode, size: 48),
+                        child:
+                            AvatarBox(code: currentUser!.avatarCode, size: 48),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 15.0),
@@ -196,7 +200,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
           Expanded(
             flex: _isPortrait ? 20 : 15,
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: _screenSize.height * 0.008),
+              padding:
+                  EdgeInsets.symmetric(vertical: _screenSize.height * 0.008),
               child: Table(
                 children: [
                   TableRow(
@@ -208,15 +213,20 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
                             aspectRatio: _isPortrait ? (1 / 1) : (3 / 1),
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: const Color(0xFFB8784B),
+                                backgroundColor: const Color(0xFFB8784B),
                                 padding: const EdgeInsets.all(5),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                               ),
-                              child: SvgPicture.asset('assets/icons/home_dashboard/trail_list.svg'),
+                              child: SvgPicture.asset(
+                                  'assets/icons/home_dashboard/trail_list.svg'),
                               onPressed: () {
-                                Navigator.push(context, CustomRoutes.fadeThrough(page: Trails(), duration: Duration(milliseconds: 300)));
+                                Navigator.push(
+                                    context,
+                                    CustomRoutes.fadeThrough(
+                                        page: Trails(),
+                                        duration: Duration(milliseconds: 300)));
                               },
                             ),
                           ),
@@ -229,15 +239,20 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
                             aspectRatio: _isPortrait ? 1 / 1 : 3 / 1,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: const Color(0xFF3D5164),
+                                backgroundColor: const Color(0xFF3D5164),
                                 padding: const EdgeInsets.all(5),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                               ),
-                              child: SvgPicture.asset('assets/icons/home_dashboard/navigate.svg'),
+                              child: SvgPicture.asset(
+                                  'assets/icons/home_dashboard/navigate.svg'),
                               onPressed: () {
-                                Navigator.push(context, CustomRoutes.fadeThrough(page: Navigate(), duration: Duration(milliseconds: 300)));
+                                Navigator.push(
+                                    context,
+                                    CustomRoutes.fadeThrough(
+                                        page: Navigate(),
+                                        duration: Duration(milliseconds: 300)));
                               },
                             ),
                           ),
@@ -250,15 +265,20 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
                             aspectRatio: _isPortrait ? 1 / 1 : 3 / 1,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: const Color(0xFFFF8B02),
+                                backgroundColor: const Color(0xFFFF8B02),
                                 padding: const EdgeInsets.all(5),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                               ),
-                              child: SvgPicture.asset('assets/icons/home_dashboard/bike_project.svg'),
+                              child: SvgPicture.asset(
+                                  'assets/icons/home_dashboard/bike_project.svg'),
                               onPressed: () {
-                                Navigator.push(context, CustomRoutes.fadeThrough(page: BikeProject(), duration: Duration(milliseconds: 300)));
+                                Navigator.push(
+                                    context,
+                                    CustomRoutes.fadeThrough(
+                                        page: BikeProject(),
+                                        duration: Duration(milliseconds: 300)));
                               },
                             ),
                           ),
@@ -271,15 +291,20 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
                             aspectRatio: _isPortrait ? 1 / 1 : 3 / 1,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: const Color(0xFFF15024),
+                                backgroundColor: const Color(0xFFF15024),
                                 padding: const EdgeInsets.all(5),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                               ),
-                              child: SvgPicture.asset('assets/icons/home_dashboard/first_aid.svg'),
+                              child: SvgPicture.asset(
+                                  'assets/icons/home_dashboard/first_aid.svg'),
                               onPressed: () {
-                                Navigator.push(context, CustomRoutes.fadeThrough(page: FirstAid(), duration: Duration(milliseconds: 300)));
+                                Navigator.push(
+                                    context,
+                                    CustomRoutes.fadeThrough(
+                                        page: FirstAid(),
+                                        duration: Duration(milliseconds: 300)));
                               },
                             ),
                           ),
@@ -303,7 +328,9 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
                           padding: const EdgeInsets.fromLTRB(0, 2, 0, 1),
                           child: const AutoSizeText(
                             'Trails',
-                            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
                           ),
                         ),
                       ),
@@ -312,7 +339,9 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
                           padding: const EdgeInsets.fromLTRB(0, 2, 0, 1),
                           child: const AutoSizeText(
                             'Navigate',
-                            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
                           ),
                         ),
                       ),
@@ -321,7 +350,9 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
                           padding: const EdgeInsets.fromLTRB(0, 2, 0, 1),
                           child: const AutoSizeText(
                             'Bike Project',
-                            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -331,7 +362,9 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
                           padding: const EdgeInsets.fromLTRB(0, 2, 0, 1),
                           child: const AutoSizeText(
                             'First Aid',
-                            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
                           ),
                         ),
                       ),
@@ -380,13 +413,17 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
                                 return Center(
                                   child: Text(
                                     snapshot.error as String,
-                                    style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w400, fontSize: 15),
+                                    style: TextStyle(
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 15),
                                   ),
                                 );
                               } else {
                                 return _HomeVideoCarousel(
                                   isPortrait: _isPortrait,
-                                  videos: _homeVideosList.items!.take(5).toList(),
+                                  videos:
+                                      _homeVideosList.items!.take(5).toList(),
                                 );
                               }
 
@@ -416,7 +453,8 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
   }
 
   void closePanel() {
-    if (_slidePanelController.isPanelOpen && _slidePanelController.isPanelShown) {
+    if (_slidePanelController.isPanelOpen &&
+        _slidePanelController.isPanelShown) {
       _slidePanelController.close();
     }
   }
@@ -427,9 +465,12 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
       if (oldData.isNotEmpty) {
         _homeVideosList.items!.addAll(YoutubeVideos.fromJson(oldData).items!);
       } else {
-        await InternetConnectionChecker().hasConnection.then((hasInternet) async {
+        await InternetConnectionChecker()
+            .hasConnection
+            .then((hasInternet) async {
           if (hasInternet) {
-            YoutubeVideos newData = await YoutubeService.getVideosList(playListId: Constants.playlist.homeVideos);
+            YoutubeVideos newData = await YoutubeService.getVideosList(
+                playListId: Constants.playlist.homeVideos);
             _homeVideosList.items = (newData.items);
             _homeVideosList.items!.shuffle();
             StorageHelper.setString('homeVideos', _homeVideosList.toJson());
@@ -441,13 +482,15 @@ class HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Aut
     } else if (_homeVideosList.items!.isNotEmpty && _wantToRefresh) {
       await InternetConnectionChecker().hasConnection.then((hasInternet) async {
         if (hasInternet) {
-          YoutubeVideos newData = await YoutubeService.getVideosList(playListId: Constants.playlist.homeVideos);
+          YoutubeVideos newData = await YoutubeService.getVideosList(
+              playListId: Constants.playlist.homeVideos);
           _homeVideosList.items!.clear();
           _homeVideosList.items!.addAll(newData.items!);
           _homeVideosList.items!.shuffle();
           StorageHelper.setString('homeVideos', _homeVideosList.toJson());
         } else {
-          CustomToast.showToastSimple(context: context, simpleMessage: 'No Internet');
+          CustomToast.showToastSimple(
+              context: context, simpleMessage: 'No Internet');
         }
       });
       _wantToRefresh = false;

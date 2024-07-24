@@ -25,9 +25,12 @@ class _BikeProjectState extends State<BikeProject> {
   @override
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
-    bool _isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    bool _isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(statusBarColor: Color(0xFFFF8B02), statusBarIconBrightness: Brightness.light),
+      value: SystemUiOverlayStyle(
+          statusBarColor: Color(0xFFFF8B02),
+          statusBarIconBrightness: Brightness.light),
       child: SafeArea(
         bottom: false,
         child: Scaffold(
@@ -35,7 +38,8 @@ class _BikeProjectState extends State<BikeProject> {
           appBar: AppBar(
             title: AutoSizeText(
               'Bike Project',
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
               maxLines: 1,
             ),
             backgroundColor: Color(0xFFFF8B02),
@@ -126,15 +130,21 @@ class _BikeProjectState extends State<BikeProject> {
                                           TextButton(
                                             onPressed: () {
                                               setState(() {
-                                                bikeProjects.removeAt(index - 1);
+                                                bikeProjects
+                                                    .removeAt(index - 1);
                                               });
-                                              List<String> decreasedList = bikeProjects.map((e) => e.toJson()).toList();
-                                              StorageHelper.setStringList('${currentUser!.profileNumber}bikeProjects', decreasedList);
+                                              List<String> decreasedList =
+                                                  bikeProjects
+                                                      .map((e) => e.toJson())
+                                                      .toList();
+                                              StorageHelper.setStringList(
+                                                  '${currentUser!.profileNumber}bikeProjects',
+                                                  decreasedList);
                                               Navigator.pop(context);
                                             },
                                             child: Text('Yes'),
                                             style: TextButton.styleFrom(
-                                              primary: Colors.white,
+                                              foregroundColor: Colors.white,
                                             ),
                                           ),
                                           TextButton(
@@ -143,7 +153,7 @@ class _BikeProjectState extends State<BikeProject> {
                                             },
                                             child: Text('No'),
                                             style: TextButton.styleFrom(
-                                              primary: Colors.white,
+                                              foregroundColor: Colors.white,
                                             ),
                                           ),
                                         ],
@@ -168,7 +178,8 @@ class _BikeProjectState extends State<BikeProject> {
                               ),
                             ),
                           ),
-                          itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
+                          itemBuilder: (BuildContext context) =>
+                              <PopupMenuEntry<int>>[
                             PopupMenuItem(
                               height: 40,
                               value: 1,
@@ -231,7 +242,8 @@ class _BikeProjectState extends State<BikeProject> {
                             ),
                             ClipRect(
                               child: BackdropFilter(
-                                filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
+                                filter:
+                                    ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
                                 child: Image.asset(
                                   'assets/images/bike_project/brands/scott.png',
                                   fit: BoxFit.contain,
@@ -265,7 +277,8 @@ class _BikeProjectState extends State<BikeProject> {
                             ),
                             ClipRect(
                               child: BackdropFilter(
-                                filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+                                filter:
+                                    ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
                                 child: Image.asset(
                                   'assets/images/bike_project/brands/specialized.png',
                                   fit: BoxFit.contain,
@@ -299,7 +312,8 @@ class _BikeProjectState extends State<BikeProject> {
                             ),
                             ClipRect(
                               child: BackdropFilter(
-                                filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+                                filter:
+                                    ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
                                 child: Image.asset(
                                   'assets/images/bike_project/brands/trek.png',
                                   fit: BoxFit.contain,
@@ -323,7 +337,8 @@ class _BikeProjectState extends State<BikeProject> {
                   textAlign: TextAlign.center,
                 ),
                 Theme(
-                  data: Theme.of(context).copyWith(cardColor: Colors.transparent),
+                  data:
+                      Theme.of(context).copyWith(cardColor: Colors.transparent),
                   child: ExpansionPanelList(
                     expandedHeaderPadding: EdgeInsets.zero,
                     elevation: 0,
@@ -337,7 +352,8 @@ class _BikeProjectState extends State<BikeProject> {
                       (partIndex) => ExpansionPanel(
                         canTapOnHeader: true,
                         isExpanded: bikeParts[partIndex].isExpanded,
-                        headerBuilder: (BuildContext context, bool isExpanded) => Align(
+                        headerBuilder:
+                            (BuildContext context, bool isExpanded) => Align(
                           alignment: Alignment.centerLeft,
                           child: AutoSizeText(
                             bikeParts[partIndex].part,
@@ -356,7 +372,8 @@ class _BikeProjectState extends State<BikeProject> {
                                   width: double.maxFinite,
                                   padding: EdgeInsets.only(left: 15.0),
                                   child: AutoSizeText(
-                                    '• ' + bikeParts[partIndex].types[typeIndex],
+                                    '• ' +
+                                        bikeParts[partIndex].types[typeIndex],
                                     textAlign: TextAlign.left,
                                   ),
                                 ),
@@ -369,7 +386,10 @@ class _BikeProjectState extends State<BikeProject> {
                                         padding: EdgeInsets.only(left: 35.0),
                                         width: double.maxFinite,
                                         child: AutoSizeText(
-                                          '-' + bikeParts[partIndex].subtypes![typeIndex][subTypeIndex],
+                                          '-' +
+                                              bikeParts[partIndex]
+                                                      .subtypes![typeIndex]
+                                                  [subTypeIndex],
                                           textAlign: TextAlign.left,
                                         ),
                                       ),
@@ -398,7 +418,9 @@ class _BikeProjectState extends State<BikeProject> {
   }
 
   void getBikeProjects() {
-    List<String> jsonProjects = StorageHelper.getStringList('${currentUser!.profileNumber}bikeProjects') ?? [];
+    List<String> jsonProjects = StorageHelper.getStringList(
+            '${currentUser!.profileNumber}bikeProjects') ??
+        [];
     if (jsonProjects.isNotEmpty) {
       bikeProjects = jsonProjects.map((e) => BikeBuild.fromJson(e)).toList();
     }

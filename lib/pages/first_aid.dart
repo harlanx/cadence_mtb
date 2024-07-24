@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cadence_mtb/data/data.dart';
@@ -8,10 +7,7 @@ import 'package:cadence_mtb/pages/bmi_history.dart';
 import 'package:cadence_mtb/utilities/function_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive/hive.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
-
-
 
 class FirstAid extends StatefulWidget {
   @override
@@ -42,7 +38,9 @@ class _FirstAidState extends State<FirstAid> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(statusBarColor: Color(0xFFF15024), statusBarIconBrightness: Brightness.light),
+      value: SystemUiOverlayStyle(
+          statusBarColor: Color(0xFFF15024),
+          statusBarIconBrightness: Brightness.light),
       child: SafeArea(
         bottom: false,
         child: Scaffold(
@@ -59,8 +57,10 @@ class _FirstAidState extends State<FirstAid> {
             ),
             elevation: 0,
             liftOnScrollElevation: 0,
-            titleStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
-            hintStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
+            titleStyle:
+                TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
+            hintStyle:
+                TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
             color: Color(0xFFF15024),
             colorOnScroll: Color(0xFFF15024),
             iconColor: Colors.white,
@@ -92,7 +92,8 @@ class _FirstAidState extends State<FirstAid> {
                                 SizedBox(
                                   width: 3,
                                 ),
-                                Text(e.value[0], style: TextStyle(color: Colors.white)),
+                                Text(e.value[0],
+                                    style: TextStyle(color: Colors.white)),
                               ],
                             ),
                           ))
@@ -107,7 +108,9 @@ class _FirstAidState extends State<FirstAid> {
                   color: Colors.white,
                 ),
                 onPressed: () async {
-                  await Hive.openBox<BMIData>('${currentUser!.profileNumber}bmiActivities').then((_) {
+                  await Hive.openBox<BMIData>(
+                          '${currentUser!.profileNumber}bmiActivities')
+                      .then((_) {
                     Navigator.push(
                       context,
                       CustomRoutes.fadeThrough(
@@ -130,9 +133,11 @@ class _FirstAidState extends State<FirstAid> {
               String searchQuery = currentText.toLowerCase();
               if (searchQuery.length != 0) {
                 List<ArticleItem> matchingResults = firstAidItems
-                    .where((injury) => injury.title.toLowerCase().contains(searchQuery) || injury.subtitle.toLowerCase().contains(searchQuery))
+                    .where((injury) =>
+                        injury.title.toLowerCase().contains(searchQuery) ||
+                        injury.subtitle.toLowerCase().contains(searchQuery))
                     .toList(growable: false)
-                      ..sort((a, b) => a.title.compareTo(b.title));
+                  ..sort((a, b) => a.title.compareTo(b.title));
                 if (matchingResults.isNotEmpty) {
                   _queriedList = matchingResults;
                 } else {

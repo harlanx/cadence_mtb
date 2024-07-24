@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
 import 'dart:ui';
 import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -23,9 +22,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:weather/weather.dart';
 part 'navigate/new_ride_session_viewer.dart';
 part 'navigate/navigation_settings.dart';
@@ -41,7 +40,10 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
   final Completer<GoogleMapController> _mapControllerCompleter = Completer();
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
   bool _showBanner = true, _sessionStarted = false, _isMapMounted = false;
-  double _activeDistance = 0.0, _currentSpeed = 0.0, _currentElevation = 0.0, _weightInKg = 57.7;
+  double _activeDistance = 0.0,
+      _currentSpeed = 0.0,
+      _currentElevation = 0.0,
+      _weightInKg = 57.7;
   int _rawTime = 0;
   String _elapsedTime = '00:00:00', _appBarTitle = 'Navigation';
   late DateTime _sessionDateTime;
@@ -49,7 +51,10 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
   late LatLng _currentPos;
   List<double> _speed = [], _elevation = [];
   List<LatLng> _trackCoordinates = [];
-  Set<Polyline> _sessionLines = {Polyline(polylineId: PolylineId('border')), Polyline(polylineId: PolylineId('line'))};
+  Set<Polyline> _sessionLines = {
+    Polyline(polylineId: PolylineId('border')),
+    Polyline(polylineId: PolylineId('line'))
+  };
   MapType _mapType = MapType.normal;
   //Possible for offline mode? Not explored yet.
   // Set<TileOverlay> _offlineTiles = {};
@@ -59,11 +64,12 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
   //WEATHER RELATED VARIABLES AND OBJECTS
   Future<Weather>? _futureWeather;
   Weather? _sessionWeather;
-  final WeatherFactory wf = WeatherFactory(Constants.openWeatherMapApiKey, language: Language.ENGLISH);
+  final WeatherFactory wf = WeatherFactory(Constants.openWeatherMapApiKey,
+      language: Language.ENGLISH);
 
   @override
   void initState() {
-    Wakelock.toggle(enable: true);
+    WakelockPlus.toggle(enable: true);
     super.initState();
     _showWeightTip();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -89,15 +95,21 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
   void dispose() {
     _cancelSubscriptions();
     _stopWatchTimer.dispose();
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight
+    ]);
     super.dispose();
-    Wakelock.toggle(enable: false);
+    WakelockPlus.toggle(enable: false);
   }
 
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(statusBarColor: Color(0xFF3D5164), statusBarIconBrightness: Brightness.light),
+      value: SystemUiOverlayStyle(
+          statusBarColor: Color(0xFF3D5164),
+          statusBarIconBrightness: Brightness.light),
       child: SafeArea(
         bottom: false,
         child: Scaffold(
@@ -108,7 +120,8 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
             elevation: 0,
             title: AutoSizeText(
               _appBarTitle,
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
               overflow: TextOverflow.fade,
               maxLines: 1,
             ),
@@ -120,7 +133,10 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
             fit: StackFit.expand,
             children: [
               _navigationMap(),
-              Positioned.fill(child: Align(alignment: Alignment.bottomCenter, child: buildBottomInfoContainer())),
+              Positioned.fill(
+                  child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: buildBottomInfoContainer())),
               RadialMenu(
                 key: _menuKey,
                 openIcon: _sessionStarted
@@ -133,7 +149,10 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
                       )
                     : SvgPicture.asset(
                         'assets/images/navigate/wheel.svg',
-                        color: Colors.white,
+                        colorFilter: ColorFilter.mode(
+                          Colors.white,
+                          BlendMode.srcIn,
+                        ),
                       ),
                 closeIcon: FittedBox(
                   fit: BoxFit.contain,
@@ -213,8 +232,8 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
                         configuration: FadeScaleTransitionConfiguration(
                           barrierDismissible: false,
                         ),
-                        builder: (context) => WillPopScope(
-                          onWillPop: () => Future.value(false),
+                        builder: (context) => PopScope(
+                          canPop: false,
                           child: NavigationSettings(),
                         ),
                       );
@@ -228,7 +247,13 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
                 child: Align(
                   alignment: Alignment.topRight,
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(0.0, AppBar().preferredSize.height + MediaQuery.of(context).padding.top + 12, 12.0, 0.0),
+                    padding: EdgeInsets.fromLTRB(
+                        0.0,
+                        AppBar().preferredSize.height +
+                            MediaQuery.of(context).padding.top +
+                            12,
+                        12.0,
+                        0.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -240,7 +265,8 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
                           child: InkWell(
                             splashColor: Colors.transparent,
                             onTap: () async {
-                              final GoogleMapController controller = await _mapControllerCompleter.future;
+                              final GoogleMapController controller =
+                                  await _mapControllerCompleter.future;
                               _currentPosition().then((position) {
                                 setState(() {
                                   _currentElevation = position.altitude;
@@ -450,23 +476,31 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
     bool _serviceEnabled;
     LocationPermission _permission;
 
-    _serviceEnabled = await GeolocatorPlatform.instance.isLocationServiceEnabled();
+    _serviceEnabled =
+        await GeolocatorPlatform.instance.isLocationServiceEnabled();
     if (!_serviceEnabled) {
       return Future.error('Location services are disabled.');
     }
 
     _permission = await GeolocatorPlatform.instance.checkPermission();
     if (_permission == LocationPermission.deniedForever) {
-      return Future.error('Location permissions are permantly denied, we cannot request permissions.');
+      return Future.error(
+          'Location permissions are permantly denied, we cannot request permissions.');
     }
 
     if (_permission == LocationPermission.denied) {
       _permission = await GeolocatorPlatform.instance.requestPermission();
-      if (_permission != LocationPermission.whileInUse || _permission != LocationPermission.always) {
-        return Future.error('Location permissions are denied (actual value: $_permission).');
+      if (_permission != LocationPermission.whileInUse ||
+          _permission != LocationPermission.always) {
+        return Future.error(
+            'Location permissions are denied (actual value: $_permission).');
       }
     }
-    Position pos = await GeolocatorPlatform.instance.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position pos = await GeolocatorPlatform.instance.getCurrentPosition(
+      locationSettings: LocationSettings(
+        accuracy: LocationAccuracy.high,
+      ),
+    );
 
     _currentSpeed = pos.speed;
     _currentElevation = pos.altitude;
@@ -474,8 +508,10 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
   }
 
   void _userLocationAddress(LatLng coordinates) async {
-    await GeocodingPlatform.instance
-        .placemarkFromCoordinates(coordinates.latitude, coordinates.longitude, localeIdentifier: 'en_PH')
+    final geoInstance = GeocodingPlatform.instance
+      ?..setLocaleIdentifier('en_PH');
+    await geoInstance
+        ?.placemarkFromCoordinates(coordinates.latitude, coordinates.longitude)
         .then((addresses) {
       setState(() {
         _appBarTitle = addresses[0].locality!;
@@ -490,21 +526,37 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
   /// Start Navigation Session
   void _startSession() async {
     //Initialization of user preference
-    _weightInKg = StorageHelper.getDouble('${currentUser!.profileNumber}userWeight') ?? 57.7;
-    String locationAccuracy = StorageHelper.getString('${currentUser!.profileNumber}locationAccuracy')?.toLowerCase() ?? 'high';
-    LocationAccuracy userDesiredAccuracy = LocationAccuracy.values.singleWhere((element) => describeEnum(element) == locationAccuracy);
-    int distanceFilter = StorageHelper.getInt('${currentUser!.profileNumber}distanceFilter') ?? 0;
-    String formula = StorageHelper.getString('${currentUser!.profileNumber}formula') ?? 'Haversine';
-    int lineWidth = StorageHelper.getInt('${currentUser!.profileNumber}lineWidth') ?? 4;
-    int borderWidth = StorageHelper.getInt('${currentUser!.profileNumber}borderWidth') ?? 6;
+    _weightInKg =
+        StorageHelper.getDouble('${currentUser!.profileNumber}userWeight') ??
+            57.7;
+    String locationAccuracy =
+        StorageHelper.getString('${currentUser!.profileNumber}locationAccuracy')
+                ?.toLowerCase() ??
+            'high';
+    LocationAccuracy userDesiredAccuracy = LocationAccuracy.values
+        .singleWhere((element) => element.name == locationAccuracy);
+    int distanceFilter =
+        StorageHelper.getInt('${currentUser!.profileNumber}distanceFilter') ??
+            0;
+    String formula =
+        StorageHelper.getString('${currentUser!.profileNumber}formula') ??
+            'Haversine';
+    int lineWidth =
+        StorageHelper.getInt('${currentUser!.profileNumber}lineWidth') ?? 4;
+    int borderWidth =
+        StorageHelper.getInt('${currentUser!.profileNumber}borderWidth') ?? 6;
     //Check if has internet first before showing polyline.
     //Otherwise show latlng data only (Not yet implemented)
     bool hasInternet = await InternetConnectionChecker().hasConnection;
     //This starts the stream of data and starts the timer
     _startSessionTimer();
-    _positionStreamSubscription =
-        GeolocatorPlatform.instance.getPositionStream(desiredAccuracy: userDesiredAccuracy, distanceFilter: distanceFilter).listen((position) async {
-      final GoogleMapController controller = await _mapControllerCompleter.future;
+    _positionStreamSubscription = GeolocatorPlatform.instance
+        .getPositionStream(
+            locationSettings: LocationSettings(
+                accuracy: userDesiredAccuracy, distanceFilter: distanceFilter))
+        .listen((position) async {
+      final GoogleMapController controller =
+          await _mapControllerCompleter.future;
       _speed.add(position.speed);
       _elevation.add(position.altitude);
       _trackCoordinates.add(LatLng(position.latitude, position.longitude));
@@ -554,9 +606,11 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
           //THIS ONE USES GCD'S VINCENTY FORMULA TO CALCULATE ACTIVE DISTANCE
           _activeDistance += GreatCircleDistance.fromDegrees(
             latitude1: _trackCoordinates[_trackCoordinates.length - 2].latitude,
-            longitude1: _trackCoordinates[_trackCoordinates.length - 2].longitude,
+            longitude1:
+                _trackCoordinates[_trackCoordinates.length - 2].longitude,
             latitude2: _trackCoordinates[_trackCoordinates.length - 1].latitude,
-            longitude2: _trackCoordinates[_trackCoordinates.length - 1].longitude,
+            longitude2:
+                _trackCoordinates[_trackCoordinates.length - 1].longitude,
           ).vincentyDistance();
         }
       }
@@ -577,8 +631,8 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
   void _startSessionTimer() {
     //Starts the navigation session timer
     _sessionDateTime = DateTime.now();
-    _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
-    _stopWatchTimer.onExecute.add(StopWatchExecute.start);
+    _stopWatchTimer.onResetTimer();
+    _stopWatchTimer.onStartTimer();
     _stopWatchTimerStreamSubscription = _stopWatchTimer.rawTime.listen((value) {
       _rawTime = value;
       setState(
@@ -602,16 +656,22 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
   }
 
   void _stopSession() {
-    _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
+    _stopWatchTimer.onStopTimer();
     _cancelSubscriptions();
     //Check the coordinates is more than or equal two 2 and the coordinates is not all the same
     //Meaning that the user must move before calculating any data.
-    final int lineWidth = StorageHelper.getInt('${currentUser!.profileNumber}lineWidth') ?? 4;
-    final int borderWidth = StorageHelper.getInt('${currentUser!.profileNumber}borderWidth') ?? 6;
+    final int lineWidth =
+        StorageHelper.getInt('${currentUser!.profileNumber}lineWidth') ?? 4;
+    final int borderWidth =
+        StorageHelper.getInt('${currentUser!.profileNumber}borderWidth') ?? 6;
     //Gets all distinct values and removes the null entries from start and end.
-    List<LatLng> trimmedCoordinates = _trackCoordinates.whereType<LatLng>().toSet().toList();
+    List<LatLng> trimmedCoordinates =
+        _trackCoordinates.whereType<LatLng>().toSet().toList();
     double quickDistance = GeolocatorPlatform.instance.distanceBetween(
-        trimmedCoordinates.first.latitude, trimmedCoordinates.first.longitude, trimmedCoordinates.last.latitude, trimmedCoordinates.last.longitude);
+        trimmedCoordinates.first.latitude,
+        trimmedCoordinates.first.longitude,
+        trimmedCoordinates.last.latitude,
+        trimmedCoordinates.last.longitude);
     //Check if user has moved before deciding in calculating or not. (Output is in meters)
     if (quickDistance >= 3.0 && trimmedCoordinates.length >= 2) {
       Set<Polyline> trimmedPolylines = {};
@@ -643,7 +703,8 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
           points: trimmedCoordinates,
         ),
       );
-      _calculateData(trimmedCoordinates, trimmedPolylines).then((calculatedResult) {
+      _calculateData(trimmedCoordinates, trimmedPolylines)
+          .then((calculatedResult) {
         setState(() {
           //Clear all after calculation is done.
           _sessionLines.clear();
@@ -655,7 +716,8 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
         });
         showModal<Map<String, dynamic>>(
           context: context,
-          configuration: FadeScaleTransitionConfiguration(barrierDismissible: false),
+          configuration:
+              FadeScaleTransitionConfiguration(barrierDismissible: false),
           builder: (context) => NewRideSessionViewer(result: calculatedResult),
         ).then((result) async {
           //DELETES THE FILE GENERATED BY SCREENSHOT CONTROLLER.
@@ -674,7 +736,8 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
           return AlertDialog(
             title: Text(
               'You haven\'t moved.',
-              style: TextStyle(color: Color(0xFF496D47), fontWeight: FontWeight.w700),
+              style: TextStyle(
+                  color: Color(0xFF496D47), fontWeight: FontWeight.w700),
             ),
             backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
@@ -698,10 +761,13 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
               TextButton(
                 child: Text('OK'),
                 style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all(Colors.white),
-                  backgroundColor: MaterialStateProperty.all(Colors.grey.shade600),
-                  overlayColor: MaterialStateProperty.resolveWith(
-                      (states) => states.contains(MaterialState.pressed) ? Colors.grey.shade700 : Colors.transparent),
+                  foregroundColor: WidgetStateProperty.all(Colors.white),
+                  backgroundColor:
+                      WidgetStateProperty.all(Colors.grey.shade600),
+                  overlayColor: WidgetStateProperty.resolveWith((states) =>
+                      states.contains(WidgetState.pressed)
+                          ? Colors.grey.shade700
+                          : Colors.transparent),
                 ),
                 onPressed: () {
                   Navigator.pop(context);
@@ -737,11 +803,15 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
         if (latLng.longitude < y0!) y0 = latLng.longitude;
       }
     }
-    return LatLngBounds(northeast:  LatLng(x1!, y1!), southwest: LatLng(x0!, y0!), );
+    return LatLngBounds(
+      northeast: LatLng(x1!, y1!),
+      southwest: LatLng(x0!, y0!),
+    );
   }
 
   ////CALCULATE TOTAL DISTANCE
-  double _totalDistanceFromLatLngList(List<LatLng> coordinates, int calculationMethod) {
+  double _totalDistanceFromLatLngList(
+      List<LatLng> coordinates, int calculationMethod) {
     double distanceInMeters = 0.0;
     if (calculationMethod == 1) {
       //USES GEOLOCATOR'S HAVERSINE FORMULA
@@ -783,7 +853,9 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
     // Formula: (Minutes x MET x 3.5 x Weight) / 200
     // SINCE getRawMinute always picks the floor, when the user doesn't complete a single minute.
     // It will return 0 so we have to check if it's 0 then we set it to 1, otherwhise the original higher result
-    final int totalMinute = StopWatchTimer.getRawMinute(time) != 0 ? StopWatchTimer.getRawMinute(time) : 1;
+    final int totalMinute = StopWatchTimer.getRawMinute(time) != 0
+        ? StopWatchTimer.getRawMinute(time)
+        : 1;
     final double averageSpeedInMph = averageSpeed * 2.23694;
     double met = 0.0;
     if (averageSpeedInMph < 5.5) {
@@ -801,16 +873,20 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
     } else {
       met = 15.8;
     }
-    return double.parse(((totalMinute * met * 3.5 * weight) / 200).toStringAsFixed(2));
+    return double.parse(
+        ((totalMinute * met * 3.5 * weight) / 200).toStringAsFixed(2));
   }
 
   ///CALCULATE VALUES FROM SESSION
-  Future<BikeActivity> _calculateData(List<LatLng> coordinates, Set<Polyline> polylines) async {
+  Future<BikeActivity> _calculateData(
+      List<LatLng> coordinates, Set<Polyline> polylines) async {
     //GETTING THE MAX ELEVATION FROM THE ELEVATION LIST
-    final double maxElevation = double.parse(_elevation.fold(_elevation[0], max).toStringAsFixed(2));
+    final double maxElevation =
+        double.parse(_elevation.fold(_elevation[0], max).toStringAsFixed(2));
 
     //GETTING THE AVERAGE(MEAN) FROM THE SPEED LIST
-    final double averageSpeed = double.parse((_speed.reduce((a, b) => a + b) / _speed.length).toStringAsFixed(2));
+    final double averageSpeed = double.parse(
+        (_speed.reduce((a, b) => a + b) / _speed.length).toStringAsFixed(2));
 
     return BikeActivity(
       activityDate: _sessionDateTime,
@@ -940,7 +1016,10 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
                   padding: EdgeInsets.only(left: 10),
                   width: 150,
                   child: Table(
-                    columnWidths: {0: FlexColumnWidth(0.5), 1: FlexColumnWidth(0.5)},
+                    columnWidths: {
+                      0: FlexColumnWidth(0.5),
+                      1: FlexColumnWidth(0.5)
+                    },
                     children: [
                       TableRow(
                         children: [
@@ -1010,7 +1089,8 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             if (snapshot.hasError) {
-              CustomToast.showToastSimple(context: context, simpleMessage: snapshot.error.toString());
+              CustomToast.showToastSimple(
+                  context: context, simpleMessage: snapshot.error.toString());
               return SizedBox.shrink();
             } else {
               return Tooltip(
@@ -1033,8 +1113,12 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
                       TextSpan(
                         children: [
                           TextSpan(
-                            text: snapshot.data!.temperature.toString().replaceAll(RegExp(r'Celsius'), '°C'),
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
+                            text: snapshot.data!.temperature
+                                .toString()
+                                .replaceAll(RegExp(r'Celsius'), '°C'),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w300),
                           ),
                           WidgetSpan(
                             child: SizedBox(
@@ -1046,20 +1130,30 @@ class _NavigateState extends State<Navigate> with TickerProviderStateMixin {
                                     opacity: 0.8,
                                     child: CachedNetworkImage(
                                       color: Colors.black,
-                                      imageUrl: 'http://openweathermap.org/img/wn/' + snapshot.data!.weatherIcon! + '@2x.png',
-                                      errorWidget: (context, string, url) => Icon(Icons.error),
+                                      imageUrl:
+                                          'http://openweathermap.org/img/wn/' +
+                                              snapshot.data!.weatherIcon! +
+                                              '@2x.png',
+                                      errorWidget: (context, string, url) =>
+                                          Icon(Icons.error),
                                     ),
                                   ),
                                   ClipRect(
                                     child: BackdropFilter(
-                                      filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
+                                      filter: ImageFilter.blur(
+                                          sigmaX: 1.0, sigmaY: 1.0),
                                       child: CachedNetworkImage(
-                                        placeholder: (context, string) => SpinKitDoubleBounce(
+                                        placeholder: (context, string) =>
+                                            SpinKitDoubleBounce(
                                           color: Colors.white,
                                           size: 10,
                                         ),
-                                        imageUrl: 'http://openweathermap.org/img/wn/' + snapshot.data!.weatherIcon! + '@2x.png',
-                                        errorWidget: (context, string, url) => Icon(Icons.error),
+                                        imageUrl:
+                                            'http://openweathermap.org/img/wn/' +
+                                                snapshot.data!.weatherIcon! +
+                                                '@2x.png',
+                                        errorWidget: (context, string, url) =>
+                                            Icon(Icons.error),
                                       ),
                                     ),
                                   ),

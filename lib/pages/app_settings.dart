@@ -1,10 +1,10 @@
 import 'package:cadence_mtb/models/models.dart';
 import 'package:cadence_mtb/utilities/function_helper.dart';
 import 'package:collection/collection.dart';
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
 class AppSettings extends StatefulWidget {
@@ -20,7 +20,7 @@ class _AppSettingsState extends State<AppSettings> {
     2: ['Light Mode', Icons.wb_sunny_outlined],
     3: ['Dark Mode', Icons.brightness_2_outlined]
   };
-  late Future <PackageInfo> _futureHolder;
+  late Future<PackageInfo> _futureHolder;
   String _massUnit = 'kg';
   int _appTheme = 1;
 
@@ -40,10 +40,13 @@ class _AppSettingsState extends State<AppSettings> {
 
   @override
   Widget build(BuildContext context) {
-    bool _isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    bool _isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     Size _size = MediaQuery.of(context).size;
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(statusBarColor: Color(0xFF496D47), statusBarIconBrightness: Brightness.light),
+      value: SystemUiOverlayStyle(
+          statusBarColor: Color(0xFF496D47),
+          statusBarIconBrightness: Brightness.light),
       child: SafeArea(
         bottom: false,
         child: Scaffold(
@@ -62,7 +65,8 @@ class _AppSettingsState extends State<AppSettings> {
               IconButton(
                 icon: Icon(Icons.check),
                 onPressed: () {
-                  final ThemeProvider _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+                  final ThemeProvider _themeProvider =
+                      Provider.of<ThemeProvider>(context, listen: false);
                   _themeProvider.selectTheme(_appTheme);
                   double weight = double.parse(_massUnitController.text);
                   if (_massUnit == 'lb') {
@@ -70,12 +74,18 @@ class _AppSettingsState extends State<AppSettings> {
                     weight = converted;
                   }
                   sosEnabled.entries.forEachIndexed((index, item) {
-                    StorageHelper.setBool('${currentUser!.profileNumber}${item.key.toLowerCase().replaceAll(' ', '')}', item.value!);
+                    StorageHelper.setBool(
+                        '${currentUser!.profileNumber}${item.key.toLowerCase().replaceAll(' ', '')}',
+                        item.value!);
                   });
-                  StorageHelper.setDouble('${currentUser!.profileNumber}userWeight', weight);
-                  StorageHelper.setString('${currentUser!.profileNumber}massUnit', _massUnit);
-                  StorageHelper.setInt('${currentUser!.profileNumber}appTheme', _appTheme);
-                  CustomToast.showToastSimple(context: context, simpleMessage: 'Settings Applied');
+                  StorageHelper.setDouble(
+                      '${currentUser!.profileNumber}userWeight', weight);
+                  StorageHelper.setString(
+                      '${currentUser!.profileNumber}massUnit', _massUnit);
+                  StorageHelper.setInt(
+                      '${currentUser!.profileNumber}appTheme', _appTheme);
+                  CustomToast.showToastSimple(
+                      context: context, simpleMessage: 'Settings Applied');
                 },
               ),
             ],
@@ -96,7 +106,8 @@ class _AppSettingsState extends State<AppSettings> {
                         padding: const EdgeInsets.only(right: 5.0),
                         child: Text(
                           'Body Weight',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w700),
                         ),
                       ),
                       SizedBox(
@@ -120,7 +131,8 @@ class _AppSettingsState extends State<AppSettings> {
                             ),
                             inputFormatters: [
                               LengthLimitingTextInputFormatter(6),
-                              FilteringTextInputFormatter.allow(RegExp(r'[0-9,\.]')),
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'[0-9,\.]')),
                             ],
                             onEditingComplete: () {
                               _massUnitNode.unfocus();
@@ -184,11 +196,14 @@ class _AppSettingsState extends State<AppSettings> {
                   Text.rich(
                     TextSpan(
                       text: 'SOS Button',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                       children: [
                         TextSpan(
-                            text: '\nChoose the pages to show the SOS Button.\nBy default, it shows in all of the pages.',
-                            style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12)),
+                            text:
+                                '\nChoose the pages to show the SOS Button.\nBy default, it shows in all of the pages.',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300, fontSize: 12)),
                       ],
                     ),
                     textAlign: TextAlign.left,
@@ -197,7 +212,9 @@ class _AppSettingsState extends State<AppSettings> {
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: _isPortrait ? _size.height * 0.006 : _size.height * 0.009,
+                      childAspectRatio: _isPortrait
+                          ? _size.height * 0.006
+                          : _size.height * 0.009,
                       crossAxisCount: _isPortrait ? 2 : 4,
                     ),
                     itemCount: sosEnabled.values.length,
@@ -280,7 +297,8 @@ class _AppSettingsState extends State<AppSettings> {
                                   SizedBox(height: 15),
                                   Text(
                                     'Cadence MTB was made to serve as a guide and application tool for mountain bikers in the Philippines.',
-                                    style: TextStyle(color: Colors.grey, fontSize: 15),
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 15),
                                     textAlign: TextAlign.center,
                                   ),
                                   // Row(
@@ -315,7 +333,8 @@ class _AppSettingsState extends State<AppSettings> {
                                   // ),
                                   // SizedBox(height: 15),
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Expanded(
                                         flex: 40,
@@ -336,7 +355,8 @@ class _AppSettingsState extends State<AppSettings> {
                           },
                           title: Text(
                             'About',
-                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 20),
                           ),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -373,25 +393,49 @@ class _AppSettingsState extends State<AppSettings> {
   }
 
   void getSavedValues() {
-    _appTheme = StorageHelper.getInt('${currentUser!.profileNumber}appTheme') ?? 1;
-    _massUnit = StorageHelper.getString('${currentUser!.profileNumber}massUnit') ?? 'kg';
-    double weight = StorageHelper.getDouble('${currentUser!.profileNumber}userWeight') ?? 57.7;
+    _appTheme =
+        StorageHelper.getInt('${currentUser!.profileNumber}appTheme') ?? 1;
+    _massUnit =
+        StorageHelper.getString('${currentUser!.profileNumber}massUnit') ??
+            'kg';
+    double weight =
+        StorageHelper.getDouble('${currentUser!.profileNumber}userWeight') ??
+            57.7;
     if (_massUnit == 'lb') {
       double converted = weight * 0.453592;
       weight = converted;
     }
     _massUnitController.text = weight.toString();
     sosEnabled = {
-      'Trails': StorageHelper.getBool('${currentUser!.profileNumber}trails') ?? true,
-      'Navigate': StorageHelper.getBool('${currentUser!.profileNumber}navigate') ?? true,
-      'Bike Project': StorageHelper.getBool('${currentUser!.profileNumber}bikeproject') ?? true,
-      'First Aid': StorageHelper.getBool('${currentUser!.profileNumber}firstaid') ?? true,
-      'Preparation': StorageHelper.getBool('${currentUser!.profileNumber}preparation') ?? true,
-      'Body Conditioning': StorageHelper.getBool('${currentUser!.profileNumber}bodyconditioning') ?? true,
-      'Repair and Maintenance': StorageHelper.getBool('${currentUser!.profileNumber}repairandmaintenance') ?? true,
-      'Tips and Benefits': StorageHelper.getBool('${currentUser!.profileNumber}tipsandbenefits') ?? true,
-      'Organizations': StorageHelper.getBool('${currentUser!.profileNumber}organizations') ?? true,
-      'User Activity': StorageHelper.getBool('${currentUser!.profileNumber}useractivitypage') ?? true,
+      'Trails':
+          StorageHelper.getBool('${currentUser!.profileNumber}trails') ?? true,
+      'Navigate':
+          StorageHelper.getBool('${currentUser!.profileNumber}navigate') ??
+              true,
+      'Bike Project':
+          StorageHelper.getBool('${currentUser!.profileNumber}bikeproject') ??
+              true,
+      'First Aid':
+          StorageHelper.getBool('${currentUser!.profileNumber}firstaid') ??
+              true,
+      'Preparation':
+          StorageHelper.getBool('${currentUser!.profileNumber}preparation') ??
+              true,
+      'Body Conditioning': StorageHelper.getBool(
+              '${currentUser!.profileNumber}bodyconditioning') ??
+          true,
+      'Repair and Maintenance': StorageHelper.getBool(
+              '${currentUser!.profileNumber}repairandmaintenance') ??
+          true,
+      'Tips and Benefits': StorageHelper.getBool(
+              '${currentUser!.profileNumber}tipsandbenefits') ??
+          true,
+      'Organizations':
+          StorageHelper.getBool('${currentUser!.profileNumber}organizations') ??
+              true,
+      'User Activity': StorageHelper.getBool(
+              '${currentUser!.profileNumber}useractivitypage') ??
+          true,
     };
   }
 }

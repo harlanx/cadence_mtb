@@ -15,7 +15,8 @@ class UserActivityPanel extends StatefulWidget {
 }
 
 class _UserActivityPanelState extends State<UserActivityPanel> {
-  Box<BikeActivity> _topActivitiesBox = Hive.box<BikeActivity>('${currentUser!.profileNumber}bikeActivities');
+  Box<BikeActivity> _topActivitiesBox =
+      Hive.box<BikeActivity>('${currentUser!.profileNumber}bikeActivities');
   double _tableWidth = 0.0;
 
   @override
@@ -51,7 +52,9 @@ class _UserActivityPanelState extends State<UserActivityPanel> {
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Center(
                           child: Icon(
-                            isPanelOpen ? Icons.keyboard_arrow_down_rounded : Icons.drag_handle_rounded,
+                            isPanelOpen
+                                ? Icons.keyboard_arrow_down_rounded
+                                : Icons.drag_handle_rounded,
                             color: Color(0xFF496D47),
                             size: 20,
                           ),
@@ -141,7 +144,9 @@ class _UserActivityPanelState extends State<UserActivityPanel> {
             builder: (context, constraints) {
               _tableWidth = constraints.maxWidth;
               return SingleChildScrollView(
-                physics: isPanelOpen ? AlwaysScrollableScrollPhysics() : NeverScrollableScrollPhysics(),
+                physics: isPanelOpen
+                    ? AlwaysScrollableScrollPhysics()
+                    : NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.only(bottom: 30),
                 controller: widget.scrollController,
                 scrollDirection: Axis.vertical,
@@ -172,32 +177,43 @@ class _UserActivityPanelState extends State<UserActivityPanel> {
                               ],
                             ),
                             style: ButtonStyle(
-                              foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                              foregroundColor:
+                                  WidgetStateProperty.resolveWith<Color>(
                                 (_) => Color(0xFF3D5164),
                               ),
-                              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                              backgroundColor:
+                                  WidgetStateProperty.resolveWith<Color>(
                                 (_) => Colors.white,
                               ),
-                              overlayColor: MaterialStateProperty.resolveWith<Color>(
+                              overlayColor:
+                                  WidgetStateProperty.resolveWith<Color>(
                                 (_) => Color(0xFF3D5164).withOpacity(0.8),
                               ),
-                              side: MaterialStateProperty.resolveWith<BorderSide>(
-                                (_) => BorderSide(color: Color(0xFF3D5164), width: 1.0),
+                              side: WidgetStateProperty.resolveWith<BorderSide>(
+                                (_) => BorderSide(
+                                    color: Color(0xFF3D5164), width: 1.0),
                               ),
                             ),
                             onPressed: () {
-                              Navigator.push(context, CustomRoutes.fadeThrough(page: Navigate(), duration: Duration(milliseconds: 300)));
+                              Navigator.push(
+                                  context,
+                                  CustomRoutes.fadeThrough(
+                                      page: Navigate(),
+                                      duration: Duration(milliseconds: 300)));
                             },
                           )
                         ],
                       );
                     } else {
-                      List<BikeActivity> _topActivitiesData = _topActivitiesBox.values.toList();
+                      List<BikeActivity> _topActivitiesData =
+                          _topActivitiesBox.values.toList();
                       //Sorts the highest burned calories from top to lowest in bottom.
-                      _topActivitiesData.sort((a, b) => b.burnedCalories!.compareTo(a.burnedCalories!));
+                      _topActivitiesData.sort((a, b) =>
+                          b.burnedCalories!.compareTo(a.burnedCalories!));
                       return Theme(
                         data: Theme.of(context).copyWith(
-                          dividerTheme: DividerThemeData(color: Colors.grey.shade400, indent: 0),
+                          dividerTheme: DividerThemeData(
+                              color: Colors.grey.shade400, indent: 0),
                         ),
                         child: DataTable(
                           headingTextStyle: TextStyle(
@@ -210,7 +226,8 @@ class _UserActivityPanelState extends State<UserActivityPanel> {
                           ),
                           showBottomBorder: false,
                           headingRowHeight: 0, //0 to hide
-                          dataRowHeight: 40,
+                          dataRowMinHeight: 40,
+                          dataRowMaxHeight: 40,
                           columnSpacing: 0,
                           horizontalMargin: 5,
                           dividerThickness: 0.8,
@@ -287,7 +304,8 @@ class _UserActivityPanelState extends State<UserActivityPanel> {
                                         child: Align(
                                           alignment: Alignment.center,
                                           child: Text(
-                                            activity.burnedCalories!.toStringAsFixed(2),
+                                            activity.burnedCalories!
+                                                .toStringAsFixed(2),
                                             textAlign: TextAlign.center,
                                           ),
                                         ),

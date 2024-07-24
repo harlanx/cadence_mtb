@@ -13,7 +13,7 @@ class DraggableFab extends StatefulWidget {
     Key? key,
     required this.child,
     this.initPosition,
-    this.securityBottom: 0,
+    this.securityBottom = 0,
   }) : super(key: key);
 
   @override
@@ -29,7 +29,8 @@ class _DraggableFabState extends State<DraggableFab> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) => _getWidgetSize(context));
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _getWidgetSize(context));
   }
 
   void _getWidgetSize(BuildContext context) {
@@ -89,12 +90,15 @@ class _DraggableFabState extends State<DraggableFab> {
         this._top = math.max(_widgetSize.height, targetOffset.dy);
         break;
       case Anchor.TOP_SECOND:
-        this._left = math.min(_screenWidth - _widgetSize.width, targetOffset.dx);
+        this._left =
+            math.min(_screenWidth - _widgetSize.width, targetOffset.dx);
         this._top = _widgetSize.height / 2;
         break;
       case Anchor.LEFT_THIRD:
         this._left = _widgetSize.width / 2;
-        this._top = math.min(_screenHeight - _widgetSize.height - widget.securityBottom, targetOffset.dy);
+        this._top = math.min(
+            _screenHeight - _widgetSize.height - widget.securityBottom,
+            targetOffset.dy);
         break;
       case Anchor.BOTTOM_THIRD:
         this._left = _widgetSize.width / 2;
@@ -102,7 +106,9 @@ class _DraggableFabState extends State<DraggableFab> {
         break;
       case Anchor.RIGHT_FOURTH:
         this._left = _screenWidth - _widgetSize.width;
-        this._top = math.min(_screenHeight - _widgetSize.height - widget.securityBottom, targetOffset.dy);
+        this._top = math.min(
+            _screenHeight - _widgetSize.height - widget.securityBottom,
+            targetOffset.dy);
         break;
       case Anchor.BOTTOM_FOURTH:
         this._left = _screenWidth - _widgetSize.width;
@@ -116,12 +122,20 @@ class _DraggableFabState extends State<DraggableFab> {
   Anchor _getAnchor(Offset position) {
     if (position.dx < _screenWidthMid! && position.dy < _screenHeightMid!) {
       return position.dx < position.dy ? Anchor.LEFT_FIRST : Anchor.TOP_FIRST;
-    } else if (position.dx >= _screenWidthMid! && position.dy < _screenHeightMid!) {
-      return _screenWidth - position.dx < position.dy ? Anchor.RIGHT_SECOND : Anchor.TOP_SECOND;
-    } else if (position.dx < _screenWidthMid! && position.dy >= _screenHeightMid!) {
-      return position.dx < _screenHeight - position.dy ? Anchor.LEFT_THIRD : Anchor.BOTTOM_THIRD;
+    } else if (position.dx >= _screenWidthMid! &&
+        position.dy < _screenHeightMid!) {
+      return _screenWidth - position.dx < position.dy
+          ? Anchor.RIGHT_SECOND
+          : Anchor.TOP_SECOND;
+    } else if (position.dx < _screenWidthMid! &&
+        position.dy >= _screenHeightMid!) {
+      return position.dx < _screenHeight - position.dy
+          ? Anchor.LEFT_THIRD
+          : Anchor.BOTTOM_THIRD;
     } else {
-      return _screenWidth - position.dx < _screenHeight - position.dy ? Anchor.RIGHT_FOURTH : Anchor.BOTTOM_FOURTH;
+      return _screenWidth - position.dx < _screenHeight - position.dy
+          ? Anchor.RIGHT_FOURTH
+          : Anchor.BOTTOM_FOURTH;
     }
   }
 }

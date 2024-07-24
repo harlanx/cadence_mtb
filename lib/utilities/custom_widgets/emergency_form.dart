@@ -1,4 +1,3 @@
-
 part of 'emergency_button.dart';
 
 ///Emergency Form. Show up if the user haven't set their SOS details.
@@ -7,13 +6,17 @@ class EmergencyForm extends StatefulWidget {
   _EmergencyFormState createState() => _EmergencyFormState();
 }
 
-class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserver {
-  final GlobalKey<FormBuilderState> formBuilderKey = GlobalKey<FormBuilderState>();
+class _EmergencyFormState extends State<EmergencyForm>
+    with WidgetsBindingObserver {
+  final GlobalKey<FormBuilderState> formBuilderKey =
+      GlobalKey<FormBuilderState>();
   //final GlobalKey<FormBuilderFieldState> _chipsInputState = GlobalKey<FormBuilderFieldState>();
   GlobalKey<ChipsInputState> _chipsInputKey = GlobalKey<ChipsInputState>();
   //ChipsInputState<Contact> _chipsState = ChipsInputState<Contact>();
   final Function deepEquals = DeepCollectionEquality.unordered().equals;
-  final List<String> _savedContactNumbers = StorageHelper.getStringList('${currentUser!.profileNumber}sosContacts') ?? [];
+  final List<String> _savedContactNumbers =
+      StorageHelper.getStringList('${currentUser!.profileNumber}sosContacts') ??
+          [];
   List<String> _selectedContacts = [];
   List<Contact> savedContacts = [];
   final FocusNode _customMessageNode = FocusNode();
@@ -24,11 +27,15 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     _customMessageNode.addListener(() => _smsPermissionChecker(context));
     _appendLocationNode.addListener(() => _locationPermissionChecker(context));
-    _selectedContactsNode.addListener(() => _contactsPermissionChecker(context));
-    savedContacts = userContacts.where((element) => _savedContactNumbers.contains(element.phones?.elementAt(0).value?.replaceAll('-', ''))).toList();
+    _selectedContactsNode
+        .addListener(() => _contactsPermissionChecker(context));
+    savedContacts = userContacts
+        .where((element) => _savedContactNumbers
+            .contains(element.phones?.elementAt(0).value?.replaceAll('-', '')))
+        .toList();
   }
 
   @override
@@ -36,7 +43,7 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
     _customMessageNode.dispose();
     _appendLocationNode.dispose();
     _selectedContactsNode.dispose();
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -46,7 +53,9 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
     if (state == AppLifecycleState.resumed) {
       Permission.contacts.status.then((permission) async {
         if (permission.isGranted) {
-          userContacts = (await ContactsService.getContacts(withThumbnails: true)).toList();
+          userContacts =
+              (await ContactsService.getContacts(withThumbnails: true))
+                  .toList();
         }
       });
     }
@@ -73,19 +82,27 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
           TextButton(
             child: Text('Save'),
             style: ButtonStyle(
-              foregroundColor:
-                  MaterialStateProperty.resolveWith<Color>((states) => states.contains(MaterialState.disabled) ? Colors.grey.shade400 : Colors.white),
-              backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                (states) => states.contains(MaterialState.disabled) ? Color(0xF496D47).brighten(0.1) : Color(0xFF496D47),
+              foregroundColor: WidgetStateProperty.resolveWith<Color>(
+                  (states) => states.contains(WidgetState.disabled)
+                      ? Colors.grey.shade400
+                      : Colors.white),
+              backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                (states) => states.contains(WidgetState.disabled)
+                    ? Color(0xF496D47).brighten(0.1)
+                    : Color(0xFF496D47),
               ),
-              overlayColor: MaterialStateProperty.resolveWith<Color>(
-                (states) => states.contains(MaterialState.pressed) ? Color(0xFF496D47).darken(0.1) : Colors.transparent,
+              overlayColor: WidgetStateProperty.resolveWith<Color>(
+                (states) => states.contains(WidgetState.pressed)
+                    ? Color(0xFF496D47).darken(0.1)
+                    : Colors.transparent,
               ),
             ),
             onPressed: () {
               //Check first if the required fields are filled.
-              if (formBuilderKey.currentState!.fields['sosMessage']!.value.isEmpty ||
-                      _chipsInputKey.currentState!.currentTextEditingValue.text.isEmpty
+              if (formBuilderKey
+                          .currentState!.fields['sosMessage']!.value.isEmpty ||
+                      _chipsInputKey
+                          .currentState!.currentTextEditingValue.text.isEmpty
                   //formBuilderKey.currentState.fields['selectedContacts'].value.isEmpty
                   ) {
                 formBuilderKey.currentState!.validate();
@@ -98,32 +115,51 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
                   THE SAME ORDER OF VALUE TO RETURN TRUE. SO IN MY CASE I NEED TO CHECK FOR CONTACT PROPERTY VALUES INSTEAD
                   AND USE DeepCollectionEquality.unordered().equals AS THE SOLUTION*/
               Map<String, dynamic> initialValue = {
-                'sosMessage': formBuilderKey.currentState!.fields['sosMessage']!.initialValue,
-                'appendLocation': formBuilderKey.currentState!.fields['appendLocation']!.initialValue,
+                'sosMessage': formBuilderKey
+                    .currentState!.fields['sosMessage']!.initialValue,
+                'appendLocation': formBuilderKey
+                    .currentState!.fields['appendLocation']!.initialValue,
                 'selectedContacts': savedContacts,
               };
               Map<String, dynamic> currentValue = {
-                'sosMessage': formBuilderKey.currentState!.fields['sosMessage']!.value,
-                'appendLocation': formBuilderKey.currentState!.fields['appendLocation']!.value,
+                'sosMessage':
+                    formBuilderKey.currentState!.fields['sosMessage']!.value,
+                'appendLocation': formBuilderKey
+                    .currentState!.fields['appendLocation']!.value,
                 'selectedContacts': _selectedContacts
-                    .map((e) => userContacts.singleWhere((element) => element.phones!.elementAt(0).value!.replaceAll('-', '') == e))
+                    .map((e) => userContacts.singleWhere((element) =>
+                        element.phones!
+                            .elementAt(0)
+                            .value!
+                            .replaceAll('-', '') ==
+                        e))
                     .toList(),
                 //'selectedContacts': formBuilderKey.currentState.fields['selectedContacts'].value,
               };
               //print('Deep Equal: ${deepEq(currentValue, formBuilderKey.currentState.initialValue)}');
               //if (deepEquals(currentValue, formBuilderKey.currentState.initialValue)) {
               if (deepEquals(currentValue, initialValue)) {
-                CustomToast.showToastSetupAction(context, 'No Changes Were Made', true);
+                CustomToast.showToastSetupAction(
+                    context, 'No Changes Were Made', true);
               } else {
-                CustomToast.showToastSetupAction(context, 'Emergency Details Saved', true);
+                CustomToast.showToastSetupAction(
+                    context, 'Emergency Details Saved', true);
                 //SAVE THE VALUES IN THE FORMBUILDER KEY
                 formBuilderKey.currentState!.save();
                 //SAVING TO SHARED PREFERENCES
-                StorageHelper.setBool('${currentUser!.profileNumber}haveSOSDetails', true);
-                StorageHelper.setString('${currentUser!.profileNumber}sosMessage', formBuilderKey.currentState!.fields['sosMessage']!.value);
-                StorageHelper.setBool('${currentUser!.profileNumber}appendLocation', formBuilderKey.currentState!.fields['appendLocation']!.value);
+                StorageHelper.setBool(
+                    '${currentUser!.profileNumber}haveSOSDetails', true);
+                StorageHelper.setString(
+                    '${currentUser!.profileNumber}sosMessage',
+                    formBuilderKey.currentState!.fields['sosMessage']!.value);
+                StorageHelper.setBool(
+                    '${currentUser!.profileNumber}appendLocation',
+                    formBuilderKey
+                        .currentState!.fields['appendLocation']!.value);
                 //StorageHelper.setStringList('${currentUser.profileNumber}sosContacts', formBuilderKey.currentState.value['selectedContacts']);
-                StorageHelper.setStringList('${currentUser!.profileNumber}sosContacts', _selectedContacts);
+                StorageHelper.setStringList(
+                    '${currentUser!.profileNumber}sosContacts',
+                    _selectedContacts);
               }
 
               Navigator.of(context).pop();
@@ -147,11 +183,15 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
           TextButton(
             child: Text('Reset'),
             style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all(Colors.white),
-              backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                  (states) => states.contains(MaterialState.disabled) ? Colors.orange.shade100 : Colors.orange.shade400),
-              overlayColor: MaterialStateProperty.resolveWith(
-                (states) => states.contains(MaterialState.pressed) ? Colors.orange.shade800 : Colors.transparent,
+              foregroundColor: WidgetStateProperty.all(Colors.white),
+              backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                  (states) => states.contains(WidgetState.disabled)
+                      ? Colors.orange.shade100
+                      : Colors.orange.shade400),
+              overlayColor: WidgetStateProperty.resolveWith(
+                (states) => states.contains(WidgetState.pressed)
+                    ? Colors.orange.shade800
+                    : Colors.transparent,
               ),
             ),
             onPressed: !resetEnabled
@@ -159,7 +199,12 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
                 : () {
                     if (_chipsInputKey.currentState!.mounted) {
                       _selectedContacts
-                          .map((e) => userContacts.singleWhere((element) => element.phones!.elementAt(0).value!.replaceAll('-', '') == e))
+                          .map((e) => userContacts.singleWhere((element) =>
+                              element.phones!
+                                  .elementAt(0)
+                                  .value!
+                                  .replaceAll('-', '') ==
+                              e))
                           .toList()
                           .forEach((element) {
                         _chipsInputKey.currentState!.deleteChip(element);
@@ -182,10 +227,13 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
           TextButton(
             child: Text('Clear'),
             style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.red.shade400),
-              overlayColor: MaterialStateProperty.resolveWith<Color>(
-                (states) => states.contains(MaterialState.pressed) ? Colors.red.shade800 : Colors.transparent,
+              foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+              backgroundColor:
+                  WidgetStateProperty.all<Color>(Colors.red.shade400),
+              overlayColor: WidgetStateProperty.resolveWith<Color>(
+                (states) => states.contains(WidgetState.pressed)
+                    ? Colors.red.shade800
+                    : Colors.transparent,
               ),
             ),
             onPressed: () {
@@ -194,7 +242,12 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
               //'key' : value
               if (_chipsInputKey.currentState!.mounted) {
                 _selectedContacts
-                    .map((e) => userContacts.singleWhere((element) => element.phones!.elementAt(0).value!.replaceAll('-', '') == e))
+                    .map((e) => userContacts.singleWhere((element) =>
+                        element.phones!
+                            .elementAt(0)
+                            .value!
+                            .replaceAll('-', '') ==
+                        e))
                     .toList()
                     .forEach((element) {
                   _chipsInputKey.currentState!.deleteChip(element);
@@ -203,21 +256,26 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
                 //   _chipsInputKey.currentState.deleteChip(val);
                 // });
               }
-              formBuilderKey.currentState!.patchValue({'sosMessage': '', 'appendLocation': false});
+              formBuilderKey.currentState!
+                  .patchValue({'sosMessage': '', 'appendLocation': false});
               formBuilderKey.currentState!.validate();
             },
           ),
           TextButton(
             child: Text('Cancel'),
             style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all(Colors.white),
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade400),
-              overlayColor: MaterialStateProperty.resolveWith<Color>(
-                (states) => states.contains(MaterialState.pressed) ? Colors.grey.shade800 : Colors.transparent,
+              foregroundColor: WidgetStateProperty.all(Colors.white),
+              backgroundColor:
+                  WidgetStateProperty.all<Color>(Colors.grey.shade400),
+              overlayColor: WidgetStateProperty.resolveWith<Color>(
+                (states) => states.contains(WidgetState.pressed)
+                    ? Colors.grey.shade800
+                    : Colors.transparent,
               ),
             ),
             onPressed: () {
-              CustomToast.showToastSetupAction(context, 'Emergency Setup Cancelled', false);
+              CustomToast.showToastSetupAction(
+                  context, 'Emergency Setup Cancelled', false);
               Navigator.pop(context);
             },
           ),
@@ -227,8 +285,12 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
           child: FormBuilder(
             key: formBuilderKey,
             initialValue: {
-              'sosMessage': StorageHelper.getString('${currentUser!.profileNumber}sosMessage') ?? '',
-              'appendLocation': StorageHelper.getBool('${currentUser!.profileNumber}appendLocation') ?? false,
+              'sosMessage': StorageHelper.getString(
+                      '${currentUser!.profileNumber}sosMessage') ??
+                  '',
+              'appendLocation': StorageHelper.getBool(
+                      '${currentUser!.profileNumber}appendLocation') ??
+                  false,
               //DOESN'T WORK CORRECTLY SO WE ALSO HAVE TO ASSIGN THE INITIAL VALUE TO THE SPECIFIC FORM BUILDER WIDGET
               //*******CHECK GITHUB REPO ISSUE IF ITS FIXED ALREADY*******
               'selectedContacts': savedContacts,
@@ -240,15 +302,24 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
                 'selectedContacts': formBuilderKey.currentState.fields['selectedContacts'].value,
               }; */
               Map<String, dynamic> initialValue = {
-                'sosMessage': formBuilderKey.currentState!.fields['sosMessage']!.initialValue,
-                'appendLocation': formBuilderKey.currentState!.fields['appendLocation']!.initialValue,
+                'sosMessage': formBuilderKey
+                    .currentState!.fields['sosMessage']!.initialValue,
+                'appendLocation': formBuilderKey
+                    .currentState!.fields['appendLocation']!.initialValue,
                 'selectedContacts': savedContacts,
               };
               Map<String, dynamic> currentValue = {
-                'sosMessage': formBuilderKey.currentState!.fields['sosMessage']!.value,
-                'appendLocation': formBuilderKey.currentState!.fields['appendLocation']!.value,
+                'sosMessage':
+                    formBuilderKey.currentState!.fields['sosMessage']!.value,
+                'appendLocation': formBuilderKey
+                    .currentState!.fields['appendLocation']!.value,
                 'selectedContacts': _selectedContacts
-                    .map((e) => userContacts.singleWhere((element) => element.phones!.elementAt(0).value!.replaceAll('-', '') == e))
+                    .map((e) => userContacts.singleWhere((element) =>
+                        element.phones!
+                            .elementAt(0)
+                            .value!
+                            .replaceAll('-', '') ==
+                        e))
                     .toList(),
                 //'selectedContacts': formBuilderKey.currentState.fields['selectedContacts'].value,
               };
@@ -335,7 +406,7 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
                       ),
                     ),
                   ),
-                  validator: FormBuilderValidators.required(context),
+                  validator: FormBuilderValidators.required(),
                 ),
                 FormBuilderSwitch(
                   name: 'appendLocation',
@@ -426,17 +497,31 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
                       ),
                     ),
                     onChanged: (contacts) {
-                      _selectedContacts = contacts.map((contact) => contact.phones!.elementAt(0).value!.replaceAll('-', '')).toList();
+                      _selectedContacts = contacts
+                          .map((contact) => contact.phones!
+                              .elementAt(0)
+                              .value!
+                              .replaceAll('-', ''))
+                          .toList();
                       Map<String, dynamic> initialValue = {
-                        'sosMessage': formBuilderKey.currentState!.fields['sosMessage']!.initialValue,
-                        'appendLocation': formBuilderKey.currentState!.fields['appendLocation']!.initialValue,
+                        'sosMessage': formBuilderKey
+                            .currentState!.fields['sosMessage']!.initialValue,
+                        'appendLocation': formBuilderKey.currentState!
+                            .fields['appendLocation']!.initialValue,
                         'selectedContacts': savedContacts,
                       };
                       Map<String, dynamic> currentValue = {
-                        'sosMessage': formBuilderKey.currentState!.fields['sosMessage']!.value,
-                        'appendLocation': formBuilderKey.currentState!.fields['appendLocation']!.value,
+                        'sosMessage': formBuilderKey
+                            .currentState!.fields['sosMessage']!.value,
+                        'appendLocation': formBuilderKey
+                            .currentState!.fields['appendLocation']!.value,
                         'selectedContacts': _selectedContacts
-                            .map((e) => userContacts.singleWhere((element) => element.phones!.elementAt(0).value!.replaceAll('-', '') == e))
+                            .map((e) => userContacts.singleWhere((element) =>
+                                element.phones!
+                                    .elementAt(0)
+                                    .value!
+                                    .replaceAll('-', '') ==
+                                e))
                             .toList(),
                         //'selectedContacts': formBuilderKey.currentState.fields['selectedContacts'].value,
                       };
@@ -467,8 +552,10 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
                       return InputChip(
                         key: ObjectKey(contact),
                         label: Text(contact.displayName!),
-                        avatar: (contact.avatar != null && contact.avatar!.isNotEmpty)
-                            ? CircleAvatar(backgroundImage: MemoryImage(contact.avatar!))
+                        avatar: (contact.avatar != null &&
+                                contact.avatar!.isNotEmpty)
+                            ? CircleAvatar(
+                                backgroundImage: MemoryImage(contact.avatar!))
                             : CircleAvatar(
                                 backgroundColor: Color(0xFF496D47),
                                 child: Padding(
@@ -490,7 +577,8 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
                       return ListTile(
                         dense: true,
                         key: ObjectKey(contact),
-                        leading: (contact.avatar != null && contact.avatar!.isNotEmpty)
+                        leading: (contact.avatar != null &&
+                                contact.avatar!.isNotEmpty)
                             ? CircleAvatar(
                                 backgroundImage: MemoryImage(
                                   contact.avatar!,
@@ -512,10 +600,17 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
                     findSuggestions: (String query) {
                       if (query.length != 0) {
                         var lowercaseQuery = query.toLowerCase();
-                        return userContacts.where((contact) => contact.displayName!.toLowerCase().contains(query.toLowerCase())).toList(
-                            growable: true)
-                          ..sort((a, b) =>
-                              a.displayName!.toLowerCase().indexOf(lowercaseQuery).compareTo(b.displayName!.toLowerCase().indexOf(lowercaseQuery)));
+                        return userContacts
+                            .where((contact) => contact.displayName!
+                                .toLowerCase()
+                                .contains(query.toLowerCase()))
+                            .toList(growable: true)
+                          ..sort((a, b) => a.displayName!
+                              .toLowerCase()
+                              .indexOf(lowercaseQuery)
+                              .compareTo(b.displayName!
+                                  .toLowerCase()
+                                  .indexOf(lowercaseQuery)));
                       } else {
                         return <Contact>[];
                       }
@@ -536,12 +631,16 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
       switch (status) {
         case PermissionStatus.permanentlyDenied:
           CustomToast.showToastPermanentlyDenied(
-              context: context, requestText: 'In-app sms permission request is permanently denied. Tap here to change through App Settings.');
+              context: context,
+              requestText:
+                  'In-app sms permission request is permanently denied. Tap here to change through App Settings.');
           _customMessageNode.unfocus();
           break;
         case PermissionStatus.denied:
           CustomToast.showToastDenied(
-              context: context, requestText: 'CadenceMTB requires sms permission to send your message to your emergency contacts.');
+              context: context,
+              requestText:
+                  'CadenceMTB requires sms permission to send your message to your emergency contacts.');
           _customMessageNode.unfocus();
           break;
         default:
@@ -556,14 +655,25 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
       switch (status) {
         case PermissionStatus.permanentlyDenied:
           CustomToast.showToastPermanentlyDenied(
-              context: context, requestText: 'In-app location permission request is permanently denied. Tap here to change through App Settings.');
+              context: context,
+              requestText:
+                  'In-app location permission request is permanently denied. Tap here to change through App Settings.');
           _appendLocationNode.unfocus();
-          formBuilderKey.currentState!.patchValue({'appendLocation': formBuilderKey.currentState!.initialValue['appendLocation']});
+          formBuilderKey.currentState!.patchValue({
+            'appendLocation':
+                formBuilderKey.currentState!.initialValue['appendLocation']
+          });
           break;
         case PermissionStatus.denied:
-          CustomToast.showToastDenied(context: context, requestText: 'CadenceMTB requires location permission to enable append location.');
+          CustomToast.showToastDenied(
+              context: context,
+              requestText:
+                  'CadenceMTB requires location permission to enable append location.');
           _appendLocationNode.unfocus();
-          formBuilderKey.currentState!.patchValue({'appendLocation': formBuilderKey.currentState!.initialValue['appendLocation']});
+          formBuilderKey.currentState!.patchValue({
+            'appendLocation':
+                formBuilderKey.currentState!.initialValue['appendLocation']
+          });
           break;
         default:
           break;
@@ -577,15 +687,23 @@ class _EmergencyFormState extends State<EmergencyForm> with WidgetsBindingObserv
       switch (status) {
         case PermissionStatus.permanentlyDenied:
           CustomToast.showToastPermanentlyDenied(
-              context: context, requestText: 'In-app contact permission request is permanently denied. Tap here to change through App Settings.');
+              context: context,
+              requestText:
+                  'In-app contact permission request is permanently denied. Tap here to change through App Settings.');
           _selectedContactsNode.unfocus();
           break;
         case PermissionStatus.denied:
-          CustomToast.showToastDenied(context: context, requestText: 'CadenceMTB requires sms permission to be able to search for contact list.');
+          CustomToast.showToastDenied(
+              context: context,
+              requestText:
+                  'CadenceMTB requires sms permission to be able to search for contact list.');
           _selectedContactsNode.unfocus();
           break;
         default:
-          if (userContacts.isEmpty) userContacts = (await ContactsService.getContacts(withThumbnails: true)).toList();
+          if (userContacts.isEmpty)
+            userContacts =
+                (await ContactsService.getContacts(withThumbnails: true))
+                    .toList();
           break;
       }
     }

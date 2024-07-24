@@ -38,8 +38,10 @@ class RangeSliderButton<T extends num> extends StatefulWidget {
     this.plusButtonColor,
     this.plusIconColor,
     required this.onChanged,
-  })  : assert(minValue <= value && value <= maxValue, 'initialValue is not in range of minValue and maxValue'),
-        assert(minValue < maxValue, 'minValue must not be greater than maxValue'),
+  })  : assert(minValue <= value && value <= maxValue,
+            'initialValue is not in range of minValue and maxValue'),
+        assert(
+            minValue < maxValue, 'minValue must not be greater than maxValue'),
         super(key: key);
 
   @override
@@ -71,14 +73,16 @@ class RangeCounterState<T extends num> extends State<RangeSliderButton<T>> {
           height: widget.buttonSize,
           width: widget.buttonSize,
           child: MaterialButton(
-            color: widget.minusButtonColor ?? Theme.of(context).buttonColor,
+            color: widget.minusButtonColor ??
+                Theme.of(context).colorScheme.onPrimary,
             shape: CircleBorder(),
             padding: EdgeInsets.all(2),
             child: FittedBox(
               fit: BoxFit.contain,
               child: Icon(
                 Icons.arrow_back_ios_rounded,
-                color: widget.minusIconColor ?? Theme.of(context).iconTheme.color,
+                color:
+                    widget.minusIconColor ?? Theme.of(context).iconTheme.color,
               ),
             ),
             onPressed: () {
@@ -111,14 +115,16 @@ class RangeCounterState<T extends num> extends State<RangeSliderButton<T>> {
           child: MaterialButton(
             height: widget.buttonSize,
             minWidth: widget.buttonSize,
-            color: widget.plusButtonColor ?? Theme.of(context).buttonColor,
+            color: widget.plusButtonColor ??
+                Theme.of(context).colorScheme.onPrimary,
             shape: CircleBorder(),
             padding: EdgeInsets.all(2),
             child: FittedBox(
               fit: BoxFit.contain,
               child: Icon(
                 Icons.arrow_forward_ios,
-                color: widget.plusIconColor ?? Theme.of(context).iconTheme.color,
+                color:
+                    widget.plusIconColor ?? Theme.of(context).iconTheme.color,
               ),
             ),
             onPressed: () {

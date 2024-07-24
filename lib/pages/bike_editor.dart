@@ -26,7 +26,8 @@ class _BikeEditorState extends State<BikeEditor> {
   double currentXAxis = 0.0;
   double currentYAxis = 0.0;
   GlobalKey<ScaffoldState> _bikeEditorKey = GlobalKey<ScaffoldState>();
-  TransformationController _transformationController = TransformationController();
+  TransformationController _transformationController =
+      TransformationController();
   //These are the default values
   //Transform.rotate uses -6.28319 to 6.28319 radians value.
   //6.28319 radians = 360 degrees and -1.000000358 radian = -57.2958 degrees
@@ -112,7 +113,8 @@ class _BikeEditorState extends State<BikeEditor> {
   Alignment phoneHoldePos = Alignment(0.186, -0.858);
   double phoneHoldeAngle = -17.800;
 
-  String chainAdvanced = 'assets/images/bike_project/bike_parts/chain_advanced.png';
+  String chainAdvanced =
+      'assets/images/bike_project/bike_parts/chain_advanced.png';
   Alignment chainAdvancedPos = Alignment(-0.51, 0.573);
   double chainAdvancedAngle = 1.145;
 
@@ -159,7 +161,7 @@ class _BikeEditorState extends State<BikeEditor> {
   void initState() {
     super.initState();
     SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual);
     // Sets the control values when loaded
     getProjectsDetails();
     getLayerValues(activeLayer);
@@ -167,8 +169,13 @@ class _BikeEditorState extends State<BikeEditor> {
 
   @override
   dispose() {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
-    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight
+    ]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
     super.dispose();
   }
 
@@ -181,17 +188,19 @@ class _BikeEditorState extends State<BikeEditor> {
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
       drawerEnableOpenDragGesture: false,
-      onDrawerChanged: (isOpen){
-        if(!isOpen){
-          SystemChrome.setEnabledSystemUIOverlays([]);
+      onDrawerChanged: (isOpen) {
+        if (!isOpen) {
+          SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual);
         }
       },
       drawer: Theme(
         data: Theme.of(context).copyWith(
           canvasColor: Color(0xFFFF8B02),
-          accentColor: Colors.white,
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            secondary: Colors.white,
+          ),
           textTheme: TextTheme(
-            subtitle1: TextStyle(
+            titleMedium: TextStyle(
               fontFamily: 'Comfortaa',
               color: Colors.black,
               fontWeight: FontWeight.w700,
@@ -281,7 +290,9 @@ class _BikeEditorState extends State<BikeEditor> {
                           ),
                         ],
                       ),
-                      tileColor: e.code == brakeClprCode ? Colors.white.withOpacity(0.2) : Colors.transparent,
+                      tileColor: e.code == brakeClprCode
+                          ? Colors.white.withOpacity(0.2)
+                          : Colors.transparent,
                       onTap: e.code == brakeClprCode
                           ? null
                           : () {
@@ -343,7 +354,9 @@ class _BikeEditorState extends State<BikeEditor> {
                           ),
                         ],
                       ),
-                      tileColor: e.code == cassetteCode ? Colors.white.withOpacity(0.2) : Colors.transparent,
+                      tileColor: e.code == cassetteCode
+                          ? Colors.white.withOpacity(0.2)
+                          : Colors.transparent,
                       onTap: e.code == cassetteCode
                           ? null
                           : () {
@@ -406,11 +419,23 @@ class _BikeEditorState extends State<BikeEditor> {
                       ),
                       tileColor: e.code == cranksetCode
                           ? Colors.white.withOpacity(0.2)
-                          : frameItems.where((element) => element.code == frameCode).first.frontDerailleurTypes.isEmpty && e.speed != '1 Speed'
+                          : frameItems
+                                      .where((element) =>
+                                          element.code == frameCode)
+                                      .first
+                                      .frontDerailleurTypes
+                                      .isEmpty &&
+                                  e.speed != '1 Speed'
                               ? Colors.black.withOpacity(0.8)
                               : Colors.transparent,
                       onTap: e.code == cranksetCode ||
-                              (frameItems.where((element) => element.code == frameCode).first.frontDerailleurTypes.isEmpty && e.speed != '1 Speed')
+                              (frameItems
+                                      .where((element) =>
+                                          element.code == frameCode)
+                                      .first
+                                      .frontDerailleurTypes
+                                      .isEmpty &&
+                                  e.speed != '1 Speed')
                           ? null
                           : () {
                               activeLayer = 4;
@@ -469,7 +494,9 @@ class _BikeEditorState extends State<BikeEditor> {
                           ),
                         ],
                       ),
-                      tileColor: e.code == frameCode ? Colors.white.withOpacity(0.2) : Colors.transparent,
+                      tileColor: e.code == frameCode
+                          ? Colors.white.withOpacity(0.2)
+                          : Colors.transparent,
                       onTap: e.code == frameCode
                           ? null
                           : () {
@@ -477,7 +504,8 @@ class _BikeEditorState extends State<BikeEditor> {
                               getLayerValues(5);
                               frameCode = e.code;
                               if (e.frontDerailleurTypes.isEmpty) {
-                                if (cranksetCode != 'c1a' || cranksetCode != 'c1b') {
+                                if (cranksetCode != 'c1a' ||
+                                    cranksetCode != 'c1b') {
                                   cranksetCode = 'c1a';
                                 }
                               }
@@ -534,13 +562,25 @@ class _BikeEditorState extends State<BikeEditor> {
                         ],
                       ),
                       tileColor: e.code == frontDlrCode &&
-                              frameItems.where((element) => element.code == frameCode).first.frontDerailleurTypes.contains(e.type)
+                              frameItems
+                                  .where((element) => element.code == frameCode)
+                                  .first
+                                  .frontDerailleurTypes
+                                  .contains(e.type)
                           ? Colors.white.withOpacity(0.2)
-                          : !frameItems.where((element) => element.code == frameCode).first.frontDerailleurTypes.contains(e.type)
+                          : !frameItems
+                                  .where((element) => element.code == frameCode)
+                                  .first
+                                  .frontDerailleurTypes
+                                  .contains(e.type)
                               ? Colors.black.withOpacity(0.8)
                               : Colors.transparent,
                       onTap: e.code == frontDlrCode ||
-                              !frameItems.where((element) => element.code == frameCode).first.frontDerailleurTypes.contains(e.type)
+                              !frameItems
+                                  .where((element) => element.code == frameCode)
+                                  .first
+                                  .frontDerailleurTypes
+                                  .contains(e.type)
                           ? null
                           : () {
                               activeLayer = 6;
@@ -599,13 +639,24 @@ class _BikeEditorState extends State<BikeEditor> {
                           ),
                         ],
                       ),
-                      tileColor: e.code == frontForkCode ? Colors.white.withOpacity(0.2) : Colors.transparent,
+                      tileColor: e.code == frontForkCode
+                          ? Colors.white.withOpacity(0.2)
+                          : Colors.transparent,
                       onTap: () {
                         activeLayer = 7;
                         getLayerValues(7);
                         frontForkCode = e.code;
-                        bool isCurrentFork29er = frontForkItems.where((element) => element.code == frontForkCode).first.sizeType == '29er';
-                        bool isCurrentRim29er = rimItems.where((element) => element.code == rimCode).first.sizeType == '29er';
+                        bool isCurrentFork29er = frontForkItems
+                                .where(
+                                    (element) => element.code == frontForkCode)
+                                .first
+                                .sizeType ==
+                            '29er';
+                        bool isCurrentRim29er = rimItems
+                                .where((element) => element.code == rimCode)
+                                .first
+                                .sizeType ==
+                            '29er';
                         if (isCurrentRim29er != isCurrentFork29er) {
                           rimCode = 'k1a';
                           if (!isCurrentRim29er) {
@@ -664,7 +715,9 @@ class _BikeEditorState extends State<BikeEditor> {
                           ),
                         ],
                       ),
-                      tileColor: e.code == handlebarCode ? Colors.white.withOpacity(0.2) : Colors.transparent,
+                      tileColor: e.code == handlebarCode
+                          ? Colors.white.withOpacity(0.2)
+                          : Colors.transparent,
                       onTap: e.code == handlebarCode
                           ? null
                           : () {
@@ -724,7 +777,9 @@ class _BikeEditorState extends State<BikeEditor> {
                           ),
                         ],
                       ),
-                      tileColor: e.code == pedalCode ? Colors.white.withOpacity(0.2) : Colors.transparent,
+                      tileColor: e.code == pedalCode
+                          ? Colors.white.withOpacity(0.2)
+                          : Colors.transparent,
                       onTap: e.code == pedalCode
                           ? null
                           : () {
@@ -784,7 +839,9 @@ class _BikeEditorState extends State<BikeEditor> {
                           ),
                         ],
                       ),
-                      tileColor: e.code == rearDlrCode ? Colors.white.withOpacity(0.2) : Colors.transparent,
+                      tileColor: e.code == rearDlrCode
+                          ? Colors.white.withOpacity(0.2)
+                          : Colors.transparent,
                       onTap: e.code == rearDlrCode
                           ? null
                           : () {
@@ -844,7 +901,9 @@ class _BikeEditorState extends State<BikeEditor> {
                           ),
                         ],
                       ),
-                      tileColor: e.code == saddleCode ? Colors.white.withOpacity(0.2) : Colors.transparent,
+                      tileColor: e.code == saddleCode
+                          ? Colors.white.withOpacity(0.2)
+                          : Colors.transparent,
                       onTap: e.code == saddleCode
                           ? null
                           : () {
@@ -906,10 +965,21 @@ class _BikeEditorState extends State<BikeEditor> {
                       ),
                       tileColor: e.code == rimCode
                           ? Colors.white.withOpacity(0.2)
-                          : e.sizeType != frontForkItems.where((element) => element.code == frontForkCode).first.sizeType
+                          : e.sizeType !=
+                                  frontForkItems
+                                      .where((element) =>
+                                          element.code == frontForkCode)
+                                      .first
+                                      .sizeType
                               ? Colors.black.withOpacity(0.8)
                               : Colors.transparent,
-                      onTap: e.code == rimCode || e.sizeType != frontForkItems.where((element) => element.code == frontForkCode).first.sizeType
+                      onTap: e.code == rimCode ||
+                              e.sizeType !=
+                                  frontForkItems
+                                      .where((element) =>
+                                          element.code == frontForkCode)
+                                      .first
+                                      .sizeType
                           ? null
                           : () {
                               if (activeLayer != 13) {
@@ -970,7 +1040,9 @@ class _BikeEditorState extends State<BikeEditor> {
                           ),
                         ],
                       ),
-                      tileColor: e.code == tireCode ? Colors.white.withOpacity(0.2) : Colors.transparent,
+                      tileColor: e.code == tireCode
+                          ? Colors.white.withOpacity(0.2)
+                          : Colors.transparent,
                       onTap: e.code == tireCode
                           ? null
                           : () {
@@ -1004,7 +1076,9 @@ class _BikeEditorState extends State<BikeEditor> {
                           color: Colors.white,
                         ),
                       ),
-                      tileColor: e.code == bellCode ? Colors.white.withOpacity(0.2) : Colors.transparent,
+                      tileColor: e.code == bellCode
+                          ? Colors.white.withOpacity(0.2)
+                          : Colors.transparent,
                       onTap: e.code == bellCode
                           ? null
                           : () {
@@ -1032,7 +1106,9 @@ class _BikeEditorState extends State<BikeEditor> {
                           color: Colors.white,
                         ),
                       ),
-                      tileColor: e.code == bottleCageCode ? Colors.white.withOpacity(0.2) : Colors.transparent,
+                      tileColor: e.code == bottleCageCode
+                          ? Colors.white.withOpacity(0.2)
+                          : Colors.transparent,
                       onTap: e.code == bottleCageCode
                           ? null
                           : () {
@@ -1060,7 +1136,9 @@ class _BikeEditorState extends State<BikeEditor> {
                           color: Colors.white,
                         ),
                       ),
-                      tileColor: e.code == fenderCode ? Colors.white.withOpacity(0.2) : Colors.transparent,
+                      tileColor: e.code == fenderCode
+                          ? Colors.white.withOpacity(0.2)
+                          : Colors.transparent,
                       onTap: e.code == fenderCode
                           ? null
                           : () {
@@ -1090,7 +1168,9 @@ class _BikeEditorState extends State<BikeEditor> {
                           color: Colors.white,
                         ),
                       ),
-                      tileColor: e.code == kickstandCode ? Colors.white.withOpacity(0.2) : Colors.transparent,
+                      tileColor: e.code == kickstandCode
+                          ? Colors.white.withOpacity(0.2)
+                          : Colors.transparent,
                       onTap: e.code == kickstandCode
                           ? null
                           : () {
@@ -1118,7 +1198,9 @@ class _BikeEditorState extends State<BikeEditor> {
                           color: Colors.white,
                         ),
                       ),
-                      tileColor: e.code == lightCode ? Colors.white.withOpacity(0.2) : Colors.transparent,
+                      tileColor: e.code == lightCode
+                          ? Colors.white.withOpacity(0.2)
+                          : Colors.transparent,
                       onTap: e.code == lightCode
                           ? null
                           : () {
@@ -1148,7 +1230,9 @@ class _BikeEditorState extends State<BikeEditor> {
                           color: Colors.white,
                         ),
                       ),
-                      tileColor: e.code == phoneHolderCode ? Colors.white.withOpacity(0.2) : Colors.transparent,
+                      tileColor: e.code == phoneHolderCode
+                          ? Colors.white.withOpacity(0.2)
+                          : Colors.transparent,
                       onTap: e.code == phoneHolderCode
                           ? null
                           : () {
@@ -1193,9 +1277,17 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: kickstandAngle * math.pi / 180,
                             child: FractionallySizedBox(
-                              heightFactor: kickstandItems.where((element) => element.code == kickstandCode).first.sizeFactorFront,
+                              heightFactor: kickstandItems
+                                  .where((element) =>
+                                      element.code == kickstandCode)
+                                  .first
+                                  .sizeFactorFront,
                               child: Image.asset(
-                                kickstandItems.where((element) => element.code == kickstandCode).first.frontImage,
+                                kickstandItems
+                                    .where((element) =>
+                                        element.code == kickstandCode)
+                                    .first
+                                    .frontImage,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1244,9 +1336,17 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: brakeClprAngleRear * math.pi / 180,
                             child: FractionallySizedBox(
-                              heightFactor: brakeCaliperItems.where((element) => element.code == brakeClprCode).first.sizeFactor,
+                              heightFactor: brakeCaliperItems
+                                  .where((element) =>
+                                      element.code == brakeClprCode)
+                                  .first
+                                  .sizeFactor,
                               child: Image.asset(
-                                brakeCaliperItems.where((element) => element.code == brakeClprCode).first.rearImage,
+                                brakeCaliperItems
+                                    .where((element) =>
+                                        element.code == brakeClprCode)
+                                    .first
+                                    .rearImage,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1261,9 +1361,17 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: brakeClprAngleFront * math.pi / 180,
                             child: FractionallySizedBox(
-                              heightFactor: brakeCaliperItems.where((element) => element.code == brakeClprCode).first.sizeFactor,
+                              heightFactor: brakeCaliperItems
+                                  .where((element) =>
+                                      element.code == brakeClprCode)
+                                  .first
+                                  .sizeFactor,
                               child: Image.asset(
-                                brakeCaliperItems.where((element) => element.code == brakeClprCode).first.frontImage,
+                                brakeCaliperItems
+                                    .where((element) =>
+                                        element.code == brakeClprCode)
+                                    .first
+                                    .frontImage,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1278,11 +1386,23 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: rimAngleRear * math.pi / 180,
                             child: FractionallySizedBox(
-                              widthFactor: frontForkItems.where((element) => element.code == frontForkCode).first.sizeType == '29er'
-                                  ? rimItems.where((element) => element.code == rimCode).first.sizeFactor
+                              widthFactor: frontForkItems
+                                          .where((element) =>
+                                              element.code == frontForkCode)
+                                          .first
+                                          .sizeType ==
+                                      '29er'
+                                  ? rimItems
+                                      .where(
+                                          (element) => element.code == rimCode)
+                                      .first
+                                      .sizeFactor
                                   : 0.32,
                               child: Image.asset(
-                                rimItems.where((element) => element.code == rimCode).first.rearImage,
+                                rimItems
+                                    .where((element) => element.code == rimCode)
+                                    .first
+                                    .rearImage,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1297,11 +1417,23 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: rimAngleFront * math.pi / 180,
                             child: FractionallySizedBox(
-                              widthFactor: frontForkItems.where((element) => element.code == frontForkCode).first.sizeType == '29er'
-                                  ? rimItems.where((element) => element.code == rimCode).first.sizeFactor
+                              widthFactor: frontForkItems
+                                          .where((element) =>
+                                              element.code == frontForkCode)
+                                          .first
+                                          .sizeType ==
+                                      '29er'
+                                  ? rimItems
+                                      .where(
+                                          (element) => element.code == rimCode)
+                                      .first
+                                      .sizeFactor
                                   : 0.32,
                               child: Image.asset(
-                                rimItems.where((element) => element.code == rimCode).first.frontImage,
+                                rimItems
+                                    .where((element) => element.code == rimCode)
+                                    .first
+                                    .frontImage,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1316,9 +1448,20 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: tireAngleRear * math.pi / 180,
                             child: FractionallySizedBox(
-                              widthFactor: frontForkItems.where((element) => element.code == frontForkCode).first.sizeType == '29er' ? 0.39 : 0.37,
+                              widthFactor: frontForkItems
+                                          .where((element) =>
+                                              element.code == frontForkCode)
+                                          .first
+                                          .sizeType ==
+                                      '29er'
+                                  ? 0.39
+                                  : 0.37,
                               child: Image.asset(
-                                tireItems.where((element) => element.code == tireCode).first.rearImage,
+                                tireItems
+                                    .where(
+                                        (element) => element.code == tireCode)
+                                    .first
+                                    .rearImage,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1333,9 +1476,20 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: tireAngleFront * math.pi / 180,
                             child: FractionallySizedBox(
-                              widthFactor: frontForkItems.where((element) => element.code == frontForkCode).first.sizeType == '29er' ? 0.39 : 0.37,
+                              widthFactor: frontForkItems
+                                          .where((element) =>
+                                              element.code == frontForkCode)
+                                          .first
+                                          .sizeType ==
+                                      '29er'
+                                  ? 0.39
+                                  : 0.37,
                               child: Image.asset(
-                                tireItems.where((element) => element.code == tireCode).first.frontImage,
+                                tireItems
+                                    .where(
+                                        (element) => element.code == tireCode)
+                                    .first
+                                    .frontImage,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1350,9 +1504,17 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: cassetteAngle * math.pi / 180,
                             child: FractionallySizedBox(
-                              widthFactor: cassetteItems.where((element) => element.code == cassetteCode).first.sizeFactor,
+                              widthFactor: cassetteItems
+                                  .where(
+                                      (element) => element.code == cassetteCode)
+                                  .first
+                                  .sizeFactor,
                               child: Image.asset(
-                                cassetteItems.where((element) => element.code == cassetteCode).first.image,
+                                cassetteItems
+                                    .where((element) =>
+                                        element.code == cassetteCode)
+                                    .first
+                                    .image,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1367,9 +1529,17 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: fenderAngleRear * math.pi / 180,
                             child: FractionallySizedBox(
-                              widthFactor: fenderItems.where((element) => element.code == fenderCode).first.sizeFactorFront,
+                              widthFactor: fenderItems
+                                  .where(
+                                      (element) => element.code == fenderCode)
+                                  .first
+                                  .sizeFactorFront,
                               child: Image.asset(
-                                fenderItems.where((element) => element.code == fenderCode).first.rearImage,
+                                fenderItems
+                                    .where(
+                                        (element) => element.code == fenderCode)
+                                    .first
+                                    .rearImage,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1384,9 +1554,17 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: fenderAngleFront * math.pi / 180,
                             child: FractionallySizedBox(
-                              widthFactor: fenderItems.where((element) => element.code == fenderCode).first.sizeFactorFront,
+                              widthFactor: fenderItems
+                                  .where(
+                                      (element) => element.code == fenderCode)
+                                  .first
+                                  .sizeFactorFront,
                               child: Image.asset(
-                                fenderItems.where((element) => element.code == fenderCode).first.frontImage,
+                                fenderItems
+                                    .where(
+                                        (element) => element.code == fenderCode)
+                                    .first
+                                    .frontImage,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1401,9 +1579,17 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: frontForkAngle * math.pi / 180,
                             child: FractionallySizedBox(
-                              heightFactor: frontForkItems.where((element) => element.code == frontForkCode).first.sizeFactor,
+                              heightFactor: frontForkItems
+                                  .where((element) =>
+                                      element.code == frontForkCode)
+                                  .first
+                                  .sizeFactor,
                               child: Image.asset(
-                                frontForkItems.where((element) => element.code == frontForkCode).first.image,
+                                frontForkItems
+                                    .where((element) =>
+                                        element.code == frontForkCode)
+                                    .first
+                                    .image,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1418,9 +1604,17 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: saddleAngle * math.pi / 180,
                             child: FractionallySizedBox(
-                              heightFactor: saddleItems.where((element) => element.code == saddleCode).first.sizeFactor,
+                              heightFactor: saddleItems
+                                  .where(
+                                      (element) => element.code == saddleCode)
+                                  .first
+                                  .sizeFactor,
                               child: Image.asset(
-                                saddleItems.where((element) => element.code == saddleCode).first.image,
+                                saddleItems
+                                    .where(
+                                        (element) => element.code == saddleCode)
+                                    .first
+                                    .image,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1452,9 +1646,16 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: frameAngle * math.pi / 180,
                             child: FractionallySizedBox(
-                              widthFactor: frameItems.where((element) => element.code == frameCode).first.sizeFactor,
+                              widthFactor: frameItems
+                                  .where((element) => element.code == frameCode)
+                                  .first
+                                  .sizeFactor,
                               child: Image.asset(
-                                frameItems.where((element) => element.code == frameCode).first.image,
+                                frameItems
+                                    .where(
+                                        (element) => element.code == frameCode)
+                                    .first
+                                    .image,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1469,9 +1670,17 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: cranksetAngle * math.pi / 180,
                             child: FractionallySizedBox(
-                              widthFactor: cranksetItems.where((element) => element.code == cranksetCode).first.sizeFactor,
+                              widthFactor: cranksetItems
+                                  .where(
+                                      (element) => element.code == cranksetCode)
+                                  .first
+                                  .sizeFactor,
                               child: Image.asset(
-                                cranksetItems.where((element) => element.code == cranksetCode).first.image,
+                                cranksetItems
+                                    .where((element) =>
+                                        element.code == cranksetCode)
+                                    .first
+                                    .image,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1486,9 +1695,16 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: pedalAngle * math.pi / 180,
                             child: FractionallySizedBox(
-                              widthFactor: pedalItems.where((element) => element.code == pedalCode).first.sizeFactor,
+                              widthFactor: pedalItems
+                                  .where((element) => element.code == pedalCode)
+                                  .first
+                                  .sizeFactor,
                               child: Image.asset(
-                                pedalItems.where((element) => element.code == pedalCode).first.image,
+                                pedalItems
+                                    .where(
+                                        (element) => element.code == pedalCode)
+                                    .first
+                                    .image,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1503,9 +1719,17 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: rearDlrAngle * math.pi / 180,
                             child: FractionallySizedBox(
-                              heightFactor: rearDlrItems.where((element) => element.code == rearDlrCode).first.sizeFactor,
+                              heightFactor: rearDlrItems
+                                  .where(
+                                      (element) => element.code == rearDlrCode)
+                                  .first
+                                  .sizeFactor,
                               child: Image.asset(
-                                rearDlrItems.where((element) => element.code == rearDlrCode).first.image,
+                                rearDlrItems
+                                    .where((element) =>
+                                        element.code == rearDlrCode)
+                                    .first
+                                    .image,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1520,15 +1744,28 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: frontDlrAngle * math.pi / 180,
                             child: FractionallySizedBox(
-                              heightFactor: frontDlrItems.where((element) => element.code == frontDlrCode).first.sizeFactor,
+                              heightFactor: frontDlrItems
+                                  .where(
+                                      (element) => element.code == frontDlrCode)
+                                  .first
+                                  .sizeFactor,
                               child: !frameItems
-                                      .where((element) => element.code == frameCode)
+                                      .where((element) =>
+                                          element.code == frameCode)
                                       .first
                                       .frontDerailleurTypes
-                                      .contains(frontDlrItems.where((element) => element.code == frontDlrCode).first.type)
+                                      .contains(frontDlrItems
+                                          .where((element) =>
+                                              element.code == frontDlrCode)
+                                          .first
+                                          .type)
                                   ? SizedBox.shrink()
                                   : Image.asset(
-                                      frontDlrItems.where((element) => element.code == frontDlrCode).first.image,
+                                      frontDlrItems
+                                          .where((element) =>
+                                              element.code == frontDlrCode)
+                                          .first
+                                          .image,
                                       fit: BoxFit.contain,
                                     ),
                             ),
@@ -1543,9 +1780,16 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: bellAngle * math.pi / 180,
                             child: FractionallySizedBox(
-                              widthFactor: bellItems.where((element) => element.code == bellCode).first.sizeFactorFront,
+                              widthFactor: bellItems
+                                  .where((element) => element.code == bellCode)
+                                  .first
+                                  .sizeFactorFront,
                               child: Image.asset(
-                                bellItems.where((element) => element.code == bellCode).first.frontImage,
+                                bellItems
+                                    .where(
+                                        (element) => element.code == bellCode)
+                                    .first
+                                    .frontImage,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1560,9 +1804,16 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: lightAngleRear * math.pi / 180,
                             child: FractionallySizedBox(
-                              heightFactor: lightItems.where((element) => element.code == lightCode).first.sizeFactorRear,
+                              heightFactor: lightItems
+                                  .where((element) => element.code == lightCode)
+                                  .first
+                                  .sizeFactorRear,
                               child: Image.asset(
-                                lightItems.where((element) => element.code == lightCode).first.rearImage,
+                                lightItems
+                                    .where(
+                                        (element) => element.code == lightCode)
+                                    .first
+                                    .rearImage,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1577,9 +1828,16 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: lightAngleFront * math.pi / 180,
                             child: FractionallySizedBox(
-                              widthFactor: lightItems.where((element) => element.code == lightCode).first.sizeFactorFront,
+                              widthFactor: lightItems
+                                  .where((element) => element.code == lightCode)
+                                  .first
+                                  .sizeFactorFront,
                               child: Image.asset(
-                                lightItems.where((element) => element.code == lightCode).first.frontImage,
+                                lightItems
+                                    .where(
+                                        (element) => element.code == lightCode)
+                                    .first
+                                    .frontImage,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1594,9 +1852,17 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: handlebarAngle * math.pi / 180,
                             child: FractionallySizedBox(
-                              widthFactor: handlebarItems.where((element) => element.code == handlebarCode).first.sizeFactor,
+                              widthFactor: handlebarItems
+                                  .where((element) =>
+                                      element.code == handlebarCode)
+                                  .first
+                                  .sizeFactor,
                               child: Image.asset(
-                                handlebarItems.where((element) => element.code == handlebarCode).first.image,
+                                handlebarItems
+                                    .where((element) =>
+                                        element.code == handlebarCode)
+                                    .first
+                                    .image,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1611,9 +1877,17 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: bottleCageAngle * math.pi / 180,
                             child: FractionallySizedBox(
-                              heightFactor: bottleCageItems.where((element) => element.code == bottleCageCode).first.sizeFactorFront,
+                              heightFactor: bottleCageItems
+                                  .where((element) =>
+                                      element.code == bottleCageCode)
+                                  .first
+                                  .sizeFactorFront,
                               child: Image.asset(
-                                bottleCageItems.where((element) => element.code == bottleCageCode).first.frontImage,
+                                bottleCageItems
+                                    .where((element) =>
+                                        element.code == bottleCageCode)
+                                    .first
+                                    .frontImage,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1628,9 +1902,17 @@ class _BikeEditorState extends State<BikeEditor> {
                           child: Transform.rotate(
                             angle: phoneHoldeAngle * math.pi / 180,
                             child: FractionallySizedBox(
-                              widthFactor: phoneHolderItems.where((element) => element.code == phoneHolderCode).first.sizeFactorFront,
+                              widthFactor: phoneHolderItems
+                                  .where((element) =>
+                                      element.code == phoneHolderCode)
+                                  .first
+                                  .sizeFactorFront,
                               child: Image.asset(
-                                phoneHolderItems.where((element) => element.code == phoneHolderCode).first.frontImage,
+                                phoneHolderItems
+                                    .where((element) =>
+                                        element.code == phoneHolderCode)
+                                    .first
+                                    .frontImage,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -1801,7 +2083,9 @@ class _BikeEditorState extends State<BikeEditor> {
                 IconButton(
                   tooltip: !hideLayer ? 'Hide Layer' : 'Show Layer',
                   icon: Icon(
-                    !hideLayer ? Icons.visibility : Icons.visibility_off_rounded,
+                    !hideLayer
+                        ? Icons.visibility
+                        : Icons.visibility_off_rounded,
                     color: Colors.orange.shade400,
                   ),
                   onPressed: () {
@@ -1959,7 +2243,7 @@ class _BikeEditorState extends State<BikeEditor> {
                 child: Text('Save'),
                 style: TextButton.styleFrom(
                   backgroundColor: Color(0xFFFF8B02),
-                  primary: Colors.white,
+                  foregroundColor: Colors.white,
                   padding: EdgeInsets.zero,
                 ),
                 onPressed: () {
@@ -1967,83 +2251,122 @@ class _BikeEditorState extends State<BikeEditor> {
                     bikeProjects[widget.index!].name = projectName;
                     bikeProjects[widget.index!].buildDate = DateTime.now();
                     bikeProjects[widget.index!].brakeClprCode = brakeClprCode;
-                    bikeProjects[widget.index!].brakeClprPosFront = PartPosition(brakeClprPosFront.x, brakeClprPosFront.y);
-                    bikeProjects[widget.index!].brakeClprPosRear = PartPosition(brakeClprPosRear.x, brakeClprPosRear.y);
-                    bikeProjects[widget.index!].brakeClprAngleFront = brakeClprAngleFront;
-                    bikeProjects[widget.index!].brakeClprAngleRear = brakeClprAngleRear;
+                    bikeProjects[widget.index!].brakeClprPosFront =
+                        PartPosition(brakeClprPosFront.x, brakeClprPosFront.y);
+                    bikeProjects[widget.index!].brakeClprPosRear =
+                        PartPosition(brakeClprPosRear.x, brakeClprPosRear.y);
+                    bikeProjects[widget.index!].brakeClprAngleFront =
+                        brakeClprAngleFront;
+                    bikeProjects[widget.index!].brakeClprAngleRear =
+                        brakeClprAngleRear;
                     bikeProjects[widget.index!].cassetteCode = cassetteCode;
-                    bikeProjects[widget.index!].cassettePos = PartPosition(cassettePos.x, cassettePos.y);
+                    bikeProjects[widget.index!].cassettePos =
+                        PartPosition(cassettePos.x, cassettePos.y);
                     bikeProjects[widget.index!].cassetteAngle = cassetteAngle;
                     bikeProjects[widget.index!].cranksetCode = cranksetCode;
-                    bikeProjects[widget.index!].cranksetPos = PartPosition(cranksetPos.x, cranksetPos.y);
+                    bikeProjects[widget.index!].cranksetPos =
+                        PartPosition(cranksetPos.x, cranksetPos.y);
                     bikeProjects[widget.index!].cranksetAngle = cranksetAngle;
                     bikeProjects[widget.index!].frameCode = frameCode;
-                    bikeProjects[widget.index!].framePos = PartPosition(framePos.x, framePos.y);
+                    bikeProjects[widget.index!].framePos =
+                        PartPosition(framePos.x, framePos.y);
                     bikeProjects[widget.index!].frameAngle = frameAngle;
                     bikeProjects[widget.index!].frontDlrCode = frontDlrCode;
-                    bikeProjects[widget.index!].frontDlrPos = PartPosition(frontDlrPos.x, frontDlrPos.y);
+                    bikeProjects[widget.index!].frontDlrPos =
+                        PartPosition(frontDlrPos.x, frontDlrPos.y);
                     bikeProjects[widget.index!].frontDlrAngle = frontDlrAngle;
                     bikeProjects[widget.index!].frontForkCode = frontForkCode;
-                    bikeProjects[widget.index!].frontForkPos = PartPosition(frontForkPos.x, frontForkPos.y);
+                    bikeProjects[widget.index!].frontForkPos =
+                        PartPosition(frontForkPos.x, frontForkPos.y);
                     bikeProjects[widget.index!].frontForkAngle = frontForkAngle;
                     bikeProjects[widget.index!].handlebarCode = handlebarCode;
-                    bikeProjects[widget.index!].handlebarPos = PartPosition(handlebarPos.x, handlebarPos.y);
+                    bikeProjects[widget.index!].handlebarPos =
+                        PartPosition(handlebarPos.x, handlebarPos.y);
                     bikeProjects[widget.index!].handlebarAngle = handlebarAngle;
                     bikeProjects[widget.index!].pedalCode = pedalCode;
-                    bikeProjects[widget.index!].pedalPos = PartPosition(pedalPos.x, pedalPos.y);
+                    bikeProjects[widget.index!].pedalPos =
+                        PartPosition(pedalPos.x, pedalPos.y);
                     bikeProjects[widget.index!].pedalAngle = pedalAngle;
                     bikeProjects[widget.index!].rearDlrCode = rearDlrCode;
-                    bikeProjects[widget.index!].rearDlrPos = PartPosition(rearDlrPos.x, rearDlrPos.y);
+                    bikeProjects[widget.index!].rearDlrPos =
+                        PartPosition(rearDlrPos.x, rearDlrPos.y);
                     bikeProjects[widget.index!].rearDlrAngle = rearDlrAngle;
                     bikeProjects[widget.index!].rimCode = rimCode;
-                    bikeProjects[widget.index!].rimPosFront = PartPosition(rimPosFront.x, rimPosFront.y);
-                    bikeProjects[widget.index!].rimPosRear = PartPosition(rimPosRear.x, rimPosRear.y);
+                    bikeProjects[widget.index!].rimPosFront =
+                        PartPosition(rimPosFront.x, rimPosFront.y);
+                    bikeProjects[widget.index!].rimPosRear =
+                        PartPosition(rimPosRear.x, rimPosRear.y);
                     bikeProjects[widget.index!].rimAngleFront = rimAngleFront;
                     bikeProjects[widget.index!].rimAngleRear = rimAngleRear;
                     bikeProjects[widget.index!].saddleCode = saddleCode;
-                    bikeProjects[widget.index!].saddlePos = PartPosition(saddlePos.x, saddlePos.y);
+                    bikeProjects[widget.index!].saddlePos =
+                        PartPosition(saddlePos.x, saddlePos.y);
                     bikeProjects[widget.index!].saddleAngle = saddleAngle;
                     bikeProjects[widget.index!].tireCode = tireCode;
-                    bikeProjects[widget.index!].tirePosFront = PartPosition(tirePosFront.x, tirePosFront.y);
-                    bikeProjects[widget.index!].tirePosRear = PartPosition(tirePosRear.x, tirePosRear.y);
+                    bikeProjects[widget.index!].tirePosFront =
+                        PartPosition(tirePosFront.x, tirePosFront.y);
+                    bikeProjects[widget.index!].tirePosRear =
+                        PartPosition(tirePosRear.x, tirePosRear.y);
                     bikeProjects[widget.index!].tireAngleFront = tireAngleFront;
                     bikeProjects[widget.index!].tireAngleRear = tireAngleRear;
                     bikeProjects[widget.index!].bellCode = bellCode;
-                    bikeProjects[widget.index!].bellPos = PartPosition(bellPos.x, bellPos.y);
+                    bikeProjects[widget.index!].bellPos =
+                        PartPosition(bellPos.x, bellPos.y);
                     bikeProjects[widget.index!].bellAngle = bellAngle;
                     bikeProjects[widget.index!].bottleCageCode = bottleCageCode;
-                    bikeProjects[widget.index!].bottleCagePos = PartPosition(bottleCagePos.x, bottleCagePos.y);
-                    bikeProjects[widget.index!].bottleCageAngle = bottleCageAngle;
+                    bikeProjects[widget.index!].bottleCagePos =
+                        PartPosition(bottleCagePos.x, bottleCagePos.y);
+                    bikeProjects[widget.index!].bottleCageAngle =
+                        bottleCageAngle;
                     bikeProjects[widget.index!].fenderCode = fenderCode;
-                    bikeProjects[widget.index!].fenderPosFront = PartPosition(fenderPosFront.x, fenderPosFront.y);
-                    bikeProjects[widget.index!].fenderPosRear = PartPosition(fenderPosRear.x, fenderPosRear.y);
-                    bikeProjects[widget.index!].fenderAngleFront = fenderAngleFront;
-                    bikeProjects[widget.index!].fenderAngleRear = fenderAngleRear;
+                    bikeProjects[widget.index!].fenderPosFront =
+                        PartPosition(fenderPosFront.x, fenderPosFront.y);
+                    bikeProjects[widget.index!].fenderPosRear =
+                        PartPosition(fenderPosRear.x, fenderPosRear.y);
+                    bikeProjects[widget.index!].fenderAngleFront =
+                        fenderAngleFront;
+                    bikeProjects[widget.index!].fenderAngleRear =
+                        fenderAngleRear;
                     bikeProjects[widget.index!].kickstandCode = kickstandCode;
-                    bikeProjects[widget.index!].kickstandPos = PartPosition(kickstandPos.x, kickstandPos.y);
+                    bikeProjects[widget.index!].kickstandPos =
+                        PartPosition(kickstandPos.x, kickstandPos.y);
                     bikeProjects[widget.index!].kickstandAngle = kickstandAngle;
                     bikeProjects[widget.index!].lightCode = lightCode;
-                    bikeProjects[widget.index!].lightPosFront = PartPosition(lightPosFront.x, lightPosFront.y);
-                    bikeProjects[widget.index!].lightPosRear = PartPosition(lightPosRear.x, lightPosRear.y);
-                    bikeProjects[widget.index!].lightAngleFront = lightAngleFront;
+                    bikeProjects[widget.index!].lightPosFront =
+                        PartPosition(lightPosFront.x, lightPosFront.y);
+                    bikeProjects[widget.index!].lightPosRear =
+                        PartPosition(lightPosRear.x, lightPosRear.y);
+                    bikeProjects[widget.index!].lightAngleFront =
+                        lightAngleFront;
                     bikeProjects[widget.index!].lightAngleRear = lightAngleRear;
-                    bikeProjects[widget.index!].phoneHolderCode = phoneHolderCode;
-                    bikeProjects[widget.index!].phoneHoldePos = PartPosition(phoneHoldePos.x, phoneHoldePos.y);
-                    bikeProjects[widget.index!].phoneHoldeAngle = phoneHoldeAngle;
-                    bikeProjects[widget.index!].chainAdvancedPos = PartPosition(chainAdvancedPos.x, chainAdvancedPos.y);
-                    bikeProjects[widget.index!].chainAdvancedAngle = chainAdvancedAngle;
-                    bikeProjects[widget.index!].brakeDiscPosFront = PartPosition(brakeDiscPosFront.x, brakeDiscPosFront.y);
-                    bikeProjects[widget.index!].brakeDiscPosRear = PartPosition(brakeDiscPosRear.x, brakeDiscPosRear.y);
-                    bikeProjects[widget.index!].brakeDiscAngleFront = brakeDiscAngleFront;
-                    bikeProjects[widget.index!].brakeDiscAngleRear = brakeDiscAngleRear;
+                    bikeProjects[widget.index!].phoneHolderCode =
+                        phoneHolderCode;
+                    bikeProjects[widget.index!].phoneHoldePos =
+                        PartPosition(phoneHoldePos.x, phoneHoldePos.y);
+                    bikeProjects[widget.index!].phoneHoldeAngle =
+                        phoneHoldeAngle;
+                    bikeProjects[widget.index!].chainAdvancedPos =
+                        PartPosition(chainAdvancedPos.x, chainAdvancedPos.y);
+                    bikeProjects[widget.index!].chainAdvancedAngle =
+                        chainAdvancedAngle;
+                    bikeProjects[widget.index!].brakeDiscPosFront =
+                        PartPosition(brakeDiscPosFront.x, brakeDiscPosFront.y);
+                    bikeProjects[widget.index!].brakeDiscPosRear =
+                        PartPosition(brakeDiscPosRear.x, brakeDiscPosRear.y);
+                    bikeProjects[widget.index!].brakeDiscAngleFront =
+                        brakeDiscAngleFront;
+                    bikeProjects[widget.index!].brakeDiscAngleRear =
+                        brakeDiscAngleRear;
                   } else {
                     bikeProjects.add(
                       BikeBuild(
                         name: projectName,
                         buildDate: DateTime.now(),
                         brakeClprCode: brakeClprCode,
-                        brakeClprPosFront: PartPosition(brakeClprPosFront.x, brakeClprPosFront.y),
-                        brakeClprPosRear: PartPosition(brakeClprPosRear.x, brakeClprPosRear.y),
+                        brakeClprPosFront: PartPosition(
+                            brakeClprPosFront.x, brakeClprPosFront.y),
+                        brakeClprPosRear: PartPosition(
+                            brakeClprPosRear.x, brakeClprPosRear.y),
                         brakeClprAngleFront: brakeClprAngleFront,
                         brakeClprAngleRear: brakeClprAngleRear,
                         cassetteCode: cassetteCode,
@@ -2059,10 +2382,12 @@ class _BikeEditorState extends State<BikeEditor> {
                         frontDlrPos: PartPosition(frontDlrPos.x, frontDlrPos.y),
                         frontDlrAngle: frontDlrAngle,
                         frontForkCode: frontForkCode,
-                        frontForkPos: PartPosition(frontForkPos.x, frontForkPos.y),
+                        frontForkPos:
+                            PartPosition(frontForkPos.x, frontForkPos.y),
                         frontForkAngle: frontForkAngle,
                         handlebarCode: handlebarCode,
-                        handlebarPos: PartPosition(handlebarPos.x, handlebarPos.y),
+                        handlebarPos:
+                            PartPosition(handlebarPos.x, handlebarPos.y),
                         handlebarAngle: handlebarAngle,
                         pedalCode: pedalCode,
                         pedalPos: PartPosition(pedalPos.x, pedalPos.y),
@@ -2079,7 +2404,8 @@ class _BikeEditorState extends State<BikeEditor> {
                         saddlePos: PartPosition(saddlePos.x, saddlePos.y),
                         saddleAngle: saddleAngle,
                         tireCode: tireCode,
-                        tirePosFront: PartPosition(tirePosFront.x, tirePosFront.y),
+                        tirePosFront:
+                            PartPosition(tirePosFront.x, tirePosFront.y),
                         tirePosRear: PartPosition(tirePosRear.x, tirePosRear.y),
                         tireAngleFront: tireAngleFront,
                         tireAngleRear: tireAngleRear,
@@ -2087,35 +2413,47 @@ class _BikeEditorState extends State<BikeEditor> {
                         bellPos: PartPosition(bellPos.x, bellPos.y),
                         bellAngle: bellAngle,
                         bottleCageCode: bottleCageCode,
-                        bottleCagePos: PartPosition(bottleCagePos.x, bottleCagePos.y),
+                        bottleCagePos:
+                            PartPosition(bottleCagePos.x, bottleCagePos.y),
                         bottleCageAngle: bottleCageAngle,
                         fenderCode: fenderCode,
-                        fenderPosFront: PartPosition(fenderPosFront.x, fenderPosFront.y),
-                        fenderPosRear: PartPosition(fenderPosRear.x, fenderPosRear.y),
+                        fenderPosFront:
+                            PartPosition(fenderPosFront.x, fenderPosFront.y),
+                        fenderPosRear:
+                            PartPosition(fenderPosRear.x, fenderPosRear.y),
                         fenderAngleFront: fenderAngleFront,
                         fenderAngleRear: fenderAngleRear,
                         kickstandCode: kickstandCode,
-                        kickstandPos: PartPosition(kickstandPos.x, kickstandPos.y),
+                        kickstandPos:
+                            PartPosition(kickstandPos.x, kickstandPos.y),
                         kickstandAngle: kickstandAngle,
                         lightCode: lightCode,
-                        lightPosFront: PartPosition(lightPosFront.x, lightPosFront.y),
-                        lightPosRear: PartPosition(lightPosRear.x, lightPosRear.y),
+                        lightPosFront:
+                            PartPosition(lightPosFront.x, lightPosFront.y),
+                        lightPosRear:
+                            PartPosition(lightPosRear.x, lightPosRear.y),
                         lightAngleFront: lightAngleFront,
                         lightAngleRear: lightAngleRear,
                         phoneHolderCode: phoneHolderCode,
-                        phoneHoldePos: PartPosition(phoneHoldePos.x, phoneHoldePos.y),
+                        phoneHoldePos:
+                            PartPosition(phoneHoldePos.x, phoneHoldePos.y),
                         phoneHoldeAngle: phoneHoldeAngle,
-                        chainAdvancedPos: PartPosition(chainAdvancedPos.x, chainAdvancedPos.y),
+                        chainAdvancedPos: PartPosition(
+                            chainAdvancedPos.x, chainAdvancedPos.y),
                         chainAdvancedAngle: chainAdvancedAngle,
-                        brakeDiscPosFront: PartPosition(brakeDiscPosFront.x, brakeDiscPosFront.y),
-                        brakeDiscPosRear: PartPosition(brakeDiscPosRear.x, brakeDiscPosRear.y),
+                        brakeDiscPosFront: PartPosition(
+                            brakeDiscPosFront.x, brakeDiscPosFront.y),
+                        brakeDiscPosRear: PartPosition(
+                            brakeDiscPosRear.x, brakeDiscPosRear.y),
                         brakeDiscAngleFront: brakeDiscAngleFront,
                         brakeDiscAngleRear: brakeDiscAngleRear,
                       ),
                     );
                   }
-                  List<String> jsonString = bikeProjects.map((e) => e.toJson()).toList();
-                  StorageHelper.setStringList('${currentUser!.profileNumber}bikeProjects', jsonString);
+                  List<String> jsonString =
+                      bikeProjects.map((e) => e.toJson()).toList();
+                  StorageHelper.setStringList(
+                      '${currentUser!.profileNumber}bikeProjects', jsonString);
                   Navigator.pop(context);
                 },
               ),
@@ -2124,13 +2462,17 @@ class _BikeEditorState extends State<BikeEditor> {
           Align(
             alignment: Alignment.centerLeft,
             child: Material(
-              borderRadius: BorderRadius.only(topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(20),
+                  bottomRight: Radius.circular(20)),
               color: Color(0xFFFF8B02),
               child: Ink(
                 height: 50,
                 width: 50,
                 child: InkWell(
-                  borderRadius: BorderRadius.only(topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      bottomRight: Radius.circular(20)),
                   child: Icon(
                     Icons.settings,
                     color: Colors.white,
@@ -2180,7 +2522,10 @@ class _BikeEditorState extends State<BikeEditor> {
     if (widget.index == null) {
       if (bikeProjects.isNotEmpty) {
         int incrementName = bikeProjects.length;
-        while (bikeProjects.map((e) => e.name).toList().contains('BikeProject$incrementName')) {
+        while (bikeProjects
+            .map((e) => e.name)
+            .toList()
+            .contains('BikeProject$incrementName')) {
           incrementName += 1;
         }
         projectName = 'BikeProject$incrementName';
@@ -2191,73 +2536,95 @@ class _BikeEditorState extends State<BikeEditor> {
       BikeBuild currentBike = bikeProjects[widget.index!];
       projectName = currentBike.name;
       brakeClprCode = currentBike.brakeClprCode;
-      brakeClprPosFront = Alignment(currentBike.brakeClprPosFront.x, currentBike.brakeClprPosFront.y);
-      brakeClprPosRear = Alignment(currentBike.brakeClprPosRear.x, currentBike.brakeClprPosRear.y);
+      brakeClprPosFront = Alignment(
+          currentBike.brakeClprPosFront.x, currentBike.brakeClprPosFront.y);
+      brakeClprPosRear = Alignment(
+          currentBike.brakeClprPosRear.x, currentBike.brakeClprPosRear.y);
       brakeClprAngleFront = currentBike.brakeClprAngleFront;
       brakeClprAngleRear = currentBike.brakeClprAngleRear;
       cassetteCode = currentBike.cassetteCode;
-      cassettePos = Alignment(currentBike.cassettePos.x, currentBike.cassettePos.y);
+      cassettePos =
+          Alignment(currentBike.cassettePos.x, currentBike.cassettePos.y);
       cassetteAngle = currentBike.cassetteAngle;
       cranksetCode = currentBike.cranksetCode;
-      cranksetPos = Alignment(currentBike.cranksetPos.x, currentBike.cranksetPos.y);
+      cranksetPos =
+          Alignment(currentBike.cranksetPos.x, currentBike.cranksetPos.y);
       cranksetAngle = currentBike.cranksetAngle;
       frameCode = currentBike.frameCode;
       framePos = Alignment(currentBike.framePos.x, currentBike.framePos.y);
       frameAngle = currentBike.frameAngle;
       frontDlrCode = currentBike.frontDlrCode;
-      frontDlrPos = Alignment(currentBike.frontDlrPos.x, currentBike.frontDlrPos.y);
+      frontDlrPos =
+          Alignment(currentBike.frontDlrPos.x, currentBike.frontDlrPos.y);
       frontDlrAngle = currentBike.frontDlrAngle;
       frontForkCode = currentBike.frontForkCode;
-      frontForkPos = Alignment(currentBike.frontForkPos.x, currentBike.frontForkPos.y);
+      frontForkPos =
+          Alignment(currentBike.frontForkPos.x, currentBike.frontForkPos.y);
       frontForkAngle = currentBike.frontForkAngle;
       handlebarCode = currentBike.handlebarCode;
-      handlebarPos = Alignment(currentBike.handlebarPos.x, currentBike.handlebarPos.y);
+      handlebarPos =
+          Alignment(currentBike.handlebarPos.x, currentBike.handlebarPos.y);
       handlebarAngle = currentBike.handlebarAngle;
       pedalCode = currentBike.pedalCode;
       pedalPos = Alignment(currentBike.pedalPos.x, currentBike.pedalPos.y);
       pedalAngle = currentBike.pedalAngle;
       rearDlrCode = currentBike.rearDlrCode;
-      rearDlrPos = Alignment(currentBike.rearDlrPos.x, currentBike.rearDlrPos.y);
+      rearDlrPos =
+          Alignment(currentBike.rearDlrPos.x, currentBike.rearDlrPos.y);
       rearDlrAngle = currentBike.rearDlrAngle;
       rimCode = currentBike.rimCode;
-      rimPosFront = Alignment(currentBike.rimPosFront.x, currentBike.rimPosFront.y);
-      rimPosRear = Alignment(currentBike.rimPosRear.x, currentBike.rimPosRear.y);
+      rimPosFront =
+          Alignment(currentBike.rimPosFront.x, currentBike.rimPosFront.y);
+      rimPosRear =
+          Alignment(currentBike.rimPosRear.x, currentBike.rimPosRear.y);
       rimAngleFront = currentBike.rimAngleFront;
       rimAngleRear = currentBike.rimAngleRear;
       saddleCode = currentBike.saddleCode;
       saddlePos = Alignment(currentBike.saddlePos.x, currentBike.saddlePos.y);
       saddleAngle = currentBike.saddleAngle;
       tireCode = currentBike.tireCode;
-      tirePosFront = Alignment(currentBike.tirePosFront.x, currentBike.tirePosFront.y);
-      tirePosRear = Alignment(currentBike.tirePosRear.x, currentBike.tirePosRear.y);
+      tirePosFront =
+          Alignment(currentBike.tirePosFront.x, currentBike.tirePosFront.y);
+      tirePosRear =
+          Alignment(currentBike.tirePosRear.x, currentBike.tirePosRear.y);
       tireAngleFront = currentBike.tireAngleFront;
       tireAngleRear = currentBike.tireAngleRear;
       bellCode = currentBike.bellCode;
       bellPos = Alignment(currentBike.bellPos.x, currentBike.bellPos.y);
       bellAngle = currentBike.bellAngle;
       bottleCageCode = currentBike.bottleCageCode;
-      bottleCagePos = Alignment(currentBike.bottleCagePos.x, currentBike.bottleCagePos.y);
+      bottleCagePos =
+          Alignment(currentBike.bottleCagePos.x, currentBike.bottleCagePos.y);
       bottleCageAngle = currentBike.bottleCageAngle;
       fenderCode = currentBike.fenderCode;
-      fenderPosFront = Alignment(currentBike.fenderPosFront.x, currentBike.fenderPosFront.y);
-      fenderPosRear = Alignment(currentBike.fenderPosRear.x, currentBike.fenderPosRear.y);
+      fenderPosFront =
+          Alignment(currentBike.fenderPosFront.x, currentBike.fenderPosFront.y);
+      fenderPosRear =
+          Alignment(currentBike.fenderPosRear.x, currentBike.fenderPosRear.y);
       fenderAngleFront = currentBike.fenderAngleFront;
       fenderAngleRear = currentBike.fenderAngleRear;
       kickstandCode = currentBike.kickstandCode;
-      kickstandPos = Alignment(currentBike.kickstandPos.x, currentBike.kickstandPos.y);
+      kickstandPos =
+          Alignment(currentBike.kickstandPos.x, currentBike.kickstandPos.y);
       kickstandAngle = currentBike.kickstandAngle;
       lightCode = currentBike.lightCode;
-      lightPosFront = Alignment(currentBike.lightPosFront.x, currentBike.lightPosFront.y);
-      lightPosRear = Alignment(currentBike.lightPosRear.x, currentBike.lightPosRear.y);
+      lightPosFront =
+          Alignment(currentBike.lightPosFront.x, currentBike.lightPosFront.y);
+      lightPosRear =
+          Alignment(currentBike.lightPosRear.x, currentBike.lightPosRear.y);
       lightAngleFront = currentBike.lightAngleFront;
       lightAngleRear = currentBike.lightAngleRear;
       phoneHolderCode = currentBike.phoneHolderCode;
-      phoneHoldePos = Alignment(currentBike.phoneHoldePos.x, currentBike.phoneHoldePos.y);
+      phoneHoldePos =
+          Alignment(currentBike.phoneHoldePos.x, currentBike.phoneHoldePos.y);
       phoneHoldeAngle = currentBike.phoneHoldeAngle;
-      chainAdvancedPos = Alignment(currentBike.chainAdvancedPos.x, currentBike.chainAdvancedPos.y);
+      chainAdvancedPos = Alignment(
+          currentBike.chainAdvancedPos.x, currentBike.chainAdvancedPos.y);
       chainAdvancedAngle = currentBike.chainAdvancedAngle;
-      brakeDiscPosFront = Alignment(currentBike.brakeDiscPosFront.x, currentBike.brakeDiscPosFront.y);
-      brakeDiscPosRear = Alignment(currentBike.brakeDiscPosRear.x, currentBike.brakeDiscPosRear.y);
+      brakeDiscPosFront = Alignment(
+          currentBike.brakeDiscPosFront.x, currentBike.brakeDiscPosFront.y);
+      brakeDiscPosRear = Alignment(
+          currentBike.brakeDiscPosRear.x, currentBike.brakeDiscPosRear.y);
       brakeDiscAngleFront = currentBike.brakeDiscAngleFront;
       brakeDiscAngleRear = currentBike.brakeDiscAngleRear;
     }

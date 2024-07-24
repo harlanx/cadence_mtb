@@ -9,7 +9,6 @@ import 'package:cadence_mtb/utilities/function_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hive/hive.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class MainScreen extends StatefulWidget {
@@ -20,7 +19,8 @@ class MainScreen extends StatefulWidget {
 
 class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   final GlobalKey<HomeScreenState> _homeKey = GlobalKey<HomeScreenState>();
-  final PageController _pageController = PageController(initialPage: 0, keepPage: true);
+  final PageController _pageController =
+      PageController(initialPage: 0, keepPage: true);
   ValueNotifier<int> _currentIndex = ValueNotifier<int>(0);
   late List<Widget> _pages;
   late Future _futureHolder;
@@ -30,14 +30,16 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     super.initState();
     _futureHolder = _openBikeActivitiesBox();
     _pages = [HomeScreen(key: _homeKey), GuidesScreen()];
-    WidgetsBinding.instance!.addObserver(this);
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       if (FunctionHelper.isFirstRun) {
-        Map<Permission, PermissionStatus> statuses = await AppPermissions.requestAllPermissions();
+        Map<Permission, PermissionStatus> statuses =
+            await AppPermissions.requestAllPermissions();
         if (statuses.containsValue(PermissionStatus.denied)) {
           CustomToast.showToastDenied(
             context: context,
-            requestText: 'CadenceMTB requires permissions for the features to work properly.',
+            requestText:
+                'CadenceMTB requires permissions for the features to work properly.',
           );
         }
       }
@@ -46,25 +48,29 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final bool _isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    final bool _isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     final Size _size = MediaQuery.of(context).size;
     final bool _inHomeScreen = _currentIndex.value == 0;
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(statusBarColor: Color(0xFF496D47), statusBarIconBrightness: Brightness.light),
+      value: SystemUiOverlayStyle(
+          statusBarColor: Color(0xFF496D47),
+          statusBarIconBrightness: Brightness.light),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         drawer: Theme(
           data: Theme.of(context).copyWith(
+            colorScheme:
+                ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
             canvasColor: Color(0xFF496D47),
-            accentColor: Colors.white,
             textTheme: TextTheme(
-              subtitle1: TextStyle(
+              titleMedium: TextStyle(
                 fontFamily: 'Comfortaa',
                 color: Colors.black,
                 fontWeight: FontWeight.w700,
@@ -99,7 +105,8 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                     onTap: () {
                       showModal(
                         context: context,
-                        configuration: FadeScaleTransitionConfiguration(barrierDismissible: false),
+                        configuration: FadeScaleTransitionConfiguration(
+                            barrierDismissible: false),
                         builder: (_) => PinCodeScreen(
                           user: currentUser!,
                           onCorrect: () {
@@ -124,7 +131,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                     title: Text('Log out'),
                     onTap: () {
                       StorageHelper.setBool('isLoggedIn', false);
-                      WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+                      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                         Navigator.pushAndRemoveUntil(
                           context,
                           CustomRoutes.fadeThrough(page: LoginScreen()),
@@ -139,7 +146,8 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                     onTap: () {
                       showModal(
                         context: context,
-                        configuration: FadeScaleTransitionConfiguration(barrierDismissible: true),
+                        configuration: FadeScaleTransitionConfiguration(
+                            barrierDismissible: true),
                         builder: (_) => Scaffold(
                           backgroundColor: Colors.black.withOpacity(0.6),
                           body: Center(
@@ -157,8 +165,8 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                                     TextButton(
                                       child: Text('Yes'),
                                       style: TextButton.styleFrom(
+                                        foregroundColor: Colors.white,
                                         backgroundColor: Color(0xFF496D47),
-                                        primary: Colors.white,
                                         padding: EdgeInsets.zero,
                                       ),
                                       onPressed: () {
@@ -169,8 +177,8 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                                     TextButton(
                                       child: Text('No'),
                                       style: TextButton.styleFrom(
+                                        foregroundColor: Colors.white,
                                         backgroundColor: Color(0xFF496D47),
-                                        primary: Colors.white,
                                         padding: EdgeInsets.zero,
                                       ),
                                       onPressed: () {
@@ -222,11 +230,15 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                 child: EmergencyButton(),
                 securityBottom: 20,
               ),
-        floatingActionButtonLocation: _isPortrait ? FloatingActionButtonLocation.centerDocked : null,
+        floatingActionButtonLocation:
+            _isPortrait ? FloatingActionButtonLocation.centerDocked : null,
         //BOTTOM NAV BAR
         bottomNavigationBar: Container(
           decoration: BoxDecoration(color: Colors.transparent, boxShadow: [
-            BoxShadow(blurRadius: 10, color: Theme.of(context).scaffoldBackgroundColor.darken(0.5), offset: Offset(0, -1)),
+            BoxShadow(
+                blurRadius: 10,
+                color: Theme.of(context).scaffoldBackgroundColor.darken(0.5),
+                offset: Offset(0, -1)),
           ]),
           child: BottomAppBar(
             elevation: 0,
@@ -251,7 +263,9 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                               width: _inHomeScreen ? 32 : 0,
                               height: 5,
                               decoration: BoxDecoration(
-                                color: _inHomeScreen ? Color(0xFF496D47) : Colors.transparent,
+                                color: _inHomeScreen
+                                    ? Color(0xFF496D47)
+                                    : Colors.transparent,
                                 borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(5),
                                   bottomRight: Radius.circular(5),
@@ -269,7 +283,9 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                               width: !_inHomeScreen ? 32 : 0,
                               height: 5,
                               decoration: BoxDecoration(
-                                color: !_inHomeScreen ? Color(0xFF496D47) : Colors.transparent,
+                                color: !_inHomeScreen
+                                    ? Color(0xFF496D47)
+                                    : Colors.transparent,
                                 borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(5),
                                   bottomRight: Radius.circular(5),
@@ -291,30 +307,39 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                         'assets/icons/home_dashboard/home.svg',
                         height: 32,
                         width: 32,
-                        color: _inHomeScreen ? Color(0xFF496D47) : Colors.grey,
+                        colorFilter: ColorFilter.mode(
+                          _inHomeScreen ? Color(0xFF496D47) : Colors.grey,
+                          BlendMode.srcIn,
+                        ),
                       ),
                       splashColor: Color(0xFF496D47).withOpacity(0.8),
                       highlightColor: Colors.transparent,
                       onPressed: _inHomeScreen
                           ? null
                           : () {
-                              _pageController.animateToPage(0, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                              _pageController.animateToPage(0,
+                                  duration: Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut);
                             },
                     ),
                     IconButton(
                       icon: SvgPicture.asset(
-                        'assets/icons/guides_dashboard/guides_and_manuals.svg',
-                        height: 32,
-                        width: 32,
-                        color: !_inHomeScreen ? Color(0xFF496D47) : Colors.grey,
-                      ),
+                          'assets/icons/guides_dashboard/guides_and_manuals.svg',
+                          height: 32,
+                          width: 32,
+                          colorFilter: ColorFilter.mode(
+                            !_inHomeScreen ? Color(0xFF496D47) : Colors.grey,
+                            BlendMode.srcIn,
+                          )),
                       splashColor: Color(0xFF496D47).withOpacity(0.8),
                       highlightColor: Colors.transparent,
                       onPressed: !_inHomeScreen
                           ? null
                           : () {
                               _homeKey.currentState!.closePanel();
-                              _pageController.animateToPage(1, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                              _pageController.animateToPage(1,
+                                  duration: Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut);
                             },
                     ),
                   ],
@@ -328,6 +353,7 @@ class MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   }
 
   Future<Box> _openBikeActivitiesBox() async {
-    return await Hive.openBox<BikeActivity>('${currentUser!.profileNumber}bikeActivities');
+    return await Hive.openBox<BikeActivity>(
+        '${currentUser!.profileNumber}bikeActivities');
   }
 }

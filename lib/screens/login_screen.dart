@@ -24,7 +24,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(statusBarColor: Color(0xFF496D47), statusBarIconBrightness: Brightness.light),
+      value: SystemUiOverlayStyle(
+          statusBarColor: Color(0xFF496D47),
+          statusBarIconBrightness: Brightness.light),
       child: SafeArea(
         bottom: false,
         child: Scaffold(
@@ -64,7 +66,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   decoration: BoxDecoration(
                                     color: Colors.grey.withOpacity(0.5),
                                     borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(color: Color(0xFF496D47), width: 2),
+                                    border: Border.all(
+                                        color: Color(0xFF496D47), width: 2),
                                   ),
                                   child: ListTile(
                                     leading: Icon(Icons.person_add),
@@ -76,31 +79,60 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     onTap: () {
                                       if (snapshot.data!.length >= 5) {
-                                        CustomToast.showToastSimple(context: context, simpleMessage: 'Number of Profile Limit Reached');
+                                        CustomToast.showToastSimple(
+                                            context: context,
+                                            simpleMessage:
+                                                'Number of Profile Limit Reached');
                                         return;
                                       } else {
                                         showModal(
                                           context: context,
-                                          configuration: FadeScaleTransitionConfiguration(barrierDismissible: false),
+                                          configuration:
+                                              FadeScaleTransitionConfiguration(
+                                                  barrierDismissible: false),
                                           builder: (_) {
-                                            return WillPopScope(
-                                              onWillPop: () => Future.value(false),
+                                            return PopScope(
+                                              canPop: false,
                                               child: UserForm(
                                                 onSave: (profile) {
                                                   if (profileList.isEmpty) {
                                                     profileList.add(profile);
-                                                    StorageHelper.setStringList('userProfiles', profileList.map((e) => e.toJson()).toList());
-                                                    Navigator.pop(context, true);
+                                                    StorageHelper.setStringList(
+                                                        'userProfiles',
+                                                        profileList
+                                                            .map((e) =>
+                                                                e.toJson())
+                                                            .toList());
+                                                    Navigator.pop(
+                                                        context, true);
                                                   } else {
                                                     if (profileList
-                                                        .map((e) => e.profileName.toLowerCase().replaceAll(' ', ''))
-                                                        .contains(profile.profileName.toLowerCase().replaceAll(' ', ''))) {
-                                                      CustomToast.showToastSimple(context: context, simpleMessage: 'Profile Name Already Exist');
+                                                        .map((e) => e
+                                                            .profileName
+                                                            .toLowerCase()
+                                                            .replaceAll(
+                                                                ' ', ''))
+                                                        .contains(profile
+                                                            .profileName
+                                                            .toLowerCase()
+                                                            .replaceAll(
+                                                                ' ', ''))) {
+                                                      CustomToast.showToastSimple(
+                                                          context: context,
+                                                          simpleMessage:
+                                                              'Profile Name Already Exist');
                                                       return;
                                                     } else {
                                                       profileList.add(profile);
-                                                      StorageHelper.setStringList('userProfiles', profileList.map((e) => e.toJson()).toList());
-                                                      Navigator.pop(context, true);
+                                                      StorageHelper
+                                                          .setStringList(
+                                                              'userProfiles',
+                                                              profileList
+                                                                  .map((e) => e
+                                                                      .toJson())
+                                                                  .toList());
+                                                      Navigator.pop(
+                                                          context, true);
                                                     }
                                                   }
                                                 },
@@ -121,7 +153,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   decoration: BoxDecoration(
                                     color: Colors.transparent,
                                     borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(color: Color(0xFF496D47), width: 2),
+                                    border: Border.all(
+                                        color: Color(0xFF496D47), width: 2),
                                   ),
                                   child: ListTile(
                                     leading: Icon(Icons.person),
@@ -137,29 +170,38 @@ class _LoginScreenState extends State<LoginScreen> {
                                       onPressed: () {
                                         showModal<bool>(
                                           context: context,
-                                          configuration: FadeScaleTransitionConfiguration(barrierDismissible: true),
+                                          configuration:
+                                              FadeScaleTransitionConfiguration(
+                                                  barrierDismissible: true),
                                           builder: (_) {
                                             return AlertDialog(
-                                              content: Text('Are you sure you want to delete the profile "${snapshot.data![index - 1].profileName}"?'),
+                                              content: Text(
+                                                  'Are you sure you want to delete the profile "${snapshot.data![index - 1].profileName}"?'),
                                               actions: [
                                                 TextButton(
                                                   onPressed: () {
-                                                    Navigator.pop(context, true);
+                                                    Navigator.pop(
+                                                        context, true);
                                                   },
                                                   child: Text('Yes'),
                                                   style: TextButton.styleFrom(
-                                                    backgroundColor: Color(0xFF496D47),
-                                                    primary: Colors.white,
+                                                    foregroundColor:
+                                                        Colors.white,
+                                                    backgroundColor:
+                                                        Color(0xFF496D47),
                                                   ),
                                                 ),
                                                 TextButton(
                                                   onPressed: () {
-                                                    Navigator.pop(context, false);
+                                                    Navigator.pop(
+                                                        context, false);
                                                   },
                                                   child: Text('No'),
                                                   style: TextButton.styleFrom(
-                                                    backgroundColor: Color(0xFF496D47),
-                                                    primary: Colors.white,
+                                                    foregroundColor:
+                                                        Colors.white,
+                                                    backgroundColor:
+                                                        Color(0xFF496D47),
                                                   ),
                                                 ),
                                               ],
@@ -169,7 +211,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                           //Deleting Profile Data
                                           if (result == true) {
                                             int realIndex = index - 1;
-                                            deleteProfile(snapshot.data!, realIndex);
+                                            deleteProfile(
+                                                snapshot.data!, realIndex);
                                           }
                                         });
                                       },
@@ -177,20 +220,34 @@ class _LoginScreenState extends State<LoginScreen> {
                                     onTap: () {
                                       showModal(
                                         context: context,
-                                        configuration: FadeScaleTransitionConfiguration(barrierDismissible: false),
+                                        configuration:
+                                            FadeScaleTransitionConfiguration(
+                                                barrierDismissible: false),
                                         builder: (_) => PinCodeScreen(
                                           user: snapshot.data![index - 1],
                                           onCorrect: () {
-                                            currentUser = snapshot.data![index - 1];
-                                            StorageHelper.setBool('isLoggedIn', true);
-                                            StorageHelper.setInt('lastUser', currentUser!.profileNumber);
-                                            WidgetsBinding.instance!.addPostFrameCallback(
+                                            currentUser =
+                                                snapshot.data![index - 1];
+                                            StorageHelper.setBool(
+                                                'isLoggedIn', true);
+                                            StorageHelper.setInt('lastUser',
+                                                currentUser!.profileNumber);
+                                            WidgetsBinding.instance
+                                                .addPostFrameCallback(
                                               (timeStamp) {
-                                                final ThemeProvider _themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-                                                _themeProvider.selectTheme(StorageHelper.getInt('${currentUser!.profileNumber}appTheme') ?? 1);
+                                                final ThemeProvider
+                                                    _themeProvider =
+                                                    Provider.of<ThemeProvider>(
+                                                        context,
+                                                        listen: false);
+                                                _themeProvider.selectTheme(
+                                                    StorageHelper.getInt(
+                                                            '${currentUser!.profileNumber}appTheme') ??
+                                                        1);
                                                 Navigator.pushAndRemoveUntil(
                                                   context,
-                                                  CustomRoutes.fadeThrough(page: MainScreen()),
+                                                  CustomRoutes.fadeThrough(
+                                                      page: MainScreen()),
                                                   (route) => false,
                                                 );
                                               },
@@ -221,7 +278,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<List<UserProfile>> getProfiles() async {
-    List<String> profilesJson = StorageHelper.getStringList('userProfiles') ?? [];
+    List<String> profilesJson =
+        StorageHelper.getStringList('userProfiles') ?? [];
     if (profilesJson.isNotEmpty) {
       return profilesJson.map((e) => UserProfile.fromJson(e)).toList();
     } else {
@@ -234,36 +292,45 @@ class _LoginScreenState extends State<LoginScreen> {
     final GlobalKey deleteStatusKey = GlobalKey();
     showModal(
       context: context,
-      configuration: FadeScaleTransitionConfiguration(barrierDismissible: false),
+      configuration:
+          FadeScaleTransitionConfiguration(barrierDismissible: false),
       builder: (_) {
         return DeleteProfile(
           key: deleteStatusKey,
         );
       },
     ).then((value) => getProfiles().then((value) => setState(() {})));
-    Future.wait([Hive.openBox<BikeActivity>('${profileNumber}bikeActivities'), Hive.openBox<BMIData>('${profileNumber}bmiActivities')]).then((value) {
+    Future.wait([
+      Hive.openBox<BikeActivity>('${profileNumber}bikeActivities'),
+      Hive.openBox<BMIData>('${profileNumber}bmiActivities')
+    ]).then((value) {
       Hive.box<BikeActivity>('${profileNumber}bikeActivities').deleteFromDisk();
       Hive.box<BMIData>('${profileNumber}bmiActivities').deleteFromDisk();
       theTwoEssentials.forEachIndexed(
-        (index, item) => StorageHelper.remove('${profileNumber}theTwoEssentials$index'),
+        (index, item) =>
+            StorageHelper.remove('${profileNumber}theTwoEssentials$index'),
       );
       coreGear.forEachIndexed(
         (index, item) => StorageHelper.remove('${profileNumber}coreGear$index'),
       );
       coreRepairItems.forEachIndexed(
-        (index, item) => StorageHelper.remove('${profileNumber}coreRepairItems$index'),
+        (index, item) =>
+            StorageHelper.remove('${profileNumber}coreRepairItems$index'),
       );
       clothing.forEachIndexed(
         (index, item) => StorageHelper.remove('${profileNumber}clothing$index'),
       );
       gearOptions.forEachIndexed(
-        (index, item) => StorageHelper.remove('${profileNumber}gearOptions$index'),
+        (index, item) =>
+            StorageHelper.remove('${profileNumber}gearOptions$index'),
       );
       repairKitOptions.forEachIndexed(
-        (index, item) => StorageHelper.remove('${profileNumber}repairKitOptions$index'),
+        (index, item) =>
+            StorageHelper.remove('${profileNumber}repairKitOptions$index'),
       );
       freeRidingGear.forEachIndexed(
-        (index, item) => StorageHelper.remove('${profileNumber}freeRidingGear$index'),
+        (index, item) =>
+            StorageHelper.remove('${profileNumber}freeRidingGear$index'),
       );
       personal.forEachIndexed(
         (index, item) => StorageHelper.remove('${profileNumber}personal$index'),
@@ -300,8 +367,10 @@ class _LoginScreenState extends State<LoginScreen> {
       ]).then((value) {
         List<UserProfile> modifiedProfiles = [];
         modifiedProfiles.addAll(profiles);
-        modifiedProfiles.removeWhere((element) => element.profileNumber == profileNumber);
-        StorageHelper.setStringList('userProfiles', modifiedProfiles.map((e) => e.toJson()).toList());
+        modifiedProfiles
+            .removeWhere((element) => element.profileNumber == profileNumber);
+        StorageHelper.setStringList(
+            'userProfiles', modifiedProfiles.map((e) => e.toJson()).toList());
         Navigator.pop(deleteStatusKey.currentContext!);
       });
     });

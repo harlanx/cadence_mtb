@@ -1,6 +1,7 @@
-
 library widget_helper;
+
 import 'dart:math' as math;
+import 'dart:ui';
 import 'package:animations/animations.dart';
 import 'package:cadence_mtb/models/user_profile.dart';
 import 'package:cadence_mtb/utilities/storage_helper.dart';
@@ -19,7 +20,9 @@ class ThemeProvider extends ChangeNotifier {
   ThemeMode themeMode = ThemeMode.system;
 
   void loadTheme() {
-    int? theme = currentUser != null ? StorageHelper.getInt('${currentUser!.profileNumber}appTheme') ?? 1 : 1;
+    int? theme = currentUser != null
+        ? StorageHelper.getInt('${currentUser!.profileNumber}appTheme') ?? 1
+        : 1;
     //Android versions lower than 10.0 have Thememode.system that defaults only to ThemeMode.light;
     if (theme == 1) {
       themeMode = ThemeMode.system;
@@ -51,12 +54,12 @@ class AppThemes {
     return ThemeData(
       brightness: Brightness.light,
       fontFamily: 'Comfortaa',
-      accentColor: Color(0xFF496D47),
+      //accentColor: Colors.grey,
       appBarTheme: AppBarTheme(
-        brightness: Brightness.light,
         iconTheme: IconThemeData(color: Colors.white),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
-      primaryColor: Colors.white,
+      primaryColor: Color(0xFF496D47),
       primarySwatch: MaterialColor(0xFF496D47, <int, Color>{
         50: Color(0xFF496D47).brighten(0.5),
         100: Color(0xFF496D47).brighten(0.4),
@@ -69,12 +72,14 @@ class AppThemes {
         800: Color(0xFF496D47).darken(0.3),
         900: Color(0xFF496D47).darken(0.4),
       }),
-      colorScheme: ColorScheme.light(),
-      scaffoldBackgroundColor: Colors.white,
+      //colorScheme: ColorScheme.light(),
+      //scaffoldBackgroundColor: Colors.white,
       textTheme: TextTheme(
-        bodyText2: TextStyle(color: Colors.black, fontWeight: FontWeight.w400),
-        caption: TextStyle(fontWeight: FontWeight.w400, color: Colors.grey.shade600),
-        subtitle1: TextStyle(fontWeight: FontWeight.w700, color: Colors.black),
+        bodyMedium: TextStyle(color: Colors.black, fontWeight: FontWeight.w400),
+        bodySmall:
+            TextStyle(fontWeight: FontWeight.w400, color: Colors.grey.shade600),
+        titleMedium:
+            TextStyle(fontWeight: FontWeight.w700, color: Colors.black),
       ),
     );
   }
@@ -83,12 +88,11 @@ class AppThemes {
     return ThemeData(
       brightness: Brightness.dark,
       fontFamily: 'Comfortaa',
-      accentColor: Color(0xFF496D47),
       appBarTheme: AppBarTheme(
-        brightness: Brightness.dark,
         iconTheme: IconThemeData(color: Colors.white),
+        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
-      primaryColor: Colors.black,
+      primaryColor: Color(0xFF496D47),
       primarySwatch: MaterialColor(0xFF496D47, <int, Color>{
         50: Color(0xFF496D47).brighten(0.5),
         100: Color(0xFF496D47).brighten(0.4),
@@ -104,19 +108,22 @@ class AppThemes {
       colorScheme: ColorScheme.dark(),
       scaffoldBackgroundColor: Colors.grey.shade900,
       textTheme: TextTheme(
-        bodyText2: TextStyle(color: Colors.white),
-        caption: TextStyle(fontWeight: FontWeight.w400, color: Colors.grey.shade400),
-        subtitle1: TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
-        headline6: TextStyle(fontWeight: FontWeight.w400, color: Colors.white),
+        bodyMedium: TextStyle(color: Colors.white),
+        bodySmall:
+            TextStyle(fontWeight: FontWeight.w400, color: Colors.grey.shade400),
+        titleMedium:
+            TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+        titleLarge: TextStyle(fontWeight: FontWeight.w400, color: Colors.white),
       ),
     );
   }
 }
 
-
 //=======================================================================
 class CustomRoutes {
-  static Route<T> fadeThrough<T>({required Widget page, Duration duration = const Duration(milliseconds: 300)}) {
+  static Route<T> fadeThrough<T>(
+      {required Widget page,
+      Duration duration = const Duration(milliseconds: 300)}) {
     return PageRouteBuilder<T>(
       transitionDuration: duration,
       pageBuilder: (_, animation, secondaryAnimation) => page,
@@ -130,7 +137,9 @@ class CustomRoutes {
     );
   }
 
-  static Route<T> fadeScale<T>({required Widget page, Duration duration = const Duration(milliseconds: 300)}) {
+  static Route<T> fadeScale<T>(
+      {required Widget page,
+      Duration duration = const Duration(milliseconds: 300)}) {
     return PageRouteBuilder<T>(
       transitionDuration: duration,
       pageBuilder: (_, animation, secondaryAnimation) => page,
@@ -166,7 +175,8 @@ class CustomRoutes {
 //Avatar Generator
 
 class AvatarBox extends StatefulWidget {
-  const AvatarBox({Key? key, required this.code, required this.size}) : super(key: key);
+  const AvatarBox({Key? key, required this.code, required this.size})
+      : super(key: key);
   final String code;
   final double size;
 
@@ -177,18 +187,15 @@ class AvatarBox extends StatefulWidget {
 class _AvatarBoxState extends State<AvatarBox> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<DrawableRoot?>(
-      future: generateAvatar(widget.code),
+    return FutureBuilder<Uint8List?>(
+      future: generateAvatar(widget.code, context),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return SizedBox.shrink();
         }
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            return CustomPaint(
-              foregroundPainter: AvatarPainter(snapshot.data!, Size(widget.size, widget.size)),
-              child: Container(),
-            );
+            return Image.memory(snapshot.data!);
           default:
             return SizedBox.shrink();
         }
@@ -196,44 +203,17 @@ class _AvatarBoxState extends State<AvatarBox> {
     );
   }
 
-  Future<DrawableRoot?> generateAvatar(String code) async {
+  Future<Uint8List?> generateAvatar(String code, BuildContext context) async {
+    final pictureInfo =
+        await vg.loadPicture(SvgStringLoader(multiavatar(code)), context);
+
+    final image = await pictureInfo.picture.toImage(50, 50);
     try {
-      return await svg.fromSvgString(multiavatar(code), multiavatar(code));
+      final byteData = await image.toByteData(format: ImageByteFormat.png);
+      final pngBytes = byteData?.buffer.asUint8List();
+      return pngBytes;
     } catch (e) {
-      Future.error(e);
-    }
-    //return SvgWrapper(multiavatar(code)).generateLogo();
-  }
-}
-
-class AvatarPainter extends CustomPainter {
-  AvatarPainter(this.svg, [this.size = const Size(50, 50)]);
-
-  final DrawableRoot svg;
-  final Size size;
-  @override
-  void paint(Canvas canvas, Size size) {
-    svg.scaleCanvasToViewBox(canvas, size);
-    svg.clipCanvasToViewBox(canvas);
-    svg.draw(canvas, Rect.zero);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
-}
-
-class SvgWrapper {
-  final String rawSvg;
-
-  SvgWrapper(this.rawSvg);
-
-  Future<DrawableRoot?> generateLogo() async {
-    try {
-      return await svg.fromSvgString(rawSvg, rawSvg);
-    } catch (e) {
-      Future.error(e);
+      return Future.error(e);
     }
   }
 }
@@ -248,7 +228,8 @@ class CustomToast {
   CustomToast._showToastPermanentlyDenied(properties) [x]This will not work on any(except itself) .dart file even if widget_helper.dart is imported.
   THE REASON IS DART USES "_" UNDERSCORE OR WITHOUT UNDERSCORE TO SPEFICY IF IT'S PUBLIC OR PRIVATE VARIABLE, OBJECT OR METHOD.
   IF IT IS SPECIFIED WITH "_" UNDERSCORE AT THE BEGINNING, IT MEANS IT IS PRIVATE TO THAT SPECIFIC .dart FILE. */
-  static showToastPermanentlyDenied({required BuildContext context, required String requestText}) {
+  static showToastPermanentlyDenied(
+      {required BuildContext context, required String requestText}) {
     final FToast ftoast = FToast();
     ftoast.init(context);
     ftoast.removeCustomToast();
@@ -290,7 +271,8 @@ class CustomToast {
     );
   }
 
-  static showToastDenied({required BuildContext context, required String requestText}) {
+  static showToastDenied(
+      {required BuildContext context, required String requestText}) {
     final FToast ftoast = FToast();
     ftoast.init(context);
     ftoast.removeCustomToast();
@@ -326,7 +308,8 @@ class CustomToast {
     );
   }
 
-  static showToastSetupAction(BuildContext context, String actionResultText, bool success) {
+  static showToastSetupAction(
+      BuildContext context, String actionResultText, bool success) {
     final FToast ftoast = FToast();
     ftoast.init(context);
     ftoast.removeCustomToast();
@@ -395,16 +378,31 @@ class CustomToast {
 //==================================================
 ///Map for showing/hiding SOS button in pages.
 Map<String, bool?> sosEnabled = {
-  'Trails': StorageHelper.getBool('${currentUser!.profileNumber}trails') ?? true,
-  'Navigate': StorageHelper.getBool('${currentUser!.profileNumber}navigate') ?? true,
-  'Bike Project': StorageHelper.getBool('${currentUser!.profileNumber}bikeproject') ?? true,
-  'First Aid': StorageHelper.getBool('${currentUser!.profileNumber}firstaid') ?? true,
-  'Preparation': StorageHelper.getBool('${currentUser!.profileNumber}preparation') ?? true,
-  'Body Conditioning': StorageHelper.getBool('${currentUser!.profileNumber}bodyconditioning') ?? true,
-  'Repair and Maintenance': StorageHelper.getBool('${currentUser!.profileNumber}repairandmaintenance') ?? true,
-  'Tips and Benefits': StorageHelper.getBool('${currentUser!.profileNumber}tipsandbenefits') ?? true,
-  'Organizations': StorageHelper.getBool('${currentUser!.profileNumber}organizations') ?? true,
-  'User Activity': StorageHelper.getBool('${currentUser!.profileNumber}useractivitypage') ?? true,
+  'Trails':
+      StorageHelper.getBool('${currentUser!.profileNumber}trails') ?? true,
+  'Navigate':
+      StorageHelper.getBool('${currentUser!.profileNumber}navigate') ?? true,
+  'Bike Project':
+      StorageHelper.getBool('${currentUser!.profileNumber}bikeproject') ?? true,
+  'First Aid':
+      StorageHelper.getBool('${currentUser!.profileNumber}firstaid') ?? true,
+  'Preparation':
+      StorageHelper.getBool('${currentUser!.profileNumber}preparation') ?? true,
+  'Body Conditioning':
+      StorageHelper.getBool('${currentUser!.profileNumber}bodyconditioning') ??
+          true,
+  'Repair and Maintenance': StorageHelper.getBool(
+          '${currentUser!.profileNumber}repairandmaintenance') ??
+      true,
+  'Tips and Benefits':
+      StorageHelper.getBool('${currentUser!.profileNumber}tipsandbenefits') ??
+          true,
+  'Organizations':
+      StorageHelper.getBool('${currentUser!.profileNumber}organizations') ??
+          true,
+  'User Activity':
+      StorageHelper.getBool('${currentUser!.profileNumber}useractivitypage') ??
+          true,
 };
 
 //==================================================
@@ -428,10 +426,12 @@ extension ColorUtil on Color {
     assert(amount >= 0 && amount <= 1);
 
     final hsl = HSLColor.fromColor(this);
-    final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
+    final hslLight =
+        hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
 
     return hslLight.toColor();
   }
 
-  static Color get random => Color((math.Random().nextDouble() * 0xFFFFFF).toInt());
+  static Color get random =>
+      Color((math.Random().nextDouble() * 0xFFFFFF).toInt());
 }

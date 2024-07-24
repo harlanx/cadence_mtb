@@ -53,7 +53,10 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
               obscuringWidget: SvgPicture.asset(
                 'assets/images/navigate/wheel.svg',
                 fit: BoxFit.contain,
-                color: Color(0xFF496D47),
+                colorFilter: ColorFilter.mode(
+                  Color(0xFF496D47),
+                  BlendMode.srcIn,
+                ),
               ),
               pinTheme: PinTheme(
                 activeColor: Color(0xFF496D47),

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:cadence_mtb/models/models.dart';
 import 'package:cadence_mtb/pages/navigate.dart';
 import 'package:cadence_mtb/utilities/function_helper.dart';
@@ -13,7 +12,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 part 'bike_activity_history/activity_chart.dart';
 part 'bike_activity_history/ride_session_viewer.dart';
@@ -24,8 +23,10 @@ class UserActivityHistory extends StatefulWidget {
 }
 
 class _UserActivityHistoryState extends State<UserActivityHistory> {
-  final ScrollController _scrollController = ScrollController(initialScrollOffset: 0.0);
-  final Box<BikeActivity> _bikeActivitiesBox = Hive.box<BikeActivity>('${currentUser!.profileNumber}bikeActivities');
+  final ScrollController _scrollController =
+      ScrollController(initialScrollOffset: 0.0);
+  final Box<BikeActivity> _bikeActivitiesBox =
+      Hive.box<BikeActivity>('${currentUser!.profileNumber}bikeActivities');
   bool _enableJumpBtn = false, _isAscending = true;
   int _sortColumnIndex = 1;
   //int _addButtonCounter = 0;
@@ -34,9 +35,10 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _scrollController.addListener(() {
-        _scrollController.position.isScrollingNotifier.addListener(_showJumpToTopButton);
+        _scrollController.position.isScrollingNotifier
+            .addListener(_showJumpToTopButton);
       });
     });
   }
@@ -50,7 +52,9 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(statusBarColor: Color(0xFF496D47), statusBarIconBrightness: Brightness.light),
+      value: SystemUiOverlayStyle(
+          statusBarColor: Color(0xFF496D47),
+          statusBarIconBrightness: Brightness.light),
       child: SafeArea(
         bottom: false,
         child: Scaffold(
@@ -73,13 +77,18 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                               child: Container(
                                 color: Color(0xFF496D47),
                                 child: Center(
-                                  child: ValueListenableBuilder<Box<BikeActivity>>(
-                                    valueListenable: _bikeActivitiesBox.listenable(),
+                                  child:
+                                      ValueListenableBuilder<Box<BikeActivity>>(
+                                    valueListenable:
+                                        _bikeActivitiesBox.listenable(),
                                     builder: (_, box, __) {
                                       if (box.values.isEmpty) {
-                                        return Text('User Activity History', style: TextStyle(color: Colors.white));
+                                        return Text('User Activity History',
+                                            style:
+                                                TextStyle(color: Colors.white));
                                       } else {
-                                        return ActivityChart(box: _bikeActivitiesBox);
+                                        return ActivityChart(
+                                            box: _bikeActivitiesBox);
                                       }
                                     },
                                   ),
@@ -90,7 +99,8 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                               child: Align(
                                 alignment: Alignment.topLeft,
                                 child: IconButton(
-                                  icon: Icon(Icons.arrow_back, color: Colors.white),
+                                  icon: Icon(Icons.arrow_back,
+                                      color: Colors.white),
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
@@ -118,8 +128,10 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                                   Center(
                                     child: OutlinedButton(
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Icon(Icons.navigation_rounded),
@@ -127,21 +139,33 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                                         ],
                                       ),
                                       style: ButtonStyle(
-                                        foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                                        foregroundColor: WidgetStateProperty
+                                            .resolveWith<Color>(
                                           (states) => Color(0xFF3D5164),
                                         ),
-                                        backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                        backgroundColor: WidgetStateProperty
+                                            .resolveWith<Color>(
                                           (states) => Colors.white,
                                         ),
-                                        overlayColor: MaterialStateProperty.resolveWith<Color>(
-                                          (states) => Color(0xFF3D5164).withOpacity(0.8),
+                                        overlayColor: WidgetStateProperty
+                                            .resolveWith<Color>(
+                                          (states) => Color(0xFF3D5164)
+                                              .withOpacity(0.8),
                                         ),
-                                        side: MaterialStateProperty.resolveWith<BorderSide>(
-                                          (states) => BorderSide(color: Color(0xFF3D5164), width: 1.0),
+                                        side: WidgetStateProperty.resolveWith<
+                                            BorderSide>(
+                                          (states) => BorderSide(
+                                              color: Color(0xFF3D5164),
+                                              width: 1.0),
                                         ),
                                       ),
                                       onPressed: () {
-                                        Navigator.push(context, CustomRoutes.fadeThrough(page: Navigate(), duration: Duration(milliseconds: 300)));
+                                        Navigator.push(
+                                            context,
+                                            CustomRoutes.fadeThrough(
+                                                page: Navigate(),
+                                                duration: Duration(
+                                                    milliseconds: 300)));
                                       },
                                     ),
                                   )
@@ -156,19 +180,25 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                                 scrollDirection: Axis.horizontal,
                                 child: Theme(
                                   data: Theme.of(context).copyWith(
-                                    colorScheme: Theme.of(context).colorScheme.copyWith(
-                                          primary: Color(0xFF496D47),
-                                          onPrimary: Colors.white,
-                                        ),
+                                    colorScheme:
+                                        Theme.of(context).colorScheme.copyWith(
+                                              primary: Color(0xFF496D47),
+                                              onPrimary: Colors.white,
+                                            ),
                                   ),
                                   child: DataTable(
-                                    headingTextStyle: TextStyle(color: Color(0xFF496D47), fontWeight: FontWeight.w700),
+                                    headingTextStyle: TextStyle(
+                                        color: Color(0xFF496D47),
+                                        fontWeight: FontWeight.w700),
                                     dataTextStyle: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       color: Colors.grey.shade600,
                                     ),
-                                    dataRowColor: MaterialStateProperty.resolveWith(
-                                        (states) => states.contains(MaterialState.selected) ? Color(0xFF496D47).brighten(0.5) : Colors.transparent),
+                                    dataRowColor: WidgetStateProperty
+                                        .resolveWith((states) => states
+                                                .contains(WidgetState.selected)
+                                            ? Color(0xFF496D47).brighten(0.5)
+                                            : Colors.transparent),
                                     sortAscending: _isAscending,
                                     sortColumnIndex: _sortColumnIndex,
                                     columnSpacing: 20,
@@ -180,7 +210,8 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                                       ),
                                       DataColumn(
                                         label: Text('Date'),
-                                        tooltip: 'The date of the ride session.',
+                                        tooltip:
+                                            'The date of the ride session.',
                                         onSort: (columnIndex, ascending) {
                                           onSortColumn(columnIndex, ascending);
                                           setState(() {
@@ -191,7 +222,8 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                                       ),
                                       DataColumn(
                                         label: Text('Start'),
-                                        tooltip: 'The starting location of the ride session.',
+                                        tooltip:
+                                            'The starting location of the ride session.',
                                         onSort: (columnIndex, ascending) {
                                           onSortColumn(columnIndex, ascending);
                                           setState(() {
@@ -202,7 +234,8 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                                       ),
                                       DataColumn(
                                         label: Text('End'),
-                                        tooltip: 'The ending location of the ride session.',
+                                        tooltip:
+                                            'The ending location of the ride session.',
                                         onSort: (columnIndex, ascending) {
                                           onSortColumn(columnIndex, ascending);
                                           setState(() {
@@ -213,7 +246,8 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                                       ),
                                       DataColumn(
                                         label: Text('Average\nSpeed'),
-                                        tooltip: 'The calculated average speed of the ride session.',
+                                        tooltip:
+                                            'The calculated average speed of the ride session.',
                                         onSort: (columnIndex, ascending) {
                                           onSortColumn(columnIndex, ascending);
                                           setState(() {
@@ -224,7 +258,8 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                                       ),
                                       DataColumn(
                                         label: Text('Calories\nBurned'),
-                                        tooltip: 'The total burned calories during the ride session.',
+                                        tooltip:
+                                            'The total burned calories during the ride session.',
                                         onSort: (columnIndex, ascending) {
                                           onSortColumn(columnIndex, ascending);
                                           setState(() {
@@ -235,7 +270,8 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                                       ),
                                       DataColumn(
                                         label: Text('Distance'),
-                                        tooltip: 'The total distance traveled of the ride session.',
+                                        tooltip:
+                                            'The total distance traveled of the ride session.',
                                         onSort: (columnIndex, ascending) {
                                           onSortColumn(columnIndex, ascending);
                                           setState(() {
@@ -246,7 +282,8 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                                       ),
                                       DataColumn(
                                         label: Text('Max\nElevation'),
-                                        tooltip: 'The maximum elevation attained in the ride session.',
+                                        tooltip:
+                                            'The maximum elevation attained in the ride session.',
                                         onSort: (columnIndex, ascending) {
                                           onSortColumn(columnIndex, ascending);
                                           setState(() {
@@ -257,7 +294,8 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                                       ),
                                       DataColumn(
                                         label: Text('Duration'),
-                                        tooltip: 'The total duration of the ride session.',
+                                        tooltip:
+                                            'The total duration of the ride session.',
                                         onSort: (columnIndex, ascending) {
                                           onSortColumn(columnIndex, ascending);
                                           setState(() {
@@ -268,7 +306,8 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                                       ),
                                       DataColumn(
                                         label: Text('Weather'),
-                                        tooltip: 'The weather status when the ride session started.',
+                                        tooltip:
+                                            'The weather status when the ride session started.',
                                         onSort: (columnIndex, ascending) {
                                           onSortColumn(columnIndex, ascending);
                                           setState(() {
@@ -281,7 +320,8 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                                     rows: _activitiesData
                                         .map(
                                           (activity) => DataRow(
-                                            selected: _selected.contains(activity),
+                                            selected:
+                                                _selected.contains(activity),
                                             onSelectChanged: (val) {
                                               onSelectedRow(val!, activity);
                                             },
@@ -295,13 +335,22 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                                                       color: Color(0xFF496D47),
                                                     ),
                                                     onLongPress: () {
-                                                      Navigator.push<Map<String, dynamic>>(
+                                                      Navigator.push<
+                                                          Map<String, dynamic>>(
                                                         context,
-                                                        CustomRoutes.fadeScale(page: RideSessionViewer(activity: activity)),
+                                                        CustomRoutes.fadeScale(
+                                                            page: RideSessionViewer(
+                                                                activity:
+                                                                    activity)),
                                                       ).then((result) {
                                                         //DELETES THE FILE GENERATED BY SCREENSHOT CONTROLLER.
-                                                        if (result!['takenScreenshot'] as bool) {
-                                                          FunctionHelper.deleteImage((result['imagePath'] as String));
+                                                        if (result![
+                                                                'takenScreenshot']
+                                                            as bool) {
+                                                          FunctionHelper
+                                                              .deleteImage((result[
+                                                                      'imagePath']
+                                                                  as String));
                                                         }
                                                       });
                                                     },
@@ -310,7 +359,9 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                                               ),
                                               DataCell(
                                                 Text(
-                                                  DateFormat('MM-dd-y hh:mm a').format(activity.activityDate!),
+                                                  DateFormat('MM-dd-y hh:mm a')
+                                                      .format(activity
+                                                          .activityDate!),
                                                 ),
                                               ),
                                               DataCell(
@@ -358,7 +409,8 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                                               ),
                                               DataCell(
                                                 Tooltip(
-                                                  message: '${activity.weatherData!.weatherDescription}',
+                                                  message:
+                                                      '${activity.weatherData!.weatherDescription}',
                                                   child: Text(
                                                     '${activity.weatherData!.temperature.toString().replaceAll(RegExp(r'Celsius'), '°C')}',
                                                   ),
@@ -399,28 +451,42 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                         child: OutlinedButton(
                           child: Text('Delete Selected'),
                           style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                              (states) => states.contains(MaterialState.disabled) ? Colors.grey.shade400 : Colors.white,
+                            foregroundColor:
+                                WidgetStateProperty.resolveWith<Color>(
+                              (states) => states.contains(WidgetState.disabled)
+                                  ? Colors.grey.shade400
+                                  : Colors.white,
                             ),
-                            backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                              (states) => states.contains(MaterialState.disabled) ? Colors.white : Color(0xFF496D47).brighten(0.05),
+                            backgroundColor:
+                                WidgetStateProperty.resolveWith<Color>(
+                              (states) => states.contains(WidgetState.disabled)
+                                  ? Colors.white
+                                  : Color(0xFF496D47).brighten(0.05),
                             ),
-                            overlayColor: MaterialStateProperty.resolveWith<Color>(
-                              (states) => states.contains(MaterialState.pressed) ? Color(0xFF496D47).darken(0.05) : Colors.transparent,
+                            overlayColor:
+                                WidgetStateProperty.resolveWith<Color>(
+                              (states) => states.contains(WidgetState.pressed)
+                                  ? Color(0xFF496D47).darken(0.05)
+                                  : Colors.transparent,
                             ),
-                            side: MaterialStateProperty.resolveWith<BorderSide>(
-                              (states) =>
-                                  states.contains(MaterialState.disabled) ? BorderSide(color: Colors.grey.shade400, width: 1.0) : BorderSide.none,
+                            side: WidgetStateProperty.resolveWith<BorderSide>(
+                              (states) => states.contains(WidgetState.disabled)
+                                  ? BorderSide(
+                                      color: Colors.grey.shade400, width: 1.0)
+                                  : BorderSide.none,
                             ),
                           ),
                           onPressed: _selected.isEmpty
                               ? null
                               : () {
-                                  List<DateTime?> selectedDates = _selected.map((e) => e.activityDate).toList();
+                                  List<DateTime?> selectedDates = _selected
+                                      .map((e) => e.activityDate)
+                                      .toList();
                                   List<dynamic> keys = _bikeActivitiesBox
                                       .toMap()
                                       .entries
-                                      .where((element) => selectedDates.contains(element.value.activityDate))
+                                      .where((element) => selectedDates
+                                          .contains(element.value.activityDate))
                                       .map((e) => e.key)
                                       .toList();
                                   _deleteSelected(keys);
@@ -464,7 +530,9 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
                             color: Colors.white,
                           ),
                           onPressed: () {
-                            _scrollController.animateTo(0.0, duration: Duration(milliseconds: 500), curve: Curves.ease);
+                            _scrollController.animateTo(0.0,
+                                duration: Duration(milliseconds: 500),
+                                curve: Curves.ease);
                           },
                         ),
                       ),
@@ -504,38 +572,48 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
     if (columnIndex == 1) {
       if (ascending) {
         //Sorts to latest on top
-        _activitiesData.sort((a, b) => b.activityDate!.compareTo(a.activityDate!));
+        _activitiesData
+            .sort((a, b) => b.activityDate!.compareTo(a.activityDate!));
       } else {
         //Sorts to latest on bottom
-        _activitiesData.sort((a, b) => a.activityDate!.compareTo(b.activityDate!));
+        _activitiesData
+            .sort((a, b) => a.activityDate!.compareTo(b.activityDate!));
       }
       //Start Location
     } else if (columnIndex == 2) {
       if (ascending) {
-        _activitiesData.sort((a, b) => a.startLocation!.compareTo(b.startLocation!));
+        _activitiesData
+            .sort((a, b) => a.startLocation!.compareTo(b.startLocation!));
       } else {
-        _activitiesData.sort((a, b) => b.startLocation!.compareTo(a.startLocation!));
+        _activitiesData
+            .sort((a, b) => b.startLocation!.compareTo(a.startLocation!));
       }
       //End Location
     } else if (columnIndex == 3) {
       if (ascending) {
-        _activitiesData.sort((a, b) => a.endLocation!.compareTo(b.endLocation!));
+        _activitiesData
+            .sort((a, b) => a.endLocation!.compareTo(b.endLocation!));
       } else {
-        _activitiesData.sort((a, b) => b.endLocation!.compareTo(a.endLocation!));
+        _activitiesData
+            .sort((a, b) => b.endLocation!.compareTo(a.endLocation!));
       }
       //Average Speed
     } else if (columnIndex == 4) {
       if (ascending) {
-        _activitiesData.sort((a, b) => a.averageSpeed!.compareTo(b.averageSpeed!));
+        _activitiesData
+            .sort((a, b) => a.averageSpeed!.compareTo(b.averageSpeed!));
       } else {
-        _activitiesData.sort((a, b) => b.averageSpeed!.compareTo(a.averageSpeed!));
+        _activitiesData
+            .sort((a, b) => b.averageSpeed!.compareTo(a.averageSpeed!));
       }
       //Calories Burned
     } else if (columnIndex == 5) {
       if (ascending) {
-        _activitiesData.sort((a, b) => a.burnedCalories!.compareTo(b.burnedCalories!));
+        _activitiesData
+            .sort((a, b) => a.burnedCalories!.compareTo(b.burnedCalories!));
       } else {
-        _activitiesData.sort((a, b) => b.burnedCalories!.compareTo(a.burnedCalories!));
+        _activitiesData
+            .sort((a, b) => b.burnedCalories!.compareTo(a.burnedCalories!));
       }
       //Distance
     } else if (columnIndex == 6) {
@@ -560,9 +638,11 @@ class _UserActivityHistoryState extends State<UserActivityHistory> {
       }
     } else if (columnIndex == 9) {
       if (ascending) {
-        _activitiesData.sort((a, b) => a.weatherData!.temperature!.celsius!.compareTo(b.weatherData!.temperature!.celsius!));
+        _activitiesData.sort((a, b) => a.weatherData!.temperature!.celsius!
+            .compareTo(b.weatherData!.temperature!.celsius!));
       } else {
-        _activitiesData.sort((a, b) => b.weatherData!.temperature!.celsius!.compareTo(a.weatherData!.temperature!.celsius!));
+        _activitiesData.sort((a, b) => b.weatherData!.temperature!.celsius!
+            .compareTo(a.weatherData!.temperature!.celsius!));
       }
     }
   }

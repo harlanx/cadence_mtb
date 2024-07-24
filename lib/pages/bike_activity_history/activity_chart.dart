@@ -57,7 +57,10 @@ class _ActivityChartState extends State<ActivityChart> {
             Listener(
               onPointerDown: (_) => FocusScope.of(context).unfocus(),
               child: DropdownButton<String>(
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 15),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15),
                 iconEnabledColor: Colors.white,
                 dropdownColor: Color(0xFF496D47),
                 underline: SizedBox.shrink(),
@@ -67,7 +70,8 @@ class _ActivityChartState extends State<ActivityChart> {
                   DropdownMenuItem(child: Text('Calories'), value: 'Calories'),
                   DropdownMenuItem(child: Text('Distance'), value: 'Distance'),
                   DropdownMenuItem(child: Text('Duration'), value: 'Duration'),
-                  DropdownMenuItem(child: Text('Elevation'), value: 'Elevation'),
+                  DropdownMenuItem(
+                      child: Text('Elevation'), value: 'Elevation'),
                   DropdownMenuItem(child: Text('Weather'), value: 'Weather'),
                 ],
                 onChanged: (value) {
@@ -95,18 +99,25 @@ class _ActivityChartState extends State<ActivityChart> {
             LineChartData(
               lineTouchData: LineTouchData(
                   touchTooltipData: LineTouchTooltipData(
-                    tooltipBgColor: Colors.white,
+                      getTooltipColor: (touchedSpot) => Colors.white,
                       tooltipPadding: EdgeInsets.all(3),
                       getTooltipItems: (data) {
                         if (_dataToShow == 'Duration') {
                           return data.map((e) {
                             int hour = e.y.toInt();
-                            double minute = int.tryParse(e.y.toStringAsFixed(2).split('.')[1])! / 100;
-                            return LineTooltipItem('${hour.toString().padLeft(2, '0')}:${(minute * 60).toInt().toString().padLeft(2, '0')}',
+                            double minute = int.tryParse(
+                                    e.y.toStringAsFixed(2).split('.')[1])! /
+                                100;
+                            return LineTooltipItem(
+                                '${hour.toString().padLeft(2, '0')}:${(minute * 60).toInt().toString().padLeft(2, '0')}',
                                 TextStyle(color: Color(0xFF496D47)));
                           }).toList();
                         } else {
-                          return data.map<LineTooltipItem>((e) => LineTooltipItem('${e.y}', TextStyle(color: Color(0xFF496D47)))).toList();
+                          return data
+                              .map<LineTooltipItem>((e) => LineTooltipItem(
+                                  '${e.y}',
+                                  TextStyle(color: Color(0xFF496D47))))
+                              .toList();
                         }
                       })),
               clipData: FlClipData.none(),
@@ -116,10 +127,12 @@ class _ActivityChartState extends State<ActivityChart> {
                 drawHorizontalLine: true,
                 drawVerticalLine: true,
                 getDrawingHorizontalLine: (val) {
-                  return FlLine(strokeWidth: 0.5, color: Colors.white.withOpacity(0.7));
+                  return FlLine(
+                      strokeWidth: 0.5, color: Colors.white.withOpacity(0.7));
                 },
                 getDrawingVerticalLine: (val) {
-                  return FlLine(strokeWidth: 0.5, color: Colors.white.withOpacity(0.7));
+                  return FlLine(
+                      strokeWidth: 0.5, color: Colors.white.withOpacity(0.7));
                 },
               ),
               borderData: FlBorderData(
@@ -127,60 +140,76 @@ class _ActivityChartState extends State<ActivityChart> {
                 border: Border.all(color: Colors.white, width: 1),
               ),
               titlesData: FlTitlesData(
-                leftTitles: SideTitles(
-                  interval: _interval,
-                  margin: 5,
-                  reservedSize: 13,
-                  showTitles: true,
-                  getTextStyles: (_, value) {
-                    return TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w400);
-                  },
-                  getTitles: (val) {
-                    if (_maxY >= 10000) {
-                      return (val / 10000).toString();
-                    } else if (_maxY >= 1000) {
-                      return (val / 1000).toString();
-                    } else {
-                      return val.round().toString();
-                    }
-                  },
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    interval: _interval,
+                    reservedSize: 13,
+                    showTitles: true,
+                    getTitlesWidget: (val, _) {
+                      var result = '';
+                      if (_maxY >= 10000) {
+                        result = (val / 10000).toString();
+                      } else if (_maxY >= 1000) {
+                        result = (val / 1000).toString();
+                      } else {
+                        result = val.round().toString();
+                      }
+
+                      return Text(
+                        result,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      );
+                    },
+                  ),
                 ),
-                bottomTitles: SideTitles(
-                  margin: 5,
-                  reservedSize: 13,
-                  showTitles: true,
-                  //rotateAngle: 90,
-                  getTextStyles: (_, value) => TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w400),
-                  getTitles: (val) {
-                    switch (val.round()) {
-                      case 1:
-                        return 'Jan';
-                      case 2:
-                        return 'Feb';
-                      case 3:
-                        return 'Mar';
-                      case 4:
-                        return 'Apr';
-                      case 5:
-                        return 'May';
-                      case 6:
-                        return 'Jun';
-                      case 7:
-                        return 'Jul';
-                      case 8:
-                        return 'Aug';
-                      case 9:
-                        return 'Sep';
-                      case 10:
-                        return 'Oct';
-                      case 11:
-                        return 'Nov';
-                      case 12:
-                        return 'Dec';
-                      default:
-                        return '';
-                    }
-                  },
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    reservedSize: 13,
+                    showTitles: true,
+                    //rotateAngle: 90,
+                    getTitlesWidget: (val, _) {
+                      var result = '';
+                      switch (val.round()) {
+                        case 1:
+                          result = 'Jan';
+                        case 2:
+                          result = 'Feb';
+                        case 3:
+                          result = 'Mar';
+                        case 4:
+                          result = 'Apr';
+                        case 5:
+                          result = 'May';
+                        case 6:
+                          result = 'Jun';
+                        case 7:
+                          result = 'Jul';
+                        case 8:
+                          result = 'Aug';
+                        case 9:
+                          result = 'Sep';
+                        case 10:
+                          result = 'Oct';
+                        case 11:
+                          result = 'Nov';
+                        case 12:
+                          result = 'Dec';
+                        default:
+                          result = '';
+                      }
+                      return Text(
+                        result,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w400),
+                      );
+                    },
+                  ),
                 ),
               ),
               minX: _minX,
@@ -189,7 +218,7 @@ class _ActivityChartState extends State<ActivityChart> {
               maxY: double.parse(_maxY.toStringAsFixed(2)),
               lineBarsData: [
                 LineChartBarData(
-                  colors: [Colors.white],
+                  color: Colors.white,
                   spots: _dataSpots,
                   isCurved: true,
                   dotData: FlDotData(
@@ -202,7 +231,7 @@ class _ActivityChartState extends State<ActivityChart> {
                   ),
                   barWidth: 1,
                   belowBarData: BarAreaData(
-                    colors: [Colors.white.withOpacity(0.5)],
+                    color: Colors.white.withOpacity(0.5),
                     show: true,
                   ),
                 ),
@@ -221,42 +250,67 @@ class _ActivityChartState extends State<ActivityChart> {
     List<double> specificList = [];
     _latestList.clear();
     //Add all the activities with the same year as the current.
-    _latestList.addAll(widget.box.values.toList().where((element) => DateTime.now().year == element.activityDate!.year).toList());
+    _latestList.addAll(widget.box.values
+        .toList()
+        .where((element) => DateTime.now().year == element.activityDate!.year)
+        .toList());
     _latestList.sort((a, b) => b.activityDate!.compareTo(a.activityDate!));
     //Distinct months available.
     Set distinctConst = _latestList.map((e) => e.activityDate!.month).toSet();
     //Lowest month available (Jan-Dec)
-    _minX = _latestList.map((e) => e.activityDate!.month).toList().getMin.toDouble();
+    _minX = _latestList
+        .map((e) => e.activityDate!.month)
+        .toList()
+        .getMin
+        .toDouble();
     //Highest month available (Jan-Dec)
-    _maxX = _latestList.map((e) => e.activityDate!.month).toList().getMax.toDouble();
+    _maxX = _latestList
+        .map((e) => e.activityDate!.month)
+        .toList()
+        .getMax
+        .toDouble();
     double constant = 10;
     //Calculating the average or total for each month base on the selected data to show.
     switch (_dataToShow) {
       case 'Speed':
         _dataUnitSymbol = 'm/s';
         distinctConst.forEach((month) {
-          List<double?> values = _latestList.where((acitivity) => acitivity.activityDate!.month == month).map((e) => e.averageSpeed).toList();
+          List<double?> values = _latestList
+              .where((acitivity) => acitivity.activityDate!.month == month)
+              .map((e) => e.averageSpeed)
+              .toList();
           double average = values.reduce((a, b) => a! + b!)! / values.length;
           specificList.add(average);
-          result.add(FlSpot(month.toDouble(), double.parse(average.toStringAsFixed(2))));
+          result.add(FlSpot(
+              month.toDouble(), double.parse(average.toStringAsFixed(2))));
         });
         break;
       case 'Calories':
         _dataUnitSymbol = 'kcal';
         distinctConst.forEach((month) {
-          List<double?> values = _latestList.where((acitivity) => acitivity.activityDate!.month == month).map((e) => e.burnedCalories).toList();
-          double total = values.fold(0, (previousValue, element) => previousValue + element!);
+          List<double?> values = _latestList
+              .where((acitivity) => acitivity.activityDate!.month == month)
+              .map((e) => e.burnedCalories)
+              .toList();
+          double total = values.fold(
+              0, (previousValue, element) => previousValue + element!);
           specificList.add(total);
-          result.add(FlSpot(month.toDouble(), double.parse(total.toStringAsFixed(2))));
+          result.add(
+              FlSpot(month.toDouble(), double.parse(total.toStringAsFixed(2))));
         });
         break;
       case 'Distance':
         _dataUnitSymbol = 'km';
         distinctConst.forEach((month) {
-          List<double?> values = _latestList.where((acitivity) => acitivity.activityDate!.month == month).map((e) => e.distance).toList();
-          double total = values.fold(0, (previousValue, element) => previousValue + element!);
+          List<double?> values = _latestList
+              .where((acitivity) => acitivity.activityDate!.month == month)
+              .map((e) => e.distance)
+              .toList();
+          double total = values.fold(
+              0, (previousValue, element) => previousValue + element!);
           specificList.add(total);
-          result.add(FlSpot(month.toDouble(), double.parse(total.toStringAsFixed(2))));
+          result.add(
+              FlSpot(month.toDouble(), double.parse(total.toStringAsFixed(2))));
         });
         break;
       case 'Duration':
@@ -266,28 +320,38 @@ class _ActivityChartState extends State<ActivityChart> {
               .where((acitivity) => acitivity.activityDate!.month == month)
               .map((e) => StopWatchTimer.getRawMinute(e.duration!).toDouble())
               .toList();
-          double total = values.fold(0, (dynamic previousValue, element) => previousValue + element) / 60;
+          double total = values.fold(0,
+                  (dynamic previousValue, element) => previousValue + element) /
+              60;
           specificList.add(total);
-          result.add(FlSpot(month.toDouble(), double.parse(total.toStringAsFixed(2))));
+          result.add(
+              FlSpot(month.toDouble(), double.parse(total.toStringAsFixed(2))));
         });
         break;
       case 'Elevation':
         _dataUnitSymbol = 'm';
         distinctConst.forEach((month) {
-          List<double?> values = _latestList.where((acitivity) => acitivity.activityDate!.month == month).map((e) => e.elevation).toList();
+          List<double?> values = _latestList
+              .where((acitivity) => acitivity.activityDate!.month == month)
+              .map((e) => e.elevation)
+              .toList();
           double average = values.reduce((a, b) => a! + b!)! / values.length;
           specificList.add(average);
-          result.add(FlSpot(month.toDouble(), double.parse(average.toStringAsFixed(2))));
+          result.add(FlSpot(
+              month.toDouble(), double.parse(average.toStringAsFixed(2))));
         });
         break;
       case 'Weather':
         _dataUnitSymbol = '°C';
         distinctConst.forEach((month) {
-          List<double?> values =
-              _latestList.where((acitivity) => acitivity.activityDate!.month == month).map((e) => e.weatherData!.temperature!.celsius).toList();
+          List<double?> values = _latestList
+              .where((acitivity) => acitivity.activityDate!.month == month)
+              .map((e) => e.weatherData!.temperature!.celsius)
+              .toList();
           double average = values.reduce((a, b) => a! + b!)! / values.length;
           specificList.add(average);
-          result.add(FlSpot(month.toDouble(), double.parse(average.toStringAsFixed(2))));
+          result.add(FlSpot(
+              month.toDouble(), double.parse(average.toStringAsFixed(2))));
         });
         break;
     }

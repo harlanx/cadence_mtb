@@ -1,4 +1,5 @@
 library function_helper;
+
 import 'dart:convert' show jsonDecode;
 import 'dart:io';
 import 'dart:math';
@@ -7,7 +8,8 @@ import 'dart:ui' as ui;
 import 'package:cadence_mtb/utilities/storage_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:google_maps_flutter/google_maps_flutter.dart' show LatLng, LatLngBounds;
+import 'package:google_maps_flutter/google_maps_flutter.dart'
+    show LatLng, LatLngBounds;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:weather/weather.dart';
@@ -34,8 +36,8 @@ class FunctionHelper {
   ///It opens the user's browser or sms form
   ///We only used it on links that can be opened using another app like facebook and youtube.
   static void launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url, universalLinksOnly: true);
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
     } else {
       throw 'Could not launch $url';
     }
@@ -50,7 +52,8 @@ class FunctionHelper {
     required double newMax,
   }) {
     double newValue = 0.0;
-    newValue = (((oldValue - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin;
+    newValue = (((oldValue - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) +
+        newMin;
     return newValue;
   }
 
@@ -66,7 +69,9 @@ class FunctionHelper {
       targetWidth: width,
     );
     ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
+        .buffer
+        .asUint8List();
   }
 
   ///Deletes the image file stored(cached) in app's temporary files folder.
@@ -94,7 +99,8 @@ class FunctionHelper {
     'Wawa Dam, M.H Del Pilar Street, Rodriguez, Rizal',
     'Forest Bathing Trail, Camp John Hay, Baguio City',
   ];
-  static String randomLocation() => locationSamples[Random().nextInt(locationSamples.length)];
+  static String randomLocation() =>
+      locationSamples[Random().nextInt(locationSamples.length)];
   static DateTime randomActivityDate() => DateTime.parse(
       '2021-${randomInt(min: 1, max: 12).toString().padLeft(2, '0')}-${randomInt(min: 1, max: 30).toString().padLeft(2, '0')}T${randomInt(min: 0, max: 23).toString().padLeft(2, '0')}:${randomInt(min: 0, max: 59).toString().padLeft(2, '0')}:${randomInt(min: 0, max: 59).toString().padLeft(2, '0')}.${randomInt(min: 0, max: 999).toString().padLeft(3, '0')}');
 
@@ -120,8 +126,11 @@ class FunctionHelper {
   }
 
   static LatLngBounds sampleLatLngBounds() {
-    List<dynamic> json = jsonDecode('[[15.855859413795411,120.9928647189144], [15.856421887129677,120.99535917334529]]');
-    return LatLngBounds(southwest: LatLng.fromJson(json[0])!, northeast: LatLng.fromJson(json[1])!);
+    List<dynamic> json = jsonDecode(
+        '[[15.855859413795411,120.9928647189144], [15.856421887129677,120.99535917334529]]');
+    return LatLngBounds(
+        southwest: LatLng.fromJson(json[0])!,
+        northeast: LatLng.fromJson(json[1])!);
   }
 }
 
@@ -132,7 +141,8 @@ extension GlobalKeyUtil on GlobalKey {
     final RenderObject? renderObject = currentContext?.findRenderObject()!;
     var translation = renderObject?.getTransformTo(null).getTranslation();
     if (translation != null && renderObject?.paintBounds != null) {
-      return renderObject?.paintBounds.shift(Offset(translation.x, translation.y));
+      return renderObject?.paintBounds
+          .shift(Offset(translation.x, translation.y));
     } else {
       return null;
     }
@@ -165,7 +175,11 @@ class AppPermissions {
   ///Ask for location permission.
   static requestLocation() async {
     try {
-      Map<Permission, PermissionStatus> statuses = await [Permission.location, Permission.locationAlways, Permission.locationWhenInUse].request();
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.location,
+        Permission.locationAlways,
+        Permission.locationWhenInUse
+      ].request();
       return statuses;
     } catch (e) {}
   }
@@ -197,7 +211,11 @@ class GreatCircleDistance {
   double latitude2;
   double longitude2;
 
-  GreatCircleDistance.fromRadians({required this.latitude1, required this.longitude1, required this.latitude2, required this.longitude2}) {
+  GreatCircleDistance.fromRadians(
+      {required this.latitude1,
+      required this.longitude1,
+      required this.latitude2,
+      required this.longitude2}) {
     this.latitude1 = latitude1;
     this.longitude1 = longitude1;
 
@@ -207,7 +225,11 @@ class GreatCircleDistance {
     _throwExceptionOnInvalidCoordinates();
   }
 
-  GreatCircleDistance.fromDegrees({required this.latitude1, required this.longitude1, required this.latitude2, required this.longitude2}) {
+  GreatCircleDistance.fromDegrees(
+      {required this.latitude1,
+      required this.longitude1,
+      required this.latitude2,
+      required this.longitude2}) {
     this.latitude1 = _radiansFromDegrees(latitude1);
     this.longitude1 = _radiansFromDegrees(longitude1);
 
@@ -221,13 +243,15 @@ class GreatCircleDistance {
   /// The haversine formula determines the great-circle distance between two points on a sphere given their longitudes and latitudes
   /// See [Haversine formula](https://en.wikipedia.org/wiki/Haversine_formula)
   double haversineDistance() {
-    return Haversine.distance(this.latitude1, this.longitude1, this.latitude2, this.longitude2);
+    return Haversine.distance(
+        this.latitude1, this.longitude1, this.latitude2, this.longitude2);
   }
 
   /// Calculate distance using Spherical law of cosines
   /// See [Spherical law of cosines](https://en.wikipedia.org/wiki/Spherical_law_of_cosines)
   double sphericalLawOfCosinesDistance() {
-    return SphericalLawOfCosines.distance(this.latitude1, this.longitude1, this.latitude2, this.longitude2);
+    return SphericalLawOfCosines.distance(
+        this.latitude1, this.longitude1, this.latitude2, this.longitude2);
   }
 
   /// Calculate distance using Vincenty formula
@@ -235,7 +259,8 @@ class GreatCircleDistance {
   /// They are based on the assumption that the figure of the Earth is an oblate spheroid, and hence are more accurate than methods that assume a spherical Earth, such as great-circle distance
   /// See [Vincenty's formulae](https://en.wikipedia.org/wiki/Vincenty%27s_formulae)
   double vincentyDistance() {
-    return Vincenty.distance(this.latitude1, this.longitude1, this.latitude2, this.longitude2);
+    return Vincenty.distance(
+        this.latitude1, this.longitude1, this.latitude2, this.longitude2);
   }
 
   double _radiansFromDegrees(final double degrees) => degrees * (pi / 180.0);
@@ -244,15 +269,18 @@ class GreatCircleDistance {
   ///
   /// - Its latitude is greater than 90 degrees or less than -90 degrees.
   ///- Its longitude is greater than 180 degrees or less than -180 degrees.
-  bool _isValidCoordinate(double latitude, longitude) => _isValidLatitude(latitude) && _isValidLongitude(longitude);
+  bool _isValidCoordinate(double latitude, longitude) =>
+      _isValidLatitude(latitude) && _isValidLongitude(longitude);
 
   /// A latitude is considered invalid if its is greater than 90 degrees or less than -90 degrees.
   bool _isValidLatitude(double latitudeInRadians) =>
-      !(latitudeInRadians < _radiansFromDegrees(-90.0) || latitudeInRadians > _radiansFromDegrees(90.0));
+      !(latitudeInRadians < _radiansFromDegrees(-90.0) ||
+          latitudeInRadians > _radiansFromDegrees(90.0));
 
   /// A longitude is considered invalid if its is greater than 180 degrees or less than -180 degrees.
   bool _isValidLongitude(double longitudeInRadians) =>
-      !(longitudeInRadians < _radiansFromDegrees(-180.0) || longitudeInRadians > _radiansFromDegrees(180.0));
+      !(longitudeInRadians < _radiansFromDegrees(-180.0) ||
+          longitudeInRadians > _radiansFromDegrees(180.0));
 
   void _throwExceptionOnInvalidCoordinates() {
     String invalidDescription = """
@@ -264,12 +292,14 @@ class GreatCircleDistance {
         """;
 
     if (!_isValidCoordinate(this.latitude1, this.longitude1)) {
-      throw new FormatException("Invalid coordinates at latitude1|longitude1\n$invalidDescription");
+      throw new FormatException(
+          "Invalid coordinates at latitude1|longitude1\n$invalidDescription");
     }
 
     {
       if (!_isValidCoordinate(this.latitude2, this.longitude2))
-        throw new FormatException("Invalid coordinates at latitude2|longitude2\n$invalidDescription");
+        throw new FormatException(
+            "Invalid coordinates at latitude2|longitude2\n$invalidDescription");
     }
   }
 }
@@ -277,14 +307,18 @@ class GreatCircleDistance {
 class Haversine {
   static double distance(double lat1, lon1, lat2, lon2) {
     var earthRadius = 6378137.0; // WGS84 major axis
-    double distance = 2 * earthRadius * asin(sqrt(pow(sin(lat2 - lat1) / 2, 2) + cos(lat1) * cos(lat2) * pow(sin(lon2 - lon1) / 2, 2)));
+    double distance = 2 *
+        earthRadius *
+        asin(sqrt(pow(sin(lat2 - lat1) / 2, 2) +
+            cos(lat1) * cos(lat2) * pow(sin(lon2 - lon1) / 2, 2)));
     return distance;
   }
 }
 
 class SphericalLawOfCosines {
   static double distance(double lat1, lon1, lat2, lon2) {
-    double distance = acos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(lon2 - lon1));
+    double distance =
+        acos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(lon2 - lon1));
     if (distance < 0) distance = distance + pi;
 
     var earthRadius = 6378137.0; // WGS84 major axis
@@ -329,22 +363,43 @@ class Vincenty {
       sinSigma = sqrt(sinSqSigma);
       cosSigma = sinU1sinU2 + cosU1cosU2 * cosLambda; // (15)
       sigma = atan2(sinSigma, cosSigma); // (16)
-      double sinAlpha = (sinSigma == 0) ? 0.0 : cosU1cosU2 * sinLambda / sinSigma; // (17)
+      double sinAlpha =
+          (sinSigma == 0) ? 0.0 : cosU1cosU2 * sinLambda / sinSigma; // (17)
       cosSqAlpha = 1.0 - sinAlpha * sinAlpha;
-      cos2SM = (cosSqAlpha == 0) ? 0.0 : cosSigma - 2.0 * sinU1sinU2 / cosSqAlpha; // (18)
+      cos2SM = (cosSqAlpha == 0)
+          ? 0.0
+          : cosSigma - 2.0 * sinU1sinU2 / cosSqAlpha; // (18)
       double uSquared = cosSqAlpha * aSqMinusBSqOverBSq; // defn
       A = 1 +
           (uSquared / 16384.0) * // (3)
-              (4096.0 + uSquared * (-768 + uSquared * (320.0 - 175.0 * uSquared)));
+              (4096.0 +
+                  uSquared * (-768 + uSquared * (320.0 - 175.0 * uSquared)));
       double B = (uSquared / 1024.0) * // (4)
           (256.0 + uSquared * (-128.0 + uSquared * (74.0 - 47.0 * uSquared)));
-      double C = (f / 16.0) * cosSqAlpha * (4.0 + f * (4.0 - 3.0 * cosSqAlpha)); // (10)
+      double C = (f / 16.0) *
+          cosSqAlpha *
+          (4.0 + f * (4.0 - 3.0 * cosSqAlpha)); // (10)
       double cos2SMSq = cos2SM * cos2SM;
       deltaSigma = B *
           sinSigma * // (6)
           (cos2SM +
-              (B / 4.0) * (cosSigma * (-1.0 + 2.0 * cos2SMSq) - (B / 6.0) * cos2SM * (-3.0 + 4.0 * sinSigma * sinSigma) * (-3.0 + 4.0 * cos2SMSq)));
-      lambda = L! + (1.0 - C) * f * sinAlpha * (sigma + C * sinSigma * (cos2SM + C * cosSigma * (-1.0 + 2.0 * cos2SM * cos2SM))); // (11)
+              (B / 4.0) *
+                  (cosSigma * (-1.0 + 2.0 * cos2SMSq) -
+                      (B / 6.0) *
+                          cos2SM *
+                          (-3.0 + 4.0 * sinSigma * sinSigma) *
+                          (-3.0 + 4.0 * cos2SMSq)));
+      lambda = L! +
+          (1.0 - C) *
+              f *
+              sinAlpha *
+              (sigma +
+                  C *
+                      sinSigma *
+                      (cos2SM +
+                          C *
+                              cosSigma *
+                              (-1.0 + 2.0 * cos2SM * cos2SM))); // (11)
       double delta = (lambda - lambdaOrig) / lambda;
       if (delta.abs() < 1.0e-12) {
         break;

@@ -11,7 +11,8 @@ class GuidesButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
-    bool _isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    bool _isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     return Expanded(
       flex: 10,
       child: Padding(
@@ -20,7 +21,11 @@ class GuidesButton extends StatelessWidget {
           highlightColor: Colors.transparent,
           splashColor: Color(0xFF496D47).darken(0.1).withOpacity(0.8),
           onTap: () {
-            Navigator.push(context, CustomRoutes.fadeThrough(page: guidesItem[index].page, duration: Duration(milliseconds: 300)));
+            Navigator.push(
+                context,
+                CustomRoutes.fadeThrough(
+                    page: guidesItem[index].page,
+                    duration: Duration(milliseconds: 300)));
           },
           child: Ink(
             decoration: BoxDecoration(
@@ -42,7 +47,10 @@ class GuidesButton extends StatelessWidget {
                           child: Center(
                             child: SvgPicture.asset(
                               guidesItem[index].iconPath,
-                              color: Colors.white,
+                              colorFilter: ColorFilter.mode(
+                                Colors.white,
+                                BlendMode.srcIn,
+                              ),
                               fit: BoxFit.contain,
                             ),
                           ),
@@ -110,7 +118,10 @@ class GuidesButton extends StatelessWidget {
                           child: Center(
                             child: SvgPicture.asset(
                               guidesItem[index].iconPath,
-                              color: Colors.white,
+                              colorFilter: ColorFilter.mode(
+                                Colors.white,
+                                BlendMode.srcIn,
+                              ),
                               fit: BoxFit.contain,
                             ),
                           ),

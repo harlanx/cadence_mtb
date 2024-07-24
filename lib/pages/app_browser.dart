@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -6,17 +5,21 @@ import 'package:webview_flutter/webview_flutter.dart';
 class AppBrowser extends StatelessWidget {
   final String link;
   final int purpose;
+  late final controller = WebViewController()
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..loadRequest(Uri.parse(link));
+
   AppBrowser({
     required this.link,
     this.purpose = 1,
   }) : assert(purpose > 0 && purpose <= 4, 'Select purpose from 1 to 4 only.');
 
-  final Completer<WebViewController> completer = Completer<WebViewController>();
-
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(statusBarColor: appBarColor(purpose), statusBarIconBrightness: Brightness.light),
+      value: SystemUiOverlayStyle(
+          statusBarColor: appBarColor(purpose),
+          statusBarIconBrightness: Brightness.light),
       child: SafeArea(
         bottom: false,
         child: Scaffold(
@@ -24,12 +27,8 @@ class AppBrowser extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: appBarColor(purpose),
           ),
-          body: WebView(
-            initialUrl: link,
-            javascriptMode: JavascriptMode.unrestricted,
-            onWebViewCreated: (controller) {
-              completer.complete(controller);
-            },
+          body: WebViewWidget(
+            controller: controller,
           ),
         ),
       ),

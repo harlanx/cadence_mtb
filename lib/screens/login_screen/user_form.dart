@@ -20,7 +20,8 @@ class _UserFormState extends State<UserForm> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController profileNameController = TextEditingController();
   final TextEditingController pinCodeController = TextEditingController();
-  final TextEditingController pinCodeConfirmController = TextEditingController();
+  final TextEditingController pinCodeConfirmController =
+      TextEditingController();
   /* Sample Male Generated
   [074142121646,303028311032,334606193403,111500050820,253039420134,
   224311353805,193035190836,370228202837,131515101046, 141243361946]
@@ -31,7 +32,9 @@ class _UserFormState extends State<UserForm> {
   */
   //It needs 6 of double digits from 01 to 47
   //Max is 474747474747
-  String avatarCode = List.generate(6, (_) => Random().nextInt(48).toString().padLeft(2, '0')).join();
+  String avatarCode =
+      List.generate(6, (_) => Random().nextInt(48).toString().padLeft(2, '0'))
+          .join();
   int? pinCodeHolder;
 
   @override
@@ -67,12 +70,15 @@ class _UserFormState extends State<UserForm> {
           TextButton(
             child: Text('Save'),
             style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
               backgroundColor: Color(0xFF496D47),
-              primary: Colors.white,
             ),
             onPressed: () {
-              if ((profileNameController.value.text.isEmpty || pinCodeController.value.text.isEmpty || pinCodeConfirmController.value.text.isEmpty) ||
-                  pinCodeController.value.text != pinCodeConfirmController.value.text) {
+              if ((profileNameController.value.text.isEmpty ||
+                      pinCodeController.value.text.isEmpty ||
+                      pinCodeConfirmController.value.text.isEmpty) ||
+                  pinCodeController.value.text !=
+                      pinCodeConfirmController.value.text) {
                 formKey.currentState!.validate();
                 return;
               } else {
@@ -92,8 +98,8 @@ class _UserFormState extends State<UserForm> {
           TextButton(
             child: Text('Clear'),
             style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
               backgroundColor: Color(0xFF496D47),
-              primary: Colors.white,
             ),
             onPressed: () {
               if (widget.onClear != null) {
@@ -107,8 +113,8 @@ class _UserFormState extends State<UserForm> {
           TextButton(
             child: Text('Cancel'),
             style: TextButton.styleFrom(
+              foregroundColor: Colors.white,
               backgroundColor: Color(0xFF496D47),
-              primary: Colors.white,
             ),
             onPressed: () {
               if (widget.onCancel != null) {
@@ -153,8 +159,12 @@ class _UserFormState extends State<UserForm> {
                       icon: Icon(Icons.refresh),
                       onPressed: () {
                         setState(() {
-                        avatarCode = List.generate(6, (_) => Random().nextInt(48).toString().padLeft(2, '0')).join();
-                          
+                          avatarCode = List.generate(
+                              6,
+                              (_) => Random()
+                                  .nextInt(48)
+                                  .toString()
+                                  .padLeft(2, '0')).join();
                         });
                         //print(avatarCode);
                       },
@@ -223,10 +233,15 @@ class _UserFormState extends State<UserForm> {
                   obscuringWidget: SvgPicture.asset(
                     'assets/images/navigate/wheel.svg',
                     fit: BoxFit.contain,
-                    color: Color(0xFF496D47),
+                    colorFilter: ColorFilter.mode(
+                      Color(0xFF496D47),
+                      BlendMode.srcIn,
+                    ),
                   ),
                   textStyle: TextStyle(
-                    color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white,
                   ),
                   pinTheme: PinTheme(
                     activeColor: Color(0xFF496D47),
@@ -266,10 +281,15 @@ class _UserFormState extends State<UserForm> {
                   obscuringWidget: SvgPicture.asset(
                     'assets/images/navigate/wheel.svg',
                     fit: BoxFit.contain,
-                    color: Color(0xFF496D47),
+                    colorFilter: ColorFilter.mode(
+                      Color(0xFF496D47),
+                      BlendMode.srcIn,
+                    ),
                   ),
                   textStyle: TextStyle(
-                    color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white,
                   ),
                   pinTheme: PinTheme(
                     activeColor: Color(0xFF496D47),

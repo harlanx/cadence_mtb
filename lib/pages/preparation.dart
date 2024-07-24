@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cadence_mtb/data/data.dart';
@@ -31,7 +30,7 @@ class _PreparationState extends State<Preparation> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _fetchValues();
       setState(() {});
     });
@@ -47,10 +46,15 @@ class _PreparationState extends State<Preparation> {
 
   @override
   Widget build(BuildContext context) {
-    bool _isPortrait = MediaQuery.of(context).orientation == Orientation.portrait ? true : false;
+    bool _isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait
+            ? true
+            : false;
     Size _size = MediaQuery.of(context).size;
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(statusBarColor: Color(0xFF496D47), statusBarIconBrightness: Brightness.light),
+      value: SystemUiOverlayStyle(
+          statusBarColor: Color(0xFF496D47),
+          statusBarIconBrightness: Brightness.light),
       child: SafeArea(
         bottom: false,
         child: Scaffold(
@@ -87,7 +91,10 @@ class _PreparationState extends State<Preparation> {
             onSubmitted: (currentText) {
               String searchQuery = currentText.toLowerCase();
               if (searchQuery.length != 0) {
-                _searchList = fullList.where((item) => item.name.toLowerCase().contains(searchQuery)).toList(growable: false);
+                _searchList = fullList
+                    .where(
+                        (item) => item.name.toLowerCase().contains(searchQuery))
+                    .toList(growable: false);
               } else {
                 _searchList = <CheckListItem>[];
               }
@@ -95,7 +102,8 @@ class _PreparationState extends State<Preparation> {
             },
             builder: (context, transition) {
               return Material(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
                 color: Theme.of(context).scaffoldBackgroundColor,
                 child: ListView.builder(
                   padding: EdgeInsets.zero,
@@ -129,7 +137,9 @@ class _PreparationState extends State<Preparation> {
             },
             body: Theme(
               data: Theme.of(context).copyWith(
-                accentColor: Color(0xFF496D47),
+                colorScheme: ColorScheme.fromSwatch().copyWith(
+                  secondary: Color(0xFF496D47),
+                ),
                 unselectedWidgetColor: Colors.grey,
                 dividerColor: Colors.transparent,
               ),
@@ -168,7 +178,8 @@ class _PreparationState extends State<Preparation> {
                               style: TextStyle(fontWeight: FontWeight.w700),
                             ),
                             TextSpan(
-                              text: 'This list is intentionally extensive. Not every rider will carry every item on every trip.',
+                              text:
+                                  'This list is intentionally extensive. Not every rider will carry every item on every trip.',
                               style: TextStyle(fontWeight: FontWeight.w400),
                             ),
                           ],
@@ -229,8 +240,10 @@ class _PreparationState extends State<Preparation> {
                           physics: NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: _size.height * (_isPortrait ? 0.006 : 0.012),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio:
+                                _size.height * (_isPortrait ? 0.006 : 0.012),
                             crossAxisCount: _isPortrait ? 2 : 3,
                           ),
                           itemCount: theTwoEssentials.length,
@@ -242,7 +255,8 @@ class _PreparationState extends State<Preparation> {
                               child: CheckboxListTile(
                                 activeColor: Color(0xFF496D47),
                                 selected: theTwoEssentials[index].value,
-                                controlAffinity: ListTileControlAffinity.leading,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
                                 value: theTwoEssentials[index].value,
                                 onChanged: (value) {
                                   setState(() {
@@ -298,8 +312,10 @@ class _PreparationState extends State<Preparation> {
                           physics: NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: _size.height * (_isPortrait ? 0.006 : 0.012),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio:
+                                _size.height * (_isPortrait ? 0.006 : 0.012),
                             crossAxisCount: _isPortrait ? 2 : 3,
                           ),
                           itemCount: coreGear.length,
@@ -311,7 +327,8 @@ class _PreparationState extends State<Preparation> {
                               child: CheckboxListTile(
                                 activeColor: Color(0xFF496D47),
                                 selected: coreGear[index].value,
-                                controlAffinity: ListTileControlAffinity.leading,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
                                 value: coreGear[index].value,
                                 onChanged: (value) {
                                   setState(() {
@@ -367,8 +384,10 @@ class _PreparationState extends State<Preparation> {
                           physics: NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: _size.height * (_isPortrait ? 0.006 : 0.012),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio:
+                                _size.height * (_isPortrait ? 0.006 : 0.012),
                             crossAxisCount: _isPortrait ? 2 : 3,
                           ),
                           itemCount: coreRepairItems.length,
@@ -380,7 +399,8 @@ class _PreparationState extends State<Preparation> {
                               child: CheckboxListTile(
                                 activeColor: Color(0xFF496D47),
                                 selected: coreRepairItems[index].value,
-                                controlAffinity: ListTileControlAffinity.leading,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
                                 value: coreRepairItems[index].value,
                                 onChanged: (value) {
                                   setState(() {
@@ -424,8 +444,10 @@ class _PreparationState extends State<Preparation> {
                           physics: NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: _size.height * (_isPortrait ? 0.006 : 0.012),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio:
+                                _size.height * (_isPortrait ? 0.006 : 0.012),
                             crossAxisCount: _isPortrait ? 2 : 3,
                           ),
                           itemCount: clothing.length,
@@ -437,7 +459,8 @@ class _PreparationState extends State<Preparation> {
                               child: CheckboxListTile(
                                 activeColor: Color(0xFF496D47),
                                 selected: clothing[index].value,
-                                controlAffinity: ListTileControlAffinity.leading,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
                                 value: clothing[index].value,
                                 onChanged: (value) {
                                   setState(() {
@@ -481,8 +504,10 @@ class _PreparationState extends State<Preparation> {
                           physics: NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: _size.height * (_isPortrait ? 0.006 : 0.012),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio:
+                                _size.height * (_isPortrait ? 0.006 : 0.012),
                             crossAxisCount: _isPortrait ? 2 : 3,
                           ),
                           itemCount: gearOptions.length,
@@ -494,7 +519,8 @@ class _PreparationState extends State<Preparation> {
                               child: CheckboxListTile(
                                 activeColor: Color(0xFF496D47),
                                 selected: gearOptions[index].value,
-                                controlAffinity: ListTileControlAffinity.leading,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
                                 value: gearOptions[index].value,
                                 onChanged: (value) {
                                   setState(() {
@@ -538,8 +564,10 @@ class _PreparationState extends State<Preparation> {
                           physics: NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: _size.height * (_isPortrait ? 0.006 : 0.012),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio:
+                                _size.height * (_isPortrait ? 0.006 : 0.012),
                             crossAxisCount: _isPortrait ? 2 : 3,
                           ),
                           itemCount: repairKitOptions.length,
@@ -551,7 +579,8 @@ class _PreparationState extends State<Preparation> {
                               child: CheckboxListTile(
                                 activeColor: Color(0xFF496D47),
                                 selected: repairKitOptions[index].value,
-                                controlAffinity: ListTileControlAffinity.leading,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
                                 value: repairKitOptions[index].value,
                                 onChanged: (value) {
                                   setState(() {
@@ -595,8 +624,10 @@ class _PreparationState extends State<Preparation> {
                           physics: NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: _size.height * (_isPortrait ? 0.006 : 0.012),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio:
+                                _size.height * (_isPortrait ? 0.006 : 0.012),
                             crossAxisCount: _isPortrait ? 2 : 3,
                           ),
                           itemCount: freeRidingGear.length,
@@ -608,7 +639,8 @@ class _PreparationState extends State<Preparation> {
                               child: CheckboxListTile(
                                 activeColor: Color(0xFF496D47),
                                 selected: freeRidingGear[index].value,
-                                controlAffinity: ListTileControlAffinity.leading,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
                                 value: freeRidingGear[index].value,
                                 onChanged: (value) {
                                   setState(() {
@@ -652,8 +684,10 @@ class _PreparationState extends State<Preparation> {
                           physics: NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: _size.height * (_isPortrait ? 0.006 : 0.012),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio:
+                                _size.height * (_isPortrait ? 0.006 : 0.012),
                             crossAxisCount: _isPortrait ? 2 : 3,
                           ),
                           itemCount: personal.length,
@@ -665,7 +699,8 @@ class _PreparationState extends State<Preparation> {
                               child: CheckboxListTile(
                                 activeColor: Color(0xFF496D47),
                                 selected: personal[index].value,
-                                controlAffinity: ListTileControlAffinity.leading,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
                                 value: personal[index].value,
                                 onChanged: (value) {
                                   setState(() {
@@ -784,31 +819,58 @@ class _PreparationState extends State<Preparation> {
   }
 
   void _saveValues() {
-    theTwoEssentials.forEachIndexed((index, item) => StorageHelper.setBool('${currentUser!.profileNumber}theTwoEssentials$index', item.value));
-    coreGear.forEachIndexed((index, item) => StorageHelper.setBool('${currentUser!.profileNumber}coreGear$index', item.value));
-    coreRepairItems.forEachIndexed((index, item) => StorageHelper.setBool('${currentUser!.profileNumber}coreRepairItems$index', item.value));
-    clothing..forEachIndexed((index, item) => StorageHelper.setBool('${currentUser!.profileNumber}clothing$index', item.value));
-    gearOptions..forEachIndexed((index, item) => StorageHelper.setBool('${currentUser!.profileNumber}gearOptions$index', item.value));
-    repairKitOptions..forEachIndexed((index, item) => StorageHelper.setBool('${currentUser!.profileNumber}repairKitOptions$index', item.value));
-    freeRidingGear..forEachIndexed((index, item) => StorageHelper.setBool('${currentUser!.profileNumber}freeRidingGear$index', item.value));
-    personal..forEachIndexed((index, item) => StorageHelper.setBool('${currentUser!.profileNumber}personal$index', item.value));
+    theTwoEssentials.forEachIndexed((index, item) => StorageHelper.setBool(
+        '${currentUser!.profileNumber}theTwoEssentials$index', item.value));
+    coreGear.forEachIndexed((index, item) => StorageHelper.setBool(
+        '${currentUser!.profileNumber}coreGear$index', item.value));
+    coreRepairItems.forEachIndexed((index, item) => StorageHelper.setBool(
+        '${currentUser!.profileNumber}coreRepairItems$index', item.value));
+    clothing
+      ..forEachIndexed((index, item) => StorageHelper.setBool(
+          '${currentUser!.profileNumber}clothing$index', item.value));
+    gearOptions
+      ..forEachIndexed((index, item) => StorageHelper.setBool(
+          '${currentUser!.profileNumber}gearOptions$index', item.value));
+    repairKitOptions
+      ..forEachIndexed((index, item) => StorageHelper.setBool(
+          '${currentUser!.profileNumber}repairKitOptions$index', item.value));
+    freeRidingGear
+      ..forEachIndexed((index, item) => StorageHelper.setBool(
+          '${currentUser!.profileNumber}freeRidingGear$index', item.value));
+    personal
+      ..forEachIndexed((index, item) => StorageHelper.setBool(
+          '${currentUser!.profileNumber}personal$index', item.value));
   }
 
   void _fetchValues() {
-    theTwoEssentials.forEachIndexed(
-        (index, item) => theTwoEssentials[index].value = StorageHelper.getBool('${currentUser!.profileNumber}theTwoEssentials$index') ?? false);
-    coreGear.forEachIndexed((index, item) => coreGear[index].value = StorageHelper.getBool('${currentUser!.profileNumber}coreGear$index') ?? false);
-    coreRepairItems.forEachIndexed(
-        (index, item) => clothing[index].value = StorageHelper.getBool('${currentUser!.profileNumber}coreRepairItems$index') ?? false);
-    clothing.forEachIndexed((index, item) => clothing[index].value = StorageHelper.getBool('${currentUser!.profileNumber}clothing$index') ?? false);
-    gearOptions
-        .forEachIndexed((index, item) => gearOptions[index].value = StorageHelper.getBool('${currentUser!.profileNumber}gearOptions$index') ?? false);
-    repairKitOptions.forEachIndexed(
-        (index, item) => repairKitOptions[index].value = StorageHelper.getBool('${currentUser!.profileNumber}repairKitOptions$index') ?? false);
-    freeRidingGear.forEachIndexed(
-        (index, item) => freeRidingGear[index].value = StorageHelper.getBool('${currentUser!.profileNumber}freeRidingGear$index') ?? false);
-    personal.forEachIndexed((index, item) => personal[index].value = StorageHelper.getBool('${currentUser!.profileNumber}personal$index') ?? false);
+    theTwoEssentials.forEachIndexed((index, item) =>
+        theTwoEssentials[index].value = StorageHelper.getBool(
+                '${currentUser!.profileNumber}theTwoEssentials$index') ??
+            false);
+    coreGear.forEachIndexed((index, item) => coreGear[index].value =
+        StorageHelper.getBool('${currentUser!.profileNumber}coreGear$index') ??
+            false);
+    coreRepairItems.forEachIndexed((index, item) => clothing[index].value =
+        StorageHelper.getBool(
+                '${currentUser!.profileNumber}coreRepairItems$index') ??
+            false);
+    clothing.forEachIndexed((index, item) => clothing[index].value =
+        StorageHelper.getBool('${currentUser!.profileNumber}clothing$index') ??
+            false);
+    gearOptions.forEachIndexed((index, item) => gearOptions[index].value =
+        StorageHelper.getBool(
+                '${currentUser!.profileNumber}gearOptions$index') ??
+            false);
+    repairKitOptions.forEachIndexed((index, item) =>
+        repairKitOptions[index].value = StorageHelper.getBool(
+                '${currentUser!.profileNumber}repairKitOptions$index') ??
+            false);
+    freeRidingGear.forEachIndexed((index, item) => freeRidingGear[index].value =
+        StorageHelper.getBool(
+                '${currentUser!.profileNumber}freeRidingGear$index') ??
+            false);
+    personal.forEachIndexed((index, item) => personal[index].value =
+        StorageHelper.getBool('${currentUser!.profileNumber}personal$index') ??
+            false);
   }
 }
-
-

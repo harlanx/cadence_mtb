@@ -11,7 +11,8 @@ class TrailsItemViewer extends StatefulWidget {
 }
 
 class _TrailsItemViewerState extends State<TrailsItemViewer> {
-  final WeatherFactory wf = WeatherFactory(Constants.openWeatherMapApiKey, language: Language.ENGLISH);
+  final WeatherFactory wf = WeatherFactory(Constants.openWeatherMapApiKey,
+      language: Language.ENGLISH);
   final Completer<GoogleMapController> _mapControllerCompleter = Completer();
   bool _isMapMounted = false;
   MapType _mapType = MapType.satellite;
@@ -35,9 +36,12 @@ class _TrailsItemViewerState extends State<TrailsItemViewer> {
   @override
   Widget build(BuildContext context) {
     Size _screenSize = MediaQuery.of(context).size;
-    bool _isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    bool _isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(statusBarColor: Color(0xFFB8784B), statusBarIconBrightness: Brightness.light),
+      value: SystemUiOverlayStyle(
+          statusBarColor: Color(0xFFB8784B),
+          statusBarIconBrightness: Brightness.light),
       child: SafeArea(
         bottom: false,
         child: Scaffold(
@@ -55,7 +59,8 @@ class _TrailsItemViewerState extends State<TrailsItemViewer> {
             title: AutoSizeText(
               widget.item.trailName,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
               maxLines: 1,
             ),
           ),
@@ -64,7 +69,9 @@ class _TrailsItemViewerState extends State<TrailsItemViewer> {
             child: ListView(
               children: [
                 Container(
-                  height: _isPortrait ? _screenSize.height * 0.3 : _screenSize.height * 0.5,
+                  height: _isPortrait
+                      ? _screenSize.height * 0.3
+                      : _screenSize.height * 0.5,
                   width: double.maxFinite,
                   child: Stack(
                     fit: StackFit.expand,
@@ -83,29 +90,37 @@ class _TrailsItemViewerState extends State<TrailsItemViewer> {
                                   mapToolbarEnabled: false,
                                   onMapCreated: (controller) {
                                     if (mounted) {
-                                      _mapControllerCompleter.complete(controller);
+                                      _mapControllerCompleter
+                                          .complete(controller);
                                       setState(() {
                                         _markers.add(
                                           Marker(
                                             markerId: MarkerId('trailMarker'),
                                             draggable: false,
-                                            position: LatLng(widget.item.latitude, widget.item.longitude),
-                                            infoWindow: InfoWindow(title: widget.item.trailName),
+                                            position: LatLng(
+                                                widget.item.latitude,
+                                                widget.item.longitude),
+                                            infoWindow: InfoWindow(
+                                                title: widget.item.trailName),
                                             icon: snapshot.data!,
                                           ),
                                         );
                                         _isMapMounted = true;
                                       });
-                                      Future.delayed(Duration(milliseconds: 300), () {
-                                        controller.showMarkerInfoWindow(MarkerId('trailMarker'));
+                                      Future.delayed(
+                                          Duration(milliseconds: 300), () {
+                                        controller.showMarkerInfoWindow(
+                                            MarkerId('trailMarker'));
                                       });
                                     }
                                   },
                                   initialCameraPosition: CameraPosition(
-                                    target: LatLng(widget.item.latitude, widget.item.longitude),
+                                    target: LatLng(widget.item.latitude,
+                                        widget.item.longitude),
                                     zoom: 17,
                                   ),
-                                  gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
+                                  gestureRecognizers:
+                                      <Factory<OneSequenceGestureRecognizer>>[
                                     Factory<OneSequenceGestureRecognizer>(
                                       () => EagerGestureRecognizer(),
                                     ),
@@ -321,20 +336,25 @@ class _TrailsItemViewerState extends State<TrailsItemViewer> {
                                         if (snapshot.hasError) {
                                           return Text(
                                             snapshot.error as String,
-                                            style: TextStyle(fontWeight: FontWeight.w300),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w300),
                                             maxLines: 1,
                                             overflow: TextOverflow.clip,
                                           );
                                         } else {
                                           return Tooltip(
-                                            message: snapshot.data!.weatherDescription!,
+                                            message: snapshot
+                                                .data!.weatherDescription!,
                                             child: GestureDetector(
                                               onTap: () {
                                                 Navigator.push(
                                                   context,
                                                   CustomRoutes.fadeThrough(
                                                     page: WeatherForecast(
-                                                      coordinates: LatLng(widget.item.latitude, widget.item.longitude),
+                                                      coordinates: LatLng(
+                                                          widget.item.latitude,
+                                                          widget
+                                                              .item.longitude),
                                                       weather: snapshot.data!,
                                                     ),
                                                   ),
@@ -344,8 +364,16 @@ class _TrailsItemViewerState extends State<TrailsItemViewer> {
                                                 TextSpan(
                                                   children: [
                                                     TextSpan(
-                                                      text: snapshot.data!.temperature.toString().replaceAll(RegExp(r'Celsius'), '°C'),
-                                                      style: TextStyle(fontWeight: FontWeight.w300),
+                                                      text: snapshot
+                                                          .data!.temperature
+                                                          .toString()
+                                                          .replaceAll(
+                                                              RegExp(
+                                                                  r'Celsius'),
+                                                              '°C'),
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w300),
                                                     ),
                                                     WidgetSpan(
                                                       child: SizedBox(
@@ -355,22 +383,53 @@ class _TrailsItemViewerState extends State<TrailsItemViewer> {
                                                           children: [
                                                             Opacity(
                                                               opacity: 0.8,
-                                                              child: CachedNetworkImage(
-                                                                color: Colors.black,
-                                                                placeholder: (context, string) => SpinKitDoubleBounce(color: Colors.white),
-                                                                imageUrl:
-                                                                    'http://openweathermap.org/img/wn/' + snapshot.data!.weatherIcon! + '@2x.png',
-                                                                errorWidget: (context, string, url) => Icon(Icons.error),
+                                                              child:
+                                                                  CachedNetworkImage(
+                                                                color: Colors
+                                                                    .black,
+                                                                placeholder: (context,
+                                                                        string) =>
+                                                                    SpinKitDoubleBounce(
+                                                                        color: Colors
+                                                                            .white),
+                                                                imageUrl: 'http://openweathermap.org/img/wn/' +
+                                                                    snapshot
+                                                                        .data!
+                                                                        .weatherIcon! +
+                                                                    '@2x.png',
+                                                                errorWidget: (context,
+                                                                        string,
+                                                                        url) =>
+                                                                    Icon(Icons
+                                                                        .error),
                                                               ),
                                                             ),
                                                             ClipRect(
-                                                              child: BackdropFilter(
-                                                                filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
-                                                                child: CachedNetworkImage(
-                                                                  placeholder: (context, string) => SpinKitDoubleBounce(color: Colors.white),
-                                                                  imageUrl:
-                                                                      'http://openweathermap.org/img/wn/' + snapshot.data!.weatherIcon! + '@2x.png',
-                                                                  errorWidget: (context, string, url) => Icon(Icons.error),
+                                                              child:
+                                                                  BackdropFilter(
+                                                                filter: ImageFilter
+                                                                    .blur(
+                                                                        sigmaX:
+                                                                            1.0,
+                                                                        sigmaY:
+                                                                            1.0),
+                                                                child:
+                                                                    CachedNetworkImage(
+                                                                  placeholder: (context,
+                                                                          string) =>
+                                                                      SpinKitDoubleBounce(
+                                                                          color:
+                                                                              Colors.white),
+                                                                  imageUrl: 'http://openweathermap.org/img/wn/' +
+                                                                      snapshot
+                                                                          .data!
+                                                                          .weatherIcon! +
+                                                                      '@2x.png',
+                                                                  errorWidget: (context,
+                                                                          string,
+                                                                          url) =>
+                                                                      Icon(Icons
+                                                                          .error),
                                                                 ),
                                                               ),
                                                             ),
@@ -386,7 +445,9 @@ class _TrailsItemViewerState extends State<TrailsItemViewer> {
                                         }
 
                                       default:
-                                        return Text('Loading...', style: TextStyle(fontWeight: FontWeight.w300));
+                                        return Text('Loading...',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w300));
                                     }
                                   },
                                 ),
@@ -411,7 +472,9 @@ class _TrailsItemViewerState extends State<TrailsItemViewer> {
                 ),
                 Container(
                   padding: EdgeInsets.only(bottom: 10),
-                  height: _isPortrait ? _screenSize.height * 0.4 : _screenSize.height * 0.5,
+                  height: _isPortrait
+                      ? _screenSize.height * 0.4
+                      : _screenSize.height * 0.5,
                   width: double.maxFinite,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
@@ -433,7 +496,8 @@ class _TrailsItemViewerState extends State<TrailsItemViewer> {
                           },
                           child: CachedNetworkImage(
                             imageUrl: widget.item.previews[index],
-                            errorWidget: (context, url, error) => Icon(Icons.error),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
                             width: 100,
                             fit: BoxFit.cover,
                           ),
@@ -486,16 +550,20 @@ class _TrailsItemViewerState extends State<TrailsItemViewer> {
   }
 
   Future<BitmapDescriptor> _initializeIcon() async {
-    return BitmapDescriptor.fromBytes(await FunctionHelper.getBytesFromAsset('assets/images/navigate/trail_marker_simple_v2.png', 50));
+    return BitmapDescriptor.bytes(await FunctionHelper.getBytesFromAsset(
+        'assets/images/navigate/trail_marker_simple_v2.png', 50));
   }
 
   Future<Weather?> _trailWeather() async {
     Weather? weather;
     await InternetConnectionChecker().hasConnection.then((hasInternet) async {
       if (hasInternet) {
-        weather = await wf.currentWeatherByLocation(widget.item.latitude, widget.item.longitude).catchError((e) {
-          Future.error(e);
-        });
+        try {
+          weather = await wf.currentWeatherByLocation(
+              widget.item.latitude, widget.item.longitude);
+        } catch (e) {
+          return Future.error(e);
+        }
       } else {
         Future.error('No Internet.');
       }

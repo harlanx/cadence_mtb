@@ -15,7 +15,9 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
   late BikeActivity _userActivity;
   final Completer<GoogleMapController> _sessionMapCompleter = Completer();
   Uint8List? _mapScreenshotBytes;
-  bool _showMapScreenshot = false, _sessionSaved = false, _takenScreenhot = false;
+  bool _showMapScreenshot = false,
+      _sessionSaved = false,
+      _takenScreenhot = false;
   final ScreenshotController _screenshotController = ScreenshotController();
   late Future<List<BitmapDescriptor>> _futureMarkerIcons;
   String _startLocation = '', _endLocation = '', _imagePath = '';
@@ -64,8 +66,13 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                 Expanded(
                                   flex: 15,
                                   child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                                    child: SvgPicture.asset('assets/images/navigate/app_logo.svg', height: 24, width: 24, fit: BoxFit.contain),
+                                    padding: const EdgeInsets.fromLTRB(
+                                        10.0, 5.0, 10.0, 5.0),
+                                    child: SvgPicture.asset(
+                                        'assets/images/navigate/app_logo.svg',
+                                        height: 24,
+                                        width: 24,
+                                        fit: BoxFit.contain),
                                   ),
                                 ),
                                 Expanded(
@@ -103,16 +110,29 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                           polylines: _userActivity.polylines!,
                                           initialCameraPosition: CameraPosition(
                                             //Default Camera Target (It is a required parameter so we just used middle of the coordinates)
-                                            target: _userActivity.coordinates![_userActivity.coordinates!.length ~/ 2]!,
+                                            target: _userActivity.coordinates![
+                                                _userActivity
+                                                        .coordinates!.length ~/
+                                                    2],
                                             zoom: 18,
                                           ),
                                           onMapCreated: (controller) {
                                             if (mounted) {
-                                              _sessionMapCompleter.complete(controller);
-                                              Future.delayed(Duration(milliseconds: 300), () {
-                                                controller.moveCamera(CameraUpdate.newLatLngBounds(_userActivity.latLngBounds!, 10.0));
+                                              _sessionMapCompleter
+                                                  .complete(controller);
+                                              Future.delayed(
+                                                  Duration(milliseconds: 300),
+                                                  () {
+                                                controller.moveCamera(
+                                                    CameraUpdate
+                                                        .newLatLngBounds(
+                                                            _userActivity
+                                                                .latLngBounds!,
+                                                            10.0));
                                                 setState(() {
-                                                  _setSessionMarkers(snapshot.data![0], snapshot.data![1]);
+                                                  _setSessionMarkers(
+                                                      snapshot.data![0],
+                                                      snapshot.data![1]);
                                                 });
                                               });
                                             }
@@ -128,18 +148,22 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                 child: Align(
                                   alignment: Alignment.topRight,
                                   child: Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 5.0, 5.0, 0),
+                                    padding:
+                                        EdgeInsets.fromLTRB(0, 5.0, 5.0, 0),
                                     child: Material(
                                       color: Colors.white.withOpacity(0.75),
                                       borderRadius: BorderRadius.circular(2),
                                       child: InkWell(
                                         splashColor: Colors.transparent,
                                         onTap: () {
-                                          if (_resultMapType == MapType.normal) {
+                                          if (_resultMapType ==
+                                              MapType.normal) {
                                             _resultMapType = MapType.hybrid;
-                                          } else if (_resultMapType == MapType.hybrid) {
+                                          } else if (_resultMapType ==
+                                              MapType.hybrid) {
                                             _resultMapType = MapType.satellite;
-                                          } else if (_resultMapType == MapType.satellite) {
+                                          } else if (_resultMapType ==
+                                              MapType.satellite) {
                                             _resultMapType = MapType.terrain;
                                           } else {
                                             _resultMapType = MapType.normal;
@@ -153,21 +177,24 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                             boxShadow: [
                                               //Left
                                               CustomBoxShadow(
-                                                color: Colors.grey.withOpacity(0.8),
+                                                color: Colors.grey
+                                                    .withOpacity(0.8),
                                                 offset: Offset(-0.5, 0),
                                                 blurRadius: 10.0,
                                                 blurStyle: BlurStyle.outer,
                                               ),
                                               //Right
                                               CustomBoxShadow(
-                                                color: Colors.grey.withOpacity(0.8),
+                                                color: Colors.grey
+                                                    .withOpacity(0.8),
                                                 offset: Offset(0.5, 0),
                                                 blurRadius: 10.0,
                                                 blurStyle: BlurStyle.outer,
                                               ),
                                               //Bottom
                                               CustomBoxShadow(
-                                                color: Colors.grey.withOpacity(0.8),
+                                                color: Colors.grey
+                                                    .withOpacity(0.8),
                                                 offset: Offset(0, -0.8),
                                                 blurRadius: 10.0,
                                                 blurStyle: BlurStyle.outer,
@@ -199,7 +226,9 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                         Expanded(
                           flex: 32,
                           child: DefaultTextStyle(
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700),
                             child: Container(
                               color: Color(0xFF496D47),
                               width: double.maxFinite,
@@ -209,10 +238,13 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                   Expanded(
                                     flex: 46,
                                     child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(5, 5, 5, 2),
+                                      padding:
+                                          const EdgeInsets.fromLTRB(5, 5, 5, 2),
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Expanded(
                                             flex: 50,
@@ -223,7 +255,8 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                                   TextSpan(
                                                     text: _startLocation,
                                                     style: TextStyle(
-                                                      fontWeight: FontWeight.w300,
+                                                      fontWeight:
+                                                          FontWeight.w300,
                                                     ),
                                                   ),
                                                 ],
@@ -242,7 +275,8 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                                   TextSpan(
                                                     text: _endLocation,
                                                     style: TextStyle(
-                                                      fontWeight: FontWeight.w300,
+                                                      fontWeight:
+                                                          FontWeight.w300,
                                                     ),
                                                   ),
                                                 ],
@@ -259,10 +293,13 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                   Expanded(
                                     flex: 18,
                                     child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(5, 3, 5, 2),
+                                      padding:
+                                          const EdgeInsets.fromLTRB(5, 3, 5, 2),
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Expanded(
                                             flex: 50,
@@ -271,8 +308,10 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                                 text: 'Duration: ',
                                                 children: [
                                                   TextSpan(
-                                                    text: StopWatchTimer.getDisplayTime(
-                                                          _userActivity.duration!,
+                                                    text: StopWatchTimer
+                                                            .getDisplayTime(
+                                                          _userActivity
+                                                              .duration!,
                                                           hours: true,
                                                           hoursRightBreak: 'h',
                                                           minute: true,
@@ -282,7 +321,8 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                                         ) +
                                                         's',
                                                     style: TextStyle(
-                                                      fontWeight: FontWeight.w300,
+                                                      fontWeight:
+                                                          FontWeight.w300,
                                                     ),
                                                   ),
                                                 ],
@@ -297,9 +337,11 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                                 text: 'Distance: ',
                                                 children: [
                                                   TextSpan(
-                                                    text: '${_userActivity.distance} km',
+                                                    text:
+                                                        '${_userActivity.distance} km',
                                                     style: TextStyle(
-                                                      fontWeight: FontWeight.w300,
+                                                      fontWeight:
+                                                          FontWeight.w300,
                                                     ),
                                                   ),
                                                 ],
@@ -314,10 +356,13 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                   Expanded(
                                     flex: 18,
                                     child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(5, 2, 5, 2),
+                                      padding:
+                                          const EdgeInsets.fromLTRB(5, 2, 5, 2),
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Expanded(
                                             flex: 50,
@@ -326,9 +371,11 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                                 text: 'Max Elevation: ',
                                                 children: [
                                                   TextSpan(
-                                                    text: '${_userActivity.elevation} m',
+                                                    text:
+                                                        '${_userActivity.elevation} m',
                                                     style: TextStyle(
-                                                      fontWeight: FontWeight.w300,
+                                                      fontWeight:
+                                                          FontWeight.w300,
                                                     ),
                                                   ),
                                                 ],
@@ -343,9 +390,11 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                                 text: 'Avg. Speed: ',
                                                 children: [
                                                   TextSpan(
-                                                    text: '${_userActivity.averageSpeed} m/s',
+                                                    text:
+                                                        '${_userActivity.averageSpeed} m/s',
                                                     style: TextStyle(
-                                                      fontWeight: FontWeight.w300,
+                                                      fontWeight:
+                                                          FontWeight.w300,
                                                     ),
                                                   ),
                                                 ],
@@ -360,15 +409,19 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                   Expanded(
                                     flex: 18,
                                     child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(5, 3, 5, 5),
+                                      padding:
+                                          const EdgeInsets.fromLTRB(5, 3, 5, 5),
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Expanded(
                                             flex: 50,
                                             child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Flexible(
                                                   child: AutoSizeText.rich(
@@ -379,7 +432,8 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                                           text:
                                                               '${_userActivity.weatherData!.temperature.toString().replaceAll(RegExp(r'Celsius'), '°C')}',
                                                           style: TextStyle(
-                                                            fontWeight: FontWeight.w300,
+                                                            fontWeight:
+                                                                FontWeight.w300,
                                                           ),
                                                         ),
                                                       ],
@@ -398,9 +452,11 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                                 text: 'Calories Burned: ',
                                                 children: [
                                                   TextSpan(
-                                                    text: '${_userActivity.burnedCalories}',
+                                                    text:
+                                                        '${_userActivity.burnedCalories}',
                                                     style: TextStyle(
-                                                      fontWeight: FontWeight.w300,
+                                                      fontWeight:
+                                                          FontWeight.w300,
                                                     ),
                                                   ),
                                                 ],
@@ -435,10 +491,14 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                           'Save',
                         ),
                         style: ButtonStyle(
-                          foregroundColor: MaterialStateProperty.all(Colors.white),
-                          backgroundColor: MaterialStateProperty.all(Color(0xFF496D47)),
-                          overlayColor: MaterialStateProperty.resolveWith(
-                              (states) => states.contains(MaterialState.pressed) ? Color(0xFF496D47).darken(0.1) : Colors.transparent),
+                          foregroundColor:
+                              WidgetStateProperty.all(Colors.white),
+                          backgroundColor:
+                              WidgetStateProperty.all(Color(0xFF496D47)),
+                          overlayColor: WidgetStateProperty.resolveWith(
+                              (states) => states.contains(WidgetState.pressed)
+                                  ? Color(0xFF496D47).darken(0.1)
+                                  : Colors.transparent),
                         ),
                         onPressed: () async {
                           if (_sessionSaved) {
@@ -449,7 +509,9 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                             );
                           } else {
                             _sessionSaved = true;
-                            await Hive.box<BikeActivity>('${currentUser!.profileNumber}bikeActivities').add(
+                            await Hive.box<BikeActivity>(
+                                    '${currentUser!.profileNumber}bikeActivities')
+                                .add(
                               BikeActivity(
                                 startLocation: _startLocation,
                                 endLocation: _endLocation,
@@ -461,7 +523,8 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                 duration: _userActivity.duration,
                                 weatherData: _userActivity.weatherData,
                                 //Related to question https://github.com/hivedb/hive/issues/182
-                                coordinates: _userActivity.coordinates!.toList(),
+                                coordinates:
+                                    _userActivity.coordinates!.toList(),
                                 latLngBounds: _userActivity.latLngBounds,
                               ),
                             );
@@ -476,12 +539,15 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                       ElevatedButton(
                         child: Text('Close'),
                         style: ElevatedButton.styleFrom(
-                          onPrimary: Colors.white,
-                          primary: Colors.grey,
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.grey,
                         ),
                         onPressed: () {
                           if (_sessionSaved) {
-                            Navigator.pop(context, {'takenScreenshot': _takenScreenhot, 'imagePath': _imagePath});
+                            Navigator.pop(context, {
+                              'takenScreenshot': _takenScreenhot,
+                              'imagePath': _imagePath
+                            });
                           } else {
                             showModal<bool>(
                               context: context,
@@ -500,10 +566,16 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                   TextButton(
                                     child: Text('Yes'),
                                     style: ButtonStyle(
-                                      foregroundColor: MaterialStateProperty.all(Colors.white),
-                                      backgroundColor: MaterialStateProperty.all(Colors.red.shade300),
-                                      overlayColor: MaterialStateProperty.resolveWith(
-                                          (states) => states.contains(MaterialState.pressed) ? Colors.red.withOpacity(0.8) : Colors.transparent),
+                                      foregroundColor:
+                                          WidgetStateProperty.all(Colors.white),
+                                      backgroundColor: WidgetStateProperty.all(
+                                          Colors.red.shade300),
+                                      overlayColor:
+                                          WidgetStateProperty.resolveWith(
+                                              (states) => states.contains(
+                                                      WidgetState.pressed)
+                                                  ? Colors.red.withOpacity(0.8)
+                                                  : Colors.transparent),
                                     ),
                                     onPressed: () {
                                       Navigator.pop(context, true);
@@ -512,10 +584,17 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                                   TextButton(
                                     child: Text('No'),
                                     style: ButtonStyle(
-                                      foregroundColor: MaterialStateProperty.all(Color(0xFF496D47)),
-                                      backgroundColor: MaterialStateProperty.all(Colors.grey.shade300),
-                                      overlayColor: MaterialStateProperty.resolveWith((states) =>
-                                          states.contains(MaterialState.pressed) ? Color(0xFF496D47).withOpacity(0.8) : Colors.transparent),
+                                      foregroundColor: WidgetStateProperty.all(
+                                          Color(0xFF496D47)),
+                                      backgroundColor: WidgetStateProperty.all(
+                                          Colors.grey.shade300),
+                                      overlayColor:
+                                          WidgetStateProperty.resolveWith(
+                                              (states) => states.contains(
+                                                      WidgetState.pressed)
+                                                  ? Color(0xFF496D47)
+                                                      .withOpacity(0.8)
+                                                  : Colors.transparent),
                                     ),
                                     onPressed: () {
                                       Navigator.pop(context, false);
@@ -525,7 +604,10 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                               ),
                             ).then((wantToClose) {
                               if (wantToClose!) {
-                                Navigator.pop(context, {'takenScreenshot': _takenScreenhot, 'imagePath': _imagePath});
+                                Navigator.pop(context, {
+                                  'takenScreenshot': _takenScreenhot,
+                                  'imagePath': _imagePath
+                                });
                               }
                             });
                           }
@@ -533,23 +615,36 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
                       ),
                       ElevatedButton(
                         child: Text('Share'),
-                        style: ElevatedButton.styleFrom(onPrimary: Colors.white, primary: Colors.blue.shade400),
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.blue.shade400,
+                        ),
                         onPressed: () async {
                           _takenScreenhot = true;
-                          GoogleMapController _mapController = await _sessionMapCompleter.future;
-                          await _mapController.takeSnapshot().then((value) async {
+                          GoogleMapController _mapController =
+                              await _sessionMapCompleter.future;
+                          await _mapController
+                              .takeSnapshot()
+                              .then((value) async {
                             setState(() {
                               _mapScreenshotBytes = value;
                               _showMapScreenshot = true;
                             });
                             Directory _tempDir = await getTemporaryDirectory();
-                            String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+                            String fileName = DateTime.now()
+                                .millisecondsSinceEpoch
+                                .toString();
                             await _screenshotController
-                                .captureAndSave(_tempDir.path, fileName: fileName, delay: Duration(seconds: 1), pixelRatio: 2.0)
+                                .captureAndSave(_tempDir.path,
+                                    fileName: fileName,
+                                    delay: Duration(seconds: 1),
+                                    pixelRatio: 2.0)
                                 .then((image) async {
                               _imagePath = image!;
-                              Share.shareFiles([_imagePath],
-                                  subject: 'Session Result', text: 'Check out my ride session result!', mimeTypes: ['image/png']);
+                              final imageFile = XFile(_imagePath);
+                              Share.shareXFiles([imageFile],
+                                  subject: 'Session Result',
+                                  text: 'Check out my ride session result!');
                               setState(() {
                                 _showMapScreenshot = false;
                               });
@@ -568,7 +663,8 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
     );
   }
 
-  void _setSessionMarkers(BitmapDescriptor startIcon, BitmapDescriptor endIcon) {
+  void _setSessionMarkers(
+      BitmapDescriptor startIcon, BitmapDescriptor endIcon) {
     //Add the session markers after session end
     setState(() {
       _sessionMarkers.add(
@@ -578,7 +674,7 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
           flat: true,
           draggable: false,
           anchor: Offset(0.5, 0.5),
-          position: _userActivity.coordinates!.first!,
+          position: _userActivity.coordinates!.first,
           icon: startIcon,
         ),
       );
@@ -589,7 +685,7 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
           flat: true,
           draggable: false,
           anchor: Offset(0.5, 0.5),
-          position: _userActivity.coordinates!.last!,
+          position: _userActivity.coordinates!.last,
           icon: endIcon,
         ),
       );
@@ -598,15 +694,21 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
 
   Future<List<BitmapDescriptor>> _initializeIcons() async {
     //Loads the icons to be used as markers later
-    final _startIconMarker =
-        BitmapDescriptor.fromBytes(await FunctionHelper.getBytesFromAsset('assets/images/navigate/starting_point_icon_v4.png', 50));
-    final _endIconMarker = BitmapDescriptor.fromBytes(await FunctionHelper.getBytesFromAsset('assets/images/navigate/end_point_icon_v4.png', 50));
+    final _startIconMarker = BitmapDescriptor.bytes(
+        await FunctionHelper.getBytesFromAsset(
+            'assets/images/navigate/starting_point_icon_v4.png', 50));
+    final _endIconMarker = BitmapDescriptor.bytes(
+        await FunctionHelper.getBytesFromAsset(
+            'assets/images/navigate/end_point_icon_v4.png', 50));
     return [_startIconMarker, _endIconMarker];
   }
 
   void _sessionLocations() async {
-    await GeocodingPlatform.instance
-        .placemarkFromCoordinates(_userActivity.coordinates!.first!.latitude, _userActivity.coordinates!.first!.longitude, localeIdentifier: 'en_PH')
+    final geoInstance = GeocodingPlatform.instance
+      ?..setLocaleIdentifier('en_PH');
+    await geoInstance
+        ?.placemarkFromCoordinates(_userActivity.coordinates!.first.latitude,
+            _userActivity.coordinates!.first.longitude)
         .then((startPoint) {
       setState(() {
         _startLocation =
@@ -617,8 +719,10 @@ class _NewRideSessionViewerState extends State<NewRideSessionViewer> {
         _startLocation = '';
       });
     });
-    await GeocodingPlatform.instance
-        .placemarkFromCoordinates(_userActivity.coordinates!.last!.latitude, _userActivity.coordinates!.last!.longitude, localeIdentifier: 'en_PH')
+
+    await geoInstance
+        ?.placemarkFromCoordinates(_userActivity.coordinates!.last.latitude,
+            _userActivity.coordinates!.last.longitude)
         .then((endPoint) {
       setState(() {
         _endLocation =

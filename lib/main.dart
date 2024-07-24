@@ -4,13 +4,9 @@ import 'package:cadence_mtb/models/bmi_data.dart';
 import 'package:cadence_mtb/screens/login_screen.dart';
 import 'package:cadence_mtb/screens/main_screen.dart';
 import 'package:cadence_mtb/utilities/function_helper.dart';
-import 'package:cadence_mtb/utilities/storage_helper.dart';
-import 'package:cadence_mtb/utilities/widget_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 //Note: I Infer not to use var and dynamic in my codes to make the understandability easier.
@@ -21,8 +17,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //Add your additional third party licenses here.
   LicenseRegistry.addLicense(() async* {
-    final gcnLicense = await rootBundle.loadString('assets/licenses/global_cycling_network.txt');
-    yield LicenseEntryWithLineBreaks(<String>['global_cycling_network'], gcnLicense);
+    final gcnLicense = await rootBundle
+        .loadString('assets/licenses/global_cycling_network.txt');
+    yield LicenseEntryWithLineBreaks(
+        <String>['global_cycling_network'], gcnLicense);
   });
   //StorageHelper (SharedPreferences Singleton).
   await StorageHelper.init();
@@ -47,7 +45,10 @@ void main() async {
     DeviceOrientation.landscapeRight,
   ]);
   /* This opens that status bar at the top. */
-  SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: SystemUiOverlay.values,
+  );
   /* Run the app
   NOTE: Don't worry about the frames skipped during startup (mostly, emulator or older phones encounter this).
   It may vary depending on the objects you initialize in the startup. If you are not doing any unnecessesary
@@ -63,8 +64,12 @@ void main() async {
       builder: (context, _) {
         //Load user saved theme preference.
         if (FunctionHelper.isLoggedIn) {
-          List<UserProfile> userProfiles = StorageHelper.getStringList('userProfiles')!.map((e) => UserProfile.fromJson(e)).toList();
-          currentUser = userProfiles.singleWhere((element) => element.profileNumber == StorageHelper.getInt('lastUser'));
+          List<UserProfile> userProfiles =
+              StorageHelper.getStringList('userProfiles')!
+                  .map((e) => UserProfile.fromJson(e))
+                  .toList();
+          currentUser = userProfiles.singleWhere((element) =>
+              element.profileNumber == StorageHelper.getInt('lastUser'));
         }
         Provider.of<ThemeProvider>(context, listen: false).loadTheme();
         return MyApp();

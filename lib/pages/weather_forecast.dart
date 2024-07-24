@@ -13,7 +13,8 @@ class WeatherForecast extends StatelessWidget {
   final LatLng coordinates;
   final Weather weather;
 
-  final WeatherFactory wf = WeatherFactory(Constants.openWeatherMapApiKey, language: Language.ENGLISH);
+  final WeatherFactory wf = WeatherFactory(Constants.openWeatherMapApiKey,
+      language: Language.ENGLISH);
   WeatherForecast({required this.coordinates, required this.weather});
 
   @override
@@ -21,7 +22,10 @@ class WeatherForecast extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarColor: Theme.of(context).scaffoldBackgroundColor,
-        statusBarIconBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.dark : Brightness.light,
+        statusBarIconBrightness:
+            Theme.of(context).brightness == Brightness.light
+                ? Brightness.dark
+                : Brightness.light,
       ),
       child: SafeArea(
         bottom: false,
@@ -29,8 +33,9 @@ class WeatherForecast extends StatelessWidget {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
-            iconTheme:
-                Theme.of(context).brightness == Brightness.light ? IconThemeData(color: Colors.black) : Theme.of(context).appBarTheme.iconTheme,
+            iconTheme: Theme.of(context).brightness == Brightness.light
+                ? IconThemeData(color: Colors.black)
+                : Theme.of(context).appBarTheme.iconTheme,
             elevation: 0,
             title: Text(
               DateFormat('EEEE MMMM d, yyyy').format(weather.date!),
@@ -46,7 +51,8 @@ class WeatherForecast extends StatelessWidget {
               Expanded(
                 flex: 50,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 10.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -116,19 +122,32 @@ class WeatherForecast extends StatelessWidget {
                                     opacity: 0.8,
                                     child: CachedNetworkImage(
                                       color: Colors.black,
-                                      placeholder: (context, string) => SpinKitDoubleBounce(color: Colors.white),
-                                      imageUrl: 'http://openweathermap.org/img/wn/' + weather.weatherIcon! + '@2x.png',
-                                      errorWidget: (context, string, url) => Icon(Icons.error),
+                                      placeholder: (context, string) =>
+                                          SpinKitDoubleBounce(
+                                              color: Colors.white),
+                                      imageUrl:
+                                          'http://openweathermap.org/img/wn/' +
+                                              weather.weatherIcon! +
+                                              '@2x.png',
+                                      errorWidget: (context, string, url) =>
+                                          Icon(Icons.error),
                                       fit: BoxFit.fitHeight,
                                     ),
                                   ),
                                   ClipRect(
                                     child: BackdropFilter(
-                                      filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
+                                      filter: ImageFilter.blur(
+                                          sigmaX: 1.0, sigmaY: 1.0),
                                       child: CachedNetworkImage(
-                                        placeholder: (context, string) => SpinKitDoubleBounce(color: Colors.white),
-                                        imageUrl: 'http://openweathermap.org/img/wn/' + weather.weatherIcon! + '@2x.png',
-                                        errorWidget: (context, string, url) => Icon(Icons.error),
+                                        placeholder: (context, string) =>
+                                            SpinKitDoubleBounce(
+                                                color: Colors.white),
+                                        imageUrl:
+                                            'http://openweathermap.org/img/wn/' +
+                                                weather.weatherIcon! +
+                                                '@2x.png',
+                                        errorWidget: (context, string, url) =>
+                                            Icon(Icons.error),
                                         fit: BoxFit.fitHeight,
                                       ),
                                     ),
@@ -189,10 +208,12 @@ class WeatherForecast extends StatelessWidget {
                                 child: IntrinsicHeight(
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
                                           Text(
                                             'MIN',
@@ -216,7 +237,8 @@ class WeatherForecast extends StatelessWidget {
                                         thickness: 1,
                                       ),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
                                           Text(
                                             'MAX',
@@ -283,7 +305,9 @@ class WeatherForecast extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      weather.windSpeed != null ? '${weather.windSpeed!.toStringAsFixed(1)}m/s' : 'N/A',
+                                      weather.windSpeed != null
+                                          ? '${weather.windSpeed!.toStringAsFixed(1)}m/s'
+                                          : 'N/A',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 20,
@@ -306,7 +330,9 @@ class WeatherForecast extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      weather.humidity != null ? '${weather.humidity}%' : 'N/A',
+                                      weather.humidity != null
+                                          ? '${weather.humidity}%'
+                                          : 'N/A',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 20,
@@ -329,7 +355,10 @@ class WeatherForecast extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      weather.sunrise != null ? DateFormat.jm().format(weather.sunrise!) : 'N/A',
+                                      weather.sunrise != null
+                                          ? DateFormat.jm()
+                                              .format(weather.sunrise!)
+                                          : 'N/A',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 20,
@@ -352,7 +381,10 @@ class WeatherForecast extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      weather.sunset != null ? DateFormat.jm().format(weather.sunset!) : 'N/A',
+                                      weather.sunset != null
+                                          ? DateFormat.jm()
+                                              .format(weather.sunset!)
+                                          : 'N/A',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 20,
@@ -384,7 +416,10 @@ class WeatherForecast extends StatelessWidget {
                                             ..add(Column(
                                               children: [
                                                 Text(
-                                                  element.date != null ? DateFormat('EEE, h a').format(element.date!) : 'N/A',
+                                                  element.date != null
+                                                      ? DateFormat('EEE, h a')
+                                                          .format(element.date!)
+                                                      : 'N/A',
                                                   style: TextStyle(
                                                     color: Colors.grey,
                                                     fontWeight: FontWeight.w400,
@@ -392,7 +427,9 @@ class WeatherForecast extends StatelessWidget {
                                                   ),
                                                 ),
                                                 Text(
-                                                  element.temperature!.celsius != null
+                                                  element.temperature!
+                                                              .celsius !=
+                                                          null
                                                       ? '${element.temperature!.celsius!.toStringAsFixed(1)}°'
                                                       : 'N/A',
                                                   style: TextStyle(
@@ -416,7 +453,9 @@ class WeatherForecast extends StatelessWidget {
                                             child: IntrinsicHeight(
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.min,
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
                                                 children: items,
                                               ),
                                             ),
@@ -445,7 +484,9 @@ class WeatherForecast extends StatelessWidget {
 
   Future<List<Weather>> _fetchForecast() async {
     List<Weather> forecastResult = [];
-    await wf.fiveDayForecastByLocation(coordinates.latitude, coordinates.longitude).then((result) {
+    await wf
+        .fiveDayForecastByLocation(coordinates.latitude, coordinates.longitude)
+        .then((result) {
       forecastResult = result;
     }).catchError((e) {
       forecastResult = <Weather>[];
@@ -455,9 +496,12 @@ class WeatherForecast extends StatelessWidget {
 
   Future<String> _exactAreaName() async {
     String _areaName = '';
-    await GeocodingPlatform.instance.placemarkFromCoordinates(coordinates.latitude, coordinates.longitude).then((result) {
+    await GeocodingPlatform.instance
+        ?.placemarkFromCoordinates(coordinates.latitude, coordinates.longitude)
+        .then((result) {
       if (result.elementAt(0).locality!.isNotEmpty) {
-        _areaName = '${result.elementAt(0).name}, ${result.elementAt(0).locality}';
+        _areaName =
+            '${result.elementAt(0).name}, ${result.elementAt(0).locality}';
       } else {
         _areaName = weather.areaName ?? '';
       }

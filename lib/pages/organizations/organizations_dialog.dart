@@ -5,7 +5,8 @@ class OrganizationDialog extends StatelessWidget {
   final OrganizationsItem item;
   @override
   Widget build(BuildContext context) {
-    bool _isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    bool _isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     Size _size = MediaQuery.of(context).size;
     return AlertDialog(
       shape: RoundedRectangleBorder(
@@ -93,14 +94,23 @@ class OrganizationDialog extends StatelessWidget {
                           onTap: () {},
                           child: Center(
                             child: TextButton(
-                              child: AutoSizeText('Visit Facebook Group / Page'),
+                              child:
+                                  AutoSizeText('Visit Facebook Group / Page'),
                               style: ButtonStyle(
-                                textStyle: MaterialStateProperty.all(TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
-                                foregroundColor: MaterialStateProperty.all(Colors.white),
-                                backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF4267B2)),
-                                overlayColor: MaterialStateProperty.resolveWith<Color>(
-                                    (states) => states.contains(MaterialState.pressed) ? Color(0xFF4267B2).darken(0.1) : Colors.transparent),
-                                shape: MaterialStateProperty.all<OutlinedBorder>(
+                                textStyle: WidgetStateProperty.all(TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700)),
+                                foregroundColor:
+                                    WidgetStateProperty.all(Colors.white),
+                                backgroundColor: WidgetStateProperty.all<Color>(
+                                    Color(0xFF4267B2)),
+                                overlayColor:
+                                    WidgetStateProperty.resolveWith<Color>(
+                                        (states) =>
+                                            states.contains(WidgetState.pressed)
+                                                ? Color(0xFF4267B2).darken(0.1)
+                                                : Colors.transparent),
+                                shape: WidgetStateProperty.all<OutlinedBorder>(
                                   RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -188,16 +198,28 @@ class OrganizationDialog extends StatelessWidget {
                                 onTap: () {},
                                 child: Center(
                                   child: TextButton(
-                                    child: AutoSizeText('Visit Facebook Group / Page'),
+                                    child: AutoSizeText(
+                                        'Visit Facebook Group / Page'),
                                     style: ButtonStyle(
-                                      textStyle: MaterialStateProperty.all(TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
-                                      foregroundColor: MaterialStateProperty.all(Colors.white),
-                                      backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF4267B2)),
-                                      overlayColor: MaterialStateProperty.resolveWith<Color>(
-                                          (states) => states.contains(MaterialState.pressed) ? Color(0xFF4267B2).darken(0.1) : Colors.transparent),
-                                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                                      textStyle: WidgetStateProperty.all(
+                                          TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700)),
+                                      foregroundColor:
+                                          WidgetStateProperty.all(Colors.white),
+                                      backgroundColor:
+                                          WidgetStateProperty.all<Color>(
+                                              Color(0xFF4267B2)),
+                                      overlayColor: WidgetStateProperty
+                                          .resolveWith<Color>((states) => states
+                                                  .contains(WidgetState.pressed)
+                                              ? Color(0xFF4267B2).darken(0.1)
+                                              : Colors.transparent),
+                                      shape: WidgetStateProperty.all<
+                                          OutlinedBorder>(
                                         RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                         ),
                                       ),
                                     ),

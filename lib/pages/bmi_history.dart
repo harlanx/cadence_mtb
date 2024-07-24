@@ -4,8 +4,6 @@ import 'package:cadence_mtb/models/models.dart';
 import 'package:cadence_mtb/utilities/function_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:rive/rive.dart';
 part 'bmi_history/bmi_calculator.dart';
@@ -16,8 +14,10 @@ class BMIHistory extends StatefulWidget {
 }
 
 class _BMIHistoryState extends State<BMIHistory> {
-  final Box<BMIData> _bmiActivitiesBox = Hive.box<BMIData>('${currentUser!.profileNumber}bmiActivities');
-  final ScrollController _scrollController = ScrollController(initialScrollOffset: 0.0);
+  final Box<BMIData> _bmiActivitiesBox =
+      Hive.box<BMIData>('${currentUser!.profileNumber}bmiActivities');
+  final ScrollController _scrollController =
+      ScrollController(initialScrollOffset: 0.0);
   List<BMIData> _bmiActivities = [];
   List<BMIData> _selected = [];
   bool _enableJumpBtn = false;
@@ -27,9 +27,10 @@ class _BMIHistoryState extends State<BMIHistory> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _scrollController.addListener(() {
-        _scrollController.position.isScrollingNotifier.addListener(_showJumpToTopButton);
+        _scrollController.position.isScrollingNotifier
+            .addListener(_showJumpToTopButton);
       });
     });
   }
@@ -45,7 +46,9 @@ class _BMIHistoryState extends State<BMIHistory> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(statusBarColor: Color(0xFFF15024), statusBarIconBrightness: Brightness.light),
+      value: SystemUiOverlayStyle(
+          statusBarColor: Color(0xFFF15024),
+          statusBarIconBrightness: Brightness.light),
       child: SafeArea(
         bottom: false,
         child: Scaffold(
@@ -63,27 +66,38 @@ class _BMIHistoryState extends State<BMIHistory> {
                 color: Colors.grey,
                 onPressed: () => showModal(
                     context: context,
-                    configuration: FadeScaleTransitionConfiguration(barrierDismissible: true),
+                    configuration: FadeScaleTransitionConfiguration(
+                        barrierDismissible: true),
                     builder: (_) {
                       return AlertDialog(
-                        title: Text('Body Mass Index', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20)),
+                        title: Text('Body Mass Index',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700, fontSize: 20)),
                         titlePadding: EdgeInsets.all(10),
                         contentPadding: EdgeInsets.all(10),
                         content: Text(
                           'Calculated from your height and weight. BMI is an estimate of body fat and a good gauge of your risk for diseases that can occur with more body fat.\n\nThe higher your BMI, the higher your risk for certain diseases such as heart disease, high blood pressure, type 2 diabetes, gallstones, breathing problems, and certain cancers.',
-                          style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w400, fontSize: 15),
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15),
                         ),
                         buttonPadding: EdgeInsets.zero,
                         actions: [
                           TextButton(
                             child: Text('OK'),
                             style: ButtonStyle(
-                              shape: MaterialStateProperty.all(CircleBorder()),
-                              textStyle: MaterialStateProperty.all(TextStyle(fontWeight: FontWeight.w700)),
-                              foregroundColor: MaterialStateProperty.all(Color(0xFFF15024)),
-                              overlayColor: MaterialStateProperty.resolveWith(
-                                (states) =>
-                                    states.contains(MaterialState.pressed) ? Color(0xFFF15024).darken(0.1).withOpacity(0.5) : Colors.transparent,
+                              shape: WidgetStateProperty.all(CircleBorder()),
+                              textStyle: WidgetStateProperty.all(
+                                  TextStyle(fontWeight: FontWeight.w700)),
+                              foregroundColor:
+                                  WidgetStateProperty.all(Color(0xFFF15024)),
+                              overlayColor: WidgetStateProperty.resolveWith(
+                                (states) => states.contains(WidgetState.pressed)
+                                    ? Color(0xFFF15024)
+                                        .darken(0.1)
+                                        .withOpacity(0.5)
+                                    : Colors.transparent,
                               ),
                             ),
                             onPressed: () => Navigator.pop(context),
@@ -135,20 +149,25 @@ class _BMIHistoryState extends State<BMIHistory> {
                               scrollDirection: Axis.vertical,
                               child: Theme(
                                 data: Theme.of(context).copyWith(
-                                  colorScheme: Theme.of(context).colorScheme.copyWith(
-                                    primary: Color(0xFFF15024),
-                                    onPrimary: Colors.white,
-                                  ),
+                                  colorScheme:
+                                      Theme.of(context).colorScheme.copyWith(
+                                            primary: Color(0xFFF15024),
+                                            onPrimary: Colors.white,
+                                          ),
                                 ),
                                 child: DataTable(
-                                  headingTextStyle: TextStyle(color: Color(0xFFF15024), fontWeight: FontWeight.w700),
+                                  headingTextStyle: TextStyle(
+                                      color: Color(0xFFF15024),
+                                      fontWeight: FontWeight.w700),
                                   dataTextStyle: TextStyle(
                                     fontWeight: FontWeight.w400,
                                     color: Colors.grey.shade600,
                                   ),
-
-                                  dataRowColor: MaterialStateProperty.resolveWith(
-                                      (states) => states.contains(MaterialState.selected) ? Color(0xFFF15024).brighten(0.3) : Colors.transparent),
+                                  dataRowColor: WidgetStateProperty.resolveWith(
+                                      (states) =>
+                                          states.contains(WidgetState.selected)
+                                              ? Color(0xFFF15024).brighten(0.3)
+                                              : Colors.transparent),
                                   sortAscending: _isAscending,
                                   sortColumnIndex: _sortColumnIndex,
                                   columnSpacing: 10,
@@ -202,14 +221,16 @@ class _BMIHistoryState extends State<BMIHistory> {
                                   rows: _bmiActivities
                                       .map(
                                         (activity) => DataRow(
-                                          selected: _selected.contains(activity),
+                                          selected:
+                                              _selected.contains(activity),
                                           onSelectChanged: (val) {
                                             onSelectedRow(val!, activity);
                                           },
                                           cells: [
                                             DataCell(
                                               Text(
-                                                DateFormat('MM-dd-y hh:mm a').format(activity.date),
+                                                DateFormat('MM-dd-y hh:mm a')
+                                                    .format(activity.date),
                                               ),
                                             ),
                                             DataCell(
@@ -262,28 +283,41 @@ class _BMIHistoryState extends State<BMIHistory> {
                         child: OutlinedButton(
                           child: Text('Delete Selected'),
                           style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                              (states) => states.contains(MaterialState.disabled) ? Colors.grey.shade400 : Colors.white,
+                            foregroundColor:
+                                WidgetStateProperty.resolveWith<Color>(
+                              (states) => states.contains(WidgetState.disabled)
+                                  ? Colors.grey.shade400
+                                  : Colors.white,
                             ),
-                            backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                              (states) => states.contains(MaterialState.disabled) ? Colors.white : Color(0xFFF15024).brighten(0.05),
+                            backgroundColor:
+                                WidgetStateProperty.resolveWith<Color>(
+                              (states) => states.contains(WidgetState.disabled)
+                                  ? Colors.white
+                                  : Color(0xFFF15024).brighten(0.05),
                             ),
-                            overlayColor: MaterialStateProperty.resolveWith<Color>(
-                              (states) => states.contains(MaterialState.pressed) ? Color(0xFFF15024).darken(0.05) : Colors.transparent,
+                            overlayColor:
+                                WidgetStateProperty.resolveWith<Color>(
+                              (states) => states.contains(WidgetState.pressed)
+                                  ? Color(0xFFF15024).darken(0.05)
+                                  : Colors.transparent,
                             ),
-                            side: MaterialStateProperty.resolveWith<BorderSide>(
-                              (states) =>
-                                  states.contains(MaterialState.disabled) ? BorderSide(color: Colors.grey.shade400, width: 1.0) : BorderSide.none,
+                            side: WidgetStateProperty.resolveWith<BorderSide>(
+                              (states) => states.contains(WidgetState.disabled)
+                                  ? BorderSide(
+                                      color: Colors.grey.shade400, width: 1.0)
+                                  : BorderSide.none,
                             ),
                           ),
                           onPressed: _selected.isEmpty
                               ? null
                               : () {
-                                  List<DateTime> selectedDates = _selected.map((e) => e.date).toList();
+                                  List<DateTime> selectedDates =
+                                      _selected.map((e) => e.date).toList();
                                   List<dynamic> keys = _bmiActivitiesBox
                                       .toMap()
                                       .entries
-                                      .where((element) => selectedDates.contains(element.value.date))
+                                      .where((element) => selectedDates
+                                          .contains(element.value.date))
                                       .map((e) => e.key)
                                       .toList();
                                   _deleteSelected(keys);
@@ -312,7 +346,9 @@ class _BMIHistoryState extends State<BMIHistory> {
                             color: Colors.white,
                           ),
                           onPressed: () {
-                            _scrollController.animateTo(0.0, duration: Duration(milliseconds: 500), curve: Curves.ease);
+                            _scrollController.animateTo(0.0,
+                                duration: Duration(milliseconds: 500),
+                                curve: Curves.ease);
                           },
                         ),
                       ),
@@ -398,4 +434,3 @@ class _BMIHistoryState extends State<BMIHistory> {
     }
   }
 }
-
